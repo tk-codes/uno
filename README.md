@@ -1,3 +1,5 @@
-# uno
-UNO - Card Game
+# UNO - Card Game
+Java Swing Application
+
+
 
