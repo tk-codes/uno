@@ -17,11 +17,11 @@ import GameModel.Player;
 import ServerController.MyCardListener;
 
 public class Session extends JPanel {
-	private PlayerPanel player1;
-	private PlayerPanel player2;
-	private TablePanel table;	
+	private /*@ spec_public nullable @*/ PlayerPanel player1;
+	private /*@ spec_public nullable @*/ PlayerPanel player2;
+	private /*@ spec_public nullable @*/ TablePanel table;	
 	
-	private Game game;
+	private /*@ spec_public nullable @*/ Game game;
 	
 	public Session(Game newGame, UNOCard firstCard){
 		setPreferredSize(new Dimension(960,720));

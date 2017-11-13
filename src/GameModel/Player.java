@@ -6,10 +6,10 @@ import View.UNOCard;
 
 public class Player {
 	
-	private String name = null;
+	private /*@ spec_public nullable @*/ String name = null;
 	private boolean isMyTurn = false;
 	private boolean saidUNO = false;
-	private LinkedList<UNOCard> myCards;
+	private /*@ spec_public nullable @*/ LinkedList<UNOCard> myCards;
 	
 	private int playedCards = 0;
 	

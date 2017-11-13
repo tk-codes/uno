@@ -12,8 +12,8 @@ import View.UNOCard;
 
 public class Dealer implements GameConstants {
 	
-	private CardDeck cardDeck;
-	private Stack<UNOCard> CardStack;	
+	private /*@ spec_public nullable @*/ CardDeck cardDeck;
+	private /*@ spec_public nullable @*/ Stack<UNOCard> CardStack;	
 	
 	public Dealer(){
 		this.cardDeck = new CardDeck();

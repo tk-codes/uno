@@ -4,7 +4,7 @@ import java.awt.event.ActionListener;
 
 public class MyButtonListener implements ActionListener {
 		
-	Server myServer;
+	private /*@ spec_public nullable @*/ Server myServer;
 	
 	public void setServer(Server server){
 		myServer = server;

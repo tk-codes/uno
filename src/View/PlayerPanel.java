@@ -27,17 +27,17 @@ import ServerController.MyButtonListener;
 
 public class PlayerPanel extends JPanel implements GameConstants {
 
-	private Player player;
-	private String name;
+	private /*@ spec_public nullable @*/ Player player;
+	private /*@ spec_public nullable @*/ String name;
 
-	private Box myLayout;
-	private JLayeredPane cardHolder;
-	private Box controlPanel;
+	private /*@ spec_public nullable @*/ Box myLayout;
+	private /*@ spec_public nullable @*/ JLayeredPane cardHolder;
+	private /*@ spec_public nullable @*/ Box controlPanel;
 
-	private JButton draw;
-	private JButton sayUNO;
-	private JLabel nameLbl;
-	private MyButtonHandler handler;
+	private /*@ spec_public nullable @*/ JButton draw;
+	private /*@ spec_public nullable @*/ JButton sayUNO;
+	private /*@ spec_public nullable @*/ JLabel nameLbl;
+	private /*@ spec_public nullable @*/ MyButtonHandler handler;
 
 	// Constructor
 	public PlayerPanel(Player newPlayer) {

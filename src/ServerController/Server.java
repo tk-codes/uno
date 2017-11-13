@@ -16,9 +16,9 @@ import View.Session;
 import View.UNOCard;
 
 public class Server implements GameConstants {
-	private Game game;
-	private Session session;
-	private Stack<UNOCard> playedCards;
+	private /*@ spec_public nullable @*/ Game game;
+	private /*@ spec_public nullable @*/ Session session;
+	private /*@ spec_public nullable @*/ Stack<UNOCard> playedCards;
 	public boolean canPlay;
 	private int mode;
 
