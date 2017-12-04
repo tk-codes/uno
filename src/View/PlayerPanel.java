@@ -1,29 +1,20 @@
 package View;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
-import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 import GameModel.Player;
 import Interfaces.GameConstants;
-import ServerController.MyButtonListener;
 
 public class PlayerPanel extends JPanel implements GameConstants {
 
@@ -60,7 +51,7 @@ public class PlayerPanel extends JPanel implements GameConstants {
 		handler = new MyButtonHandler();
 		draw.addActionListener(BUTTONLISTENER);
 		draw.addActionListener(handler);
-		
+
 		sayUNO.addActionListener(BUTTONLISTENER);
 		sayUNO.addActionListener(handler);
 	}
@@ -70,13 +61,11 @@ public class PlayerPanel extends JPanel implements GameConstants {
 
 		// Origin point at the center
 		Point origin = getPoint(cardHolder.getWidth(), player.getTotalCards());
-		int offset = calculateOffset(cardHolder.getWidth(),
-				player.getTotalCards());
+		int offset = calculateOffset(cardHolder.getWidth(), player.getTotalCards());
 
 		int i = 0;
 		for (UNOCard card : player.getAllCards()) {
-			card.setBounds(origin.x, origin.y, card.CARDSIZE.width,
-					card.CARDSIZE.height);
+			card.setBounds(origin.x, origin.y, card.CARDSIZE.width, card.CARDSIZE.height);
 			cardHolder.add(card, i++);
 			cardHolder.moveToFront(card);
 			origin.x += offset;
@@ -84,7 +73,7 @@ public class PlayerPanel extends JPanel implements GameConstants {
 		repaint();
 	}
 
-	public Player getPlayer() {
+	public /*@ pure @*/ Player getPlayer() {
 		return player;
 	}
 
@@ -140,16 +129,16 @@ public class PlayerPanel extends JPanel implements GameConstants {
 			return p;
 		}
 	}
-	
-	class MyButtonHandler implements ActionListener{
-		
+
+	class MyButtonHandler implements ActionListener {
+
 		public void actionPerformed(ActionEvent e) {
-			
-			if(player.isMyTurn()){
-				
-				if(e.getSource()==draw)
+
+			if (player.isMyTurn()) {
+
+				if (e.getSource() == draw)
 					BUTTONLISTENER.drawCard();
-				else if(e.getSource()==sayUNO)
+				else if (e.getSource() == sayUNO)
 					BUTTONLISTENER.sayUNO();
 			}
 		}
