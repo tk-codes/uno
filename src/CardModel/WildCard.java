@@ -6,7 +6,6 @@ import View.UNOCard;
 
 public class WildCard extends UNOCard {
 	
-	private /*@ spec_public @*/ int Function = 0;
 	private /*@ spec_public nullable @*/ Color chosenColor;
 	
 	public WildCard() {

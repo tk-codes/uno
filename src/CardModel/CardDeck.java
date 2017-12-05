@@ -12,26 +12,22 @@ import View.UNOCard;
  */
 public class CardDeck implements GameConstants {
 
-	private final /*@ spec_public nullable @*/ LinkedList<NumberCard> numberCards;
-	private final /*@ spec_public @*/ LinkedList<ActionCard> actionCards;
-	private final /*@ spec_public nullable @*/ LinkedList<WildCard> wildCards;
-
+	// public initially UNOcards != null 
 	private /*@ spec_public nullable @*/ LinkedList<UNOCard> UNOcards;
 
 	public CardDeck() {
 
 		// Initialize Cards
-		numberCards = new LinkedList<NumberCard>();
-		actionCards = new LinkedList<ActionCard>();
-		wildCards = new LinkedList<WildCard>();
-
 		UNOcards = new LinkedList<UNOCard>();
 
 		addCards();
 		addCardListener(CARDLISTENER);
 	}
 
+	
 	// Create 108 cards for this CardDeck
+	/*@ ensures (\forall int i; 0 <= i && i < UNOcards.size(); UNOcards.get(i) != null);
+	  @*/
 	private void addCards() {
 		for (Color color : UNO_COLORS) {
 
@@ -60,6 +56,7 @@ public class CardDeck implements GameConstants {
 	}
 
 	// Cards have MouseListener
+	//@ requires listener != null;
 	public void addCardListener(MyCardListener listener) {
 		for (UNOCard card : UNOcards)
 			card.addMouseListener(listener);
