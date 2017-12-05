@@ -5,80 +5,125 @@ import java.util.LinkedList;
 import View.UNOCard;
 
 public class Player {
-	
-	private String name = null;
-	private boolean isMyTurn = false;
-	private boolean saidUNO = false;
-	private LinkedList<UNOCard> myCards;
-	
-	private int playedCards = 0;
-	
+
+	//@ public initially name != null;
+	private /*@ spec_public nullable @*/ String name;
+	private /*@ spec_public @*/ boolean isMyTurn = false;
+	private /*@ spec_public @*/ boolean saidUNO = false;
+
+	//@ public initially myCards != null;
+	private /*@ spec_public nullable @*/ LinkedList<UNOCard> myCards;
+
+	//@ public invariant playedCards >= 0;
+	private /*@ spec_public @*/ int playedCards = 0;
+
 	public Player(){
-		myCards = new LinkedList<UNOCard>();
+		myCards = new LinkedList<>();
 	}
-	
+
+	/*@ assignable name, myCards;
+	  @ ensures name == player;
+	  @ ensures myCards != null && myCards.size() == 0;
+	  @*/
 	public Player(String player){
 		setName(player);
-		myCards = new LinkedList<UNOCard>();
+		myCards = new LinkedList<>();
 	}
-	
+
+	/*@ assignable this.name;
+	  @ ensures this.name == newName;
+	  @*/
 	public void setName(String newName){
 		name = newName;
 	}
-	
-	public String getName(){
+
+	//@ ensures \result == this.name;
+	public /*@ pure @*/ String getName(){
 		return this.name;
 	}
+
+	/*@ ensures myCards.size() == \old(myCards.size()) + 1;
+	  @ ensures myCards.get(myCards.size() - 1) == card;
+	  @ ensures_redundantly
+	  @ 	(\forall int i; 0 <= i && i < myCards.size() - 1;
+	  @ 		myCards.get(i) == \old(myCards).get(i));
+	  @*/
 	public void obtainCard(UNOCard card){
 		myCards.add(card);
 	}
-	
-	public LinkedList<UNOCard> getAllCards(){
+
+	//@ ensures \result == this.myCards;
+	public /*@ pure @*/LinkedList<UNOCard> getAllCards(){
 		return myCards;
 	}
-	
-	public int getTotalCards(){
+
+	//@ ensures \result == myCards.size();
+	public /*@ pure @*/ int getTotalCards(){
 		return myCards.size();
 	}
-	
-	public boolean hasCard(UNOCard thisCard){
-		return myCards.contains(thisCard);		
+
+	/*@ ensures \result
+	  @ 	== (\num_of int j; 0 <= j && j < myCards.size();
+	  @ 		myCards.get(j) == thisCard) > 0;
+	  @*/
+	public /*@ pure @*/ boolean hasCard(UNOCard thisCard){
+		return myCards.contains(thisCard);
 	}
-	
+
+	/*@ assignable myCards, playedCards;
+	  @ ensures myCards.size() == \old(myCards.size()) - 1;
+	  @ ensures playedCards == \old(playedCards) + 1;
+	  @*/
 	public void removeCard(UNOCard thisCard){
 		myCards.remove(thisCard);
 		playedCards++;
 	}
-	
-	public int totalPlayedCards(){
+
+	//@ ensures \result == playedCards;
+	public /*@ pure @*/ int totalPlayedCards(){
 		return playedCards;
 	}
-	
+
+	/*@ assignable isMyTurn;
+	  @ ensures isMyTurn != \old(isMyTurn) && (isMyTurn == true || isMyTurn == false);
+	  @*/
 	public void toggleTurn(){
 		isMyTurn = (isMyTurn) ? false : true;
 	}
-	
-	public boolean isMyTurn(){
+
+	//@ ensures \result == isMyTurn;
+	public /*@ pure @*/ boolean isMyTurn(){
 		return isMyTurn;
 	}
-	
-	public boolean hasCards(){
+
+	//@ ensures \result == myCards.size() > 0;
+	public /*@ pure @*/ boolean hasCards(){
 		return (myCards.isEmpty()) ? false : true;
 	}
-	
-	public boolean getSaidUNO(){
+
+	//@ ensures \result == saidUNO;
+	public /*@ pure @*/ boolean getSaidUNO(){
 		return saidUNO;
 	}
-	
+
+	/*@ assignable saidUNO;
+	  @ ensures saidUNO == true;
+	  @*/
 	public void saysUNO(){
 		saidUNO = true;
 	}
-	
+
+	/*@ assignable saidUNO;
+	  @ ensures saidUNO == false;
+	  @*/
 	public void setSaidUNOFalse(){
 		saidUNO = false;
 	}
-	
+
+	/*@ assignable myCards;
+	  @ ensures myCards != null && myCards.size() == 0;
+	  @*/
 	public void setCards(){
-		myCards = new LinkedList<UNOCard>();
+		myCards = new LinkedList<>();
 	}
 }

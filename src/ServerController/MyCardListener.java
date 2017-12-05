@@ -11,8 +11,8 @@ import View.UNOCard;
 
 public class MyCardListener extends MouseAdapter {
 	
-	UNOCard sourceCard;
-	Server myServer;
+	private /*@ spec_public nullable @*/ UNOCard sourceCard;
+	private /*@ spec_public nullable @*/ Server myServer;
 	
 	public void setServer(Server server){
 		myServer = server;
