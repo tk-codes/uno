@@ -21,16 +21,35 @@ public class CardDeck {
 
     private void createCards() {
         createNumberCards();
+        createActionCards();
+        createWildCards();
     }
 
     private void createNumberCards() {
-        for(var color: CardColor.values()){
+        for (var color : CardColor.values()) {
             cards.add(new NumberCard(0, color));
 
-            for(var i = 1; i <= 9; i++){
+            for (var i = 1; i <= 9; i++) {
                 cards.add(new NumberCard(i, color));
                 cards.add(new NumberCard(i, color));
             }
+        }
+    }
+
+    private void createActionCards() {
+        for (var color : CardColor.values()) {
+            for (var i = 0; i < 2; i++) {
+                cards.add(new SkipCard(color));
+                cards.add(new ReverseCard(color));
+                cards.add(new DrawTwoCard(color));
+            }
+        }
+    }
+
+    private void createWildCards() {
+        for (var i = 0; i < 4; i++) {
+            cards.add(new WildColorCard());
+            cards.add(new WildDrawFourCard());
         }
     }
 }
