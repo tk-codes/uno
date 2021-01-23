@@ -4,8 +4,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Random;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 public class TestGameBuilder {
 
     @Test
@@ -16,6 +14,5 @@ public class TestGameBuilder {
         for(var i = 0; i < 10; i++) {
             System.out.println(random.nextInt(5));
         }
-        assertEquals("test", "test2");
     }
 }

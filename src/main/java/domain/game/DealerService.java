@@ -18,14 +18,20 @@ public class DealerService {
         var shuffledCards = new ArrayList<>(cards);
         var rand = new Random();
 
-        for (int i = 0; i < cards.size() - 2; i++) {
+        for (int current = 0; current < shuffledCards.size() - 1; current++) {
             // get a random index for remaining positions, i.e. [i, CARDS_SIZE - 1)
-            var r = i + rand.nextInt(cards.size() - i);
+            var randomIndex = current + rand.nextInt(cards.size() - current);
 
-            shuffledCards.set(i, cards.get(r));
-            shuffledCards.set(r, cards.get(i));
+            swapCard(shuffledCards, current, randomIndex);
         }
 
         return shuffledCards;
+    }
+
+    private static void swapCard(List<Card> shuffledList, int currentIndex, int randomIndex) {
+        var randomCard = shuffledList.get(randomIndex);
+
+        shuffledList.set(randomIndex, shuffledList.get(currentIndex));
+        shuffledList.set(currentIndex, randomCard);
     }
 }
