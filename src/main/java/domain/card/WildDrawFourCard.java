@@ -3,7 +3,7 @@ package domain.card;
 import java.util.Objects;
 
 public class WildDrawFourCard implements Card {
-    private final CardType type = CardType.WILD_COLOR;
+    private final CardType type = CardType.WILD_DRAW_FOUR;
 
     public WildDrawFourCard() {
     }
