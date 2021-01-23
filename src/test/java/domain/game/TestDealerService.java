@@ -1,14 +1,13 @@
 package domain.game;
 
-import domain.card.Card;
-import domain.card.CardCounterAssertionHelper;
-import domain.card.CardDeck;
+import domain.card.*;
+import domain.player.HandCardList;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestDealerService {
     @Test
@@ -68,5 +67,34 @@ public class TestDealerService {
     private List<Card> getShuffledCards() {
         var originalList = new CardDeck().getImmutableCards();
         return DealerService.shuffle(originalList);
+    }
+
+    @Test
+    public void WhenDealt_ShouldHave7CardsPerEachPlayer() {
+        // Arrange
+        var fixedCards = new ArrayList<Card>();
+        for (int i = 0; i < 7; i++) {
+            fixedCards.add(new NumberCard(1, CardColor.RED));
+            fixedCards.add(new NumberCard(2, CardColor.GREEN));
+            fixedCards.add(new NumberCard(3, CardColor.BLUE));
+        }
+        var drawPile = new DrawPile(fixedCards);
+
+        // Act
+        var handCardLists = DealerService.dealInitialHandCards(drawPile, 3);
+
+        // Assert
+        assertTrue(hasAllSameValues(handCardLists[0], 3, CardColor.BLUE));
+        assertTrue(hasAllSameValues(handCardLists[1], 2, CardColor.GREEN));
+        assertTrue(hasAllSameValues(handCardLists[2], 1, CardColor.RED));
+
+        assertEquals(0, drawPile.getSize());
+    }
+
+    private boolean hasAllSameValues(HandCardList handCardList, int number, CardColor color) {
+        return handCardList
+            .getCardStream()
+            .map(c -> (NumberCard) c)
+            .allMatch(c -> c.getValue() == number && c.getColor() == color);
     }
 }

@@ -11,4 +11,12 @@ public class DrawPile {
     public DrawPile(List<Card> shuffledCards) {
         drawPile.addAll(shuffledCards);
     }
+
+    public Card drawCard() {
+        return drawPile.pop();
+    }
+
+    public int getSize() {
+        return drawPile.size();
+    }
 }

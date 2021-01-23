@@ -1,12 +1,14 @@
 package domain.game;
 
 import domain.card.Card;
+import domain.player.HandCardList;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class DealerService {
+    private final static int TOTAL_INITIAL_HAND_CARDS = 7;
 
     /**
      * Cards are shuffled using the modern version of Fisher-Yates shuffle.
@@ -33,5 +35,21 @@ public class DealerService {
 
         shuffledList.set(randomIndex, shuffledList.get(currentIndex));
         shuffledList.set(currentIndex, randomCard);
+    }
+
+    public static HandCardList[] dealInitialHandCards(DrawPile drawPile, int totalPlayers) {
+        var handCardLists = new HandCardList[totalPlayers];
+
+        for (int i = 0; i < TOTAL_INITIAL_HAND_CARDS; i++) {
+            for (int p = 0; p < totalPlayers; p++) {
+                if(i == 0){
+                    handCardLists[p] = new HandCardList();
+                }
+
+                handCardLists[p].addCard(drawPile.drawCard());
+            }
+        }
+
+        return handCardLists;
     }
 }
