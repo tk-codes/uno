@@ -19,19 +19,19 @@ public class TestCardDeck {
 
     @Test
     public void WhenInitialized_ShouldBeImmutable() {
-        var cards = testee.getCards();
+        var cards = testee.getImmutableCards();
 
         Assertions.assertThrows(UnsupportedOperationException.class, () -> cards.remove(0));
     }
 
     @Test
     public void WhenInitialized_ShouldHave108Cards() {
-        assertEquals(108, testee.getCards().size());
+        assertEquals(108, testee.getImmutableCards().size());
     }
 
     @Test
     public void WhenInitialized_ShouldHave76NumberCards() {
-        var cards = testee.getCards();
+        var cards = testee.getImmutableCards();
 
         var numberCounts = new int[10];
         var expectedNumberCounts = new int[]{4, 8, 8, 8, 8, 8, 8, 8, 8, 8};
@@ -55,7 +55,7 @@ public class TestCardDeck {
 
     @Test
     public void WhenInitialized_ShouldHave8SkipCards() {
-        var cards = testee.getCards();
+        var cards = testee.getImmutableCards();
 
         var colorCounts = new int[4];
 
@@ -73,7 +73,7 @@ public class TestCardDeck {
 
     @Test
     public void WhenInitialized_ShouldHave8ReverseCards() {
-        var cards = testee.getCards();
+        var cards = testee.getImmutableCards();
 
         var colorCounts = new int[4];
         var expectedColorCounts = new int[4];
@@ -93,7 +93,7 @@ public class TestCardDeck {
 
     @Test
     public void WhenInitialized_ShouldHave8DrawTwoCards() {
-        var cards = testee.getCards();
+        var cards = testee.getImmutableCards();
 
         var colorCounts = new int[4];
         var expectedColorCounts = new int[4];
@@ -113,7 +113,7 @@ public class TestCardDeck {
 
     @Test
     public void WhenInitialized_ShouldHave8WildCards() {
-        var cards = testee.getCards();
+        var cards = testee.getImmutableCards();
 
         var wildColorCardCount = 0;
         var wildDrawCardCount = 0;

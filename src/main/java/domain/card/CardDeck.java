@@ -15,7 +15,7 @@ public class CardDeck {
         createCards();
     }
 
-    public List<Card> getCards() {
+    public List<Card> getImmutableCards() {
         return Collections.unmodifiableList(cards);
     }
 
