@@ -33,8 +33,8 @@ public class GameBuilder {
     }
 
     private PlayerRoundIterator buildPlayers(DrawPile drawPile){
-        if(playerNames.size() < 2) {
-            throw new IllegalStateException("Minimum 2 players are required to create a game");
+        if(playerNames.size() < 2 || playerNames.size() > 10) {
+            throw new IllegalStateException("2-10 players are required to create a game");
         }
 
         var handCardLists = DealerService.dealInitialHandCards(drawPile, playerNames.size());

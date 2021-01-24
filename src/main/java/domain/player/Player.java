@@ -28,6 +28,10 @@ public class Player {
         return this.handCards.getCardStream();
     }
 
+    public void addToHandCards(Card card){
+        handCards.addCard(card);
+    }
+
     public ImmutablePlayer toImmutable() {
         return new ImmutablePlayer(this);
     }

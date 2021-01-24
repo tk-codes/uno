@@ -2,8 +2,6 @@ package domain.game;
 
 import domain.card.Card;
 import domain.card.ColorCard;
-import domain.card.NumberCard;
-import domain.card.SkipCard;
 import domain.player.ImmutablePlayer;
 import domain.player.Player;
 import domain.player.PlayerRoundIterator;
@@ -28,7 +26,41 @@ public class Game {
         var card = drawPile.drawCard();
 
         switch (card.getType()) {
-            case NUMBER -> discardPile.add((NumberCard) card);
+            case NUMBER -> discard(card);
+            case SKIP -> {
+                discard(card);
+                players.next();
+            }
+            case REVERSE -> {
+                discard(card);
+                reverse();
+            }
+            case DRAW_TWO -> {
+                discard(card);
+                drawTwoCards(players.getCurrentPlayer());
+                players.next();
+            }
+        }
+    }
+
+    private void discard(Card card){
+        discardPile.add((ColorCard) card);
+    }
+
+    private void reverse() {
+        players.reverseDirection();
+        players.next();
+    }
+
+    private void drawTwoCards(Player player){
+        drawCards(player, 2);
+    }
+
+    private void drawCards(Player player, int total){
+        int min = Math.min(total, drawPile.getSize());
+
+        for (int i = 0; i < min; i++) {
+            player.addToHandCards(drawPile.drawCard());
         }
     }
 

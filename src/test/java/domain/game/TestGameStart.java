@@ -2,7 +2,6 @@ package domain.game;
 
 import domain.card.Card;
 import domain.card.CardType;
-import domain.card.NumberCard;
 import domain.player.PlayerRoundIterator;
 import domain.testhelper.CardTestFactory;
 import domain.testhelper.PlayerTestFactory;
@@ -13,18 +12,54 @@ import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestGameStart {
+    private final PlayerRoundIterator players = new PlayerRoundIterator(PlayerTestFactory.createPlayers(3));
+
     @Test
     void WhenNumberCardPlayed_ShouldHaveNoEffect() {
-        var drawPile = createDrawPile(CardTestFactory.createNumberCard());
-        var players = new PlayerRoundIterator(PlayerTestFactory.createPlayers(3));
+        var game = createGame(CardTestFactory.createNumberCard());
 
-        var game = new Game(drawPile, players);
+        assertGameState(game, CardType.NUMBER, "1");
+    }
 
-        assertEquals(CardType.NUMBER, game.peekLastPlayedCard().getType());
-        assertEquals("1", game.getCurrentPlayer().getName());
+    @Test
+    void WhenSkipCardPlayed_CurrentPlayerShouldBeSkipped(){
+        var game = createGame(CardTestFactory.createSkipCard());
+
+        assertGameState(game, CardType.SKIP, "2");
+    }
+
+    @Test
+    void WhenReverseCardPlayed_DirectionShouldBeReversed(){
+        var game = createGame(CardTestFactory.createReverseCard());
+
+        assertGameState(game, CardType.REVERSE, "3");
+    }
+
+    @Test
+    void WhenDrawTwoCardPlayed_FirstPlayerShouldGetTwoCards(){
+        var game = createGame(
+            CardTestFactory.createNumberCard(),
+            CardTestFactory.createSkipCard(),
+            CardTestFactory.createDrawTwoCard());
+
+        var previousPlayer = players.stream().findFirst().get();
+
+        assertGameState(game, CardType.DRAW_TWO, "2");
+        assertEquals(2, previousPlayer.getHandCards().count());
+    }
+
+    private Game createGame(Card... cards) {
+        var drawPile = createDrawPile(cards);
+
+        return new Game(drawPile, players);
     }
 
     private DrawPile createDrawPile(Card... cards){
         return new DrawPile(Arrays.asList(cards));
+    }
+
+    private void assertGameState(Game game, CardType expectedPlayedCardType, String expectedCurrentPlayer) {
+        assertEquals(expectedPlayedCardType, game.peekLastPlayedCard().getType());
+        assertEquals(expectedCurrentPlayer, game.getCurrentPlayer().getName());
     }
 }

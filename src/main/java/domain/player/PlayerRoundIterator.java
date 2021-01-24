@@ -20,7 +20,7 @@ public class PlayerRoundIterator {
         return players[current];
     }
 
-    public void reverse() {
+    public void reverseDirection() {
         direction = Direction.COUNTER_CLOCK_WISE;
     }
 

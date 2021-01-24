@@ -1,5 +1,6 @@
 package domain.testhelper;
 
+import domain.player.HandCardList;
 import domain.player.Player;
 
 public class PlayerTestFactory {
@@ -7,7 +8,8 @@ public class PlayerTestFactory {
         Player[] players = new Player[total];
 
         for (int i = 0; i < players.length; i++) {
-            players[i] = new Player(String.format("%s", i + 1), null);
+            var handCards = new HandCardList();
+            players[i] = new Player(String.format("%s", i + 1), handCards);
         }
 
         return players;

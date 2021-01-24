@@ -39,7 +39,7 @@ public class TestPlayersIterator {
 
     @Test
     public void WhenReversed_ShouldHaveDescendingOrder() {
-        playerIterator.reverse();
+        playerIterator.reverseDirection();
 
         var current = playerIterator.getCurrentPlayer();
         assertPlayer(current, "1");
