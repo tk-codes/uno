@@ -3,7 +3,7 @@ package domain.game;
 import domain.card.Card;
 import domain.card.CardDeck;
 import domain.player.Player;
-import domain.player.PlayersIterator;
+import domain.player.PlayerRoundIterator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +32,7 @@ public class GameBuilder {
         return new DrawPile(shuffledCards);
     }
 
-    private PlayersIterator buildPlayers(DrawPile drawPile){
+    private PlayerRoundIterator buildPlayers(DrawPile drawPile){
         if(playerNames.size() < 2) {
             throw new IllegalStateException("Minimum 2 players are required to create a game");
         }
@@ -44,7 +44,7 @@ public class GameBuilder {
          players[i] = new Player(playerNames.get(i), handCardLists[i]);
         }
 
-        return new PlayersIterator(players);
+        return new PlayerRoundIterator(players);
     }
 
 }
