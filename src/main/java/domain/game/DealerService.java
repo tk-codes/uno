@@ -30,6 +30,19 @@ public class DealerService {
         return shuffledCards;
     }
 
+    public static DrawPile shuffle(DrawPile drawPile, Card lastPlayedCard) {
+        var oldCards = new ArrayList<Card>();
+        oldCards.add(lastPlayedCard);
+
+        for (int i = 0; i < drawPile.getSize(); i++) {
+            oldCards.add(drawPile.drawCard());
+        }
+
+        var shuffledCards = shuffle(oldCards);
+
+        return new DrawPile(shuffledCards);
+    }
+
     private static void swapCard(List<Card> shuffledList, int currentIndex, int randomIndex) {
         var randomCard = shuffledList.get(randomIndex);
 

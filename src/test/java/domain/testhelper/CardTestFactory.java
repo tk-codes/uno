@@ -18,4 +18,12 @@ public class CardTestFactory {
     public static DrawTwoCard createDrawTwoCard() {
         return new DrawTwoCard(CardColor.YELLOW);
     }
+
+    public static WildColorCard createWildColorCard() {
+        return new WildColorCard();
+    }
+
+    public static WildDrawFourCard createWildDrawFourCard() {
+        return new WildDrawFourCard();
+    }
 }
