@@ -16,4 +16,8 @@ public class HandCardList {
     public Stream<Card> getCardStream() {
         return handCards.stream();
     }
+
+    public int size() {
+        return handCards.size();
+    }
 }

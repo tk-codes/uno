@@ -92,6 +92,10 @@ public class TestDealerService {
     }
 
     private boolean hasAllSameValues(HandCardList handCardList, int number, CardColor color) {
+        if (handCardList.size() != 7) {
+            return false;
+        }
+
         return handCardList
             .getCardStream()
             .map(c -> (NumberCard) c)

@@ -18,11 +18,13 @@ dependencies {
 
 test {
   useJUnitPlatform()
+
+  jacoco {
+    enabled = System.getenv("CI") == "true"
+  }
 }
 
 jacocoTestReport {
-  dependsOn test // tests are required to run before generating the report
-
   reports {
     xml.enabled true
     xml.destination file("${buildDir}/jacocoXml")
