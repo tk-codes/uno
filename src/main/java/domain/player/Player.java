@@ -1,6 +1,9 @@
 package domain.player;
 
+import domain.card.Card;
+
 import java.util.UUID;
+import java.util.stream.Stream;
 
 public class Player {
     private final UUID id;
@@ -19,5 +22,13 @@ public class Player {
 
     public String getName() {
         return name;
+    }
+
+    public Stream<Card> getHandCards() {
+        return this.handCards.getCardStream();
+    }
+
+    public ImmutablePlayer toImmutable() {
+        return new ImmutablePlayer(this);
     }
 }

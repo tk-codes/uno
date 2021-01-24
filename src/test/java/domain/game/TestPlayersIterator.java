@@ -2,7 +2,7 @@ package domain.game;
 
 import domain.player.Player;
 import domain.player.PlayerRoundIterator;
-import org.junit.jupiter.api.BeforeAll;
+import domain.testhelper.PlayerTestFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -10,15 +10,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestPlayersIterator {
 
-    private static Player[] players = new Player[3];
+    private final Player[] players = PlayerTestFactory.createPlayers(3);
     private PlayerRoundIterator playerIterator;
-
-    @BeforeAll
-    static void beforeAll() {
-        for (int i = 0; i < players.length; i++) {
-            players[i] = new Player(String.format("%s", i + 1), null);
-        }
-    }
 
     @BeforeEach
     void setUp() {

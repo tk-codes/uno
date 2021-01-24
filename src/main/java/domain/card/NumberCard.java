@@ -2,7 +2,7 @@ package domain.card;
 
 import java.util.Objects;
 
-public class NumberCard implements Card {
+public class NumberCard implements ColorCard {
     private final int value;
     private final CardColor color;
 
@@ -18,6 +18,7 @@ public class NumberCard implements Card {
         return value;
     }
 
+    @Override
     public CardColor getColor() {
         return color;
     }

@@ -2,7 +2,7 @@ package domain.card;
 
 import java.util.Objects;
 
-public class SkipCard implements Card {
+public class SkipCard implements ColorCard {
     private final CardColor color;
 
     public SkipCard(CardColor color) {
@@ -11,6 +11,7 @@ public class SkipCard implements Card {
         this.color = color;
     }
 
+    @Override
     public CardColor getColor() {
         return color;
     }
