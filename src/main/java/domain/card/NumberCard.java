@@ -2,7 +2,7 @@ package domain.card;
 
 import java.util.Objects;
 
-public class NumberCard implements ColorCard {
+public class NumberCard implements Card {
     private final int value;
     private final CardColor color;
 

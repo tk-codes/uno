@@ -2,7 +2,7 @@ package domain.card;
 
 import java.util.Objects;
 
-public class DrawTwoCard implements ColorCard {
+public class DrawTwoCard implements Card {
     private final CardColor color;
 
     public DrawTwoCard(CardColor color) {

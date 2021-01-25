@@ -2,7 +2,7 @@ package domain.card;
 
 import java.util.Objects;
 
-public class SkipCard implements ColorCard {
+public class SkipCard implements Card {
     private final CardColor color;
 
     public SkipCard(CardColor color) {

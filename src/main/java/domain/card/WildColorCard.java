@@ -14,6 +14,11 @@ public class WildColorCard implements Card {
     }
 
     @Override
+    public CardColor getColor() {
+        return null;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

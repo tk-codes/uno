@@ -2,7 +2,7 @@ package domain.card;
 
 import java.util.Objects;
 
-public class ReverseCard implements ColorCard {
+public class ReverseCard implements Card {
     private final CardColor color;
 
     public ReverseCard(CardColor color) {
