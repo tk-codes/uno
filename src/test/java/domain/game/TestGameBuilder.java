@@ -1,5 +1,6 @@
 package domain.game;
 
+import domain.player.ImmutablePlayer;
 import domain.player.Player;
 import org.junit.jupiter.api.Test;
 
@@ -24,7 +25,7 @@ public class TestGameBuilder {
             .withPlayer("Player 3")
             .build();
 
-        var players = game.getPlayers().toArray(Player[]::new);
+        var players = game.getPlayers().toArray(ImmutablePlayer[]::new);
 
         assertEquals(3, players.length);
         assertEquals("Player 1", players[0].getName());
