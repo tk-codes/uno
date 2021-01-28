@@ -1,23 +1,18 @@
 package domain.player;
 
 import domain.card.Card;
+import domain.common.Entity;
 
-import java.util.UUID;
 import java.util.stream.Stream;
 
-public class Player {
-    private final UUID id;
+public class Player extends Entity {
     private final String name;
     private final HandCardList handCards;
 
     public Player(String name, HandCardList handCards){
-        id = UUID.randomUUID();
+        super();
         this.name = name;
         this.handCards = handCards;
-    }
-
-    public UUID getId() {
-        return id;
     }
 
     public String getName() {
