@@ -115,13 +115,18 @@ public class TestGamePlay {
     @MethodSource("provideValidDrawTwoCards")
     public void WhenValidDrawTwoCardPlayed_ShouldBeAccepted(Card topCard, Card cardToPlay) {
         // Arrange
-        var game = createGame(cardToPlay, topCard);
+        var game = createGame(
+            cardToPlay,
+            CardTestFactory.createNumberCard(),
+            CardTestFactory.createNumberCard(),
+            topCard);
 
         // Act
         playCardFromCurrentPlayer(game, cardToPlay);
 
         // Assert
         assertGameState(game, cardToPlay, "3");
+        assertEquals(2, players[1].getHandCards().count());
     }
 
     private static Stream<Arguments> provideValidDrawTwoCards() {
@@ -156,6 +161,35 @@ public class TestGamePlay {
     }
 
     @ParameterizedTest
+    @MethodSource("provideValidWildDrawFourCards")
+    public void WhenValidWildDrawFourCardPlayed_ShouldBeAccepted(Card topCard, Card cardToPlay) {
+        // Arrange
+        var game = createGame(
+            cardToPlay,
+            CardTestFactory.createNumberCard(),
+            CardTestFactory.createNumberCard(),
+            CardTestFactory.createSkipCard(),
+            CardTestFactory.createReverseCard(),
+            topCard);
+
+        // Act
+        playCardFromCurrentPlayer(game, cardToPlay);
+
+        // Assert
+        assertGameState(game, cardToPlay, "3");
+        assertEquals(4, players[1].getHandCards().count());
+    }
+
+    private static Stream<Arguments> provideValidWildDrawFourCards() {
+        var cardToPlay = CardTestFactory.createWildDrawFourCard(CardColor.RED);
+
+        return Stream.of(
+            Arguments.of(CardTestFactory.createNumberCard(5, CardColor.YELLOW), cardToPlay),
+            Arguments.of(CardTestFactory.createWildColorCard(), cardToPlay)
+        );
+    }
+
+    @ParameterizedTest
     @MethodSource("provideInvalidCardsForNumberCard")
     public void WhenInvalidCardPlayed_ShouldBeRejected(Card topCard, Card cardToPlay) {
         // Arrange
@@ -174,7 +208,8 @@ public class TestGamePlay {
             Arguments.of(topCard, CardTestFactory.createSkipCard(CardColor.RED)),
             Arguments.of(topCard, CardTestFactory.createReverseCard(CardColor.RED)),
             Arguments.of(topCard, CardTestFactory.createDrawTwoCard(CardColor.RED)),
-            Arguments.of(topCard, CardTestFactory.createWildColorCard())
+            Arguments.of(topCard, CardTestFactory.createWildColorCard()),
+            Arguments.of(topCard, CardTestFactory.createWildDrawFourCard())
         );
     }
 

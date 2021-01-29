@@ -99,6 +99,14 @@ public class Game extends Entity {
 
                 players.next();
             }
+            case WILD_DRAW_FOUR -> {
+                checkWildCardRule(playedCard);
+                discard(playedCard);
+
+                players.next();
+                drawFourCards(players.getCurrentPlayer());
+                players.next();
+            }
             default -> rejectPlayedCard(playedCard);
         }
     }
@@ -163,6 +171,10 @@ public class Game extends Entity {
 
     private void drawTwoCards(Player player) {
         drawCards(player, 2);
+    }
+
+    private void drawFourCards(Player player) {
+        drawCards(player, 4);
     }
 
     private void drawCards(Player player, int total) {
