@@ -2,16 +2,12 @@ package domain.card;
 
 import java.util.Objects;
 
-public class WildCard implements Card {
+public class ActionCard implements Card {
     private final CardType type;
     private final CardColor color;
 
-    public WildCard(CardType type) {
-        this.type = type;
-        this.color = null;
-    }
-
-    public WildCard(CardType type, CardColor color) {
+    public ActionCard(CardType type, CardColor color) {
+        CardUtil.validateActionType(type);
         CardUtil.validateColor(color);
 
         this.type = type;
@@ -32,8 +28,8 @@ public class WildCard implements Card {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        WildCard wildCard = (WildCard) o;
-        return type == wildCard.type && color == wildCard.color;
+        ActionCard that = (ActionCard) o;
+        return type == that.type && color == that.color;
     }
 
     @Override
@@ -43,7 +39,7 @@ public class WildCard implements Card {
 
     @Override
     public String toString() {
-        return "WildCard{" +
+        return "ActionCard{" +
             type + ", " + color +
             '}';
     }

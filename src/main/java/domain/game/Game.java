@@ -76,11 +76,13 @@ public class Game extends Entity {
                 if (CardRules.isValidCard(topCard, (NumberCard) playedCard) || isFirstDiscardWithoutColor) {
                     discard(playedCard);
                     players.next();
+                    return;
                 }
-                rejectPlayedCard(playedCard);
             }
             default -> rejectPlayedCard(playedCard);
         }
+
+        rejectPlayedCard(playedCard);
     }
 
     private void validatePlayedCard(UUID playerId, Card card) {

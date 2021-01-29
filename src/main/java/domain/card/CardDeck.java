@@ -39,9 +39,9 @@ public class CardDeck {
     private void createActionCards() {
         for (var color : CardColor.values()) {
             for (var i = 0; i < 2; i++) {
-                cards.add(new SkipCard(color));
-                cards.add(new ReverseCard(color));
-                cards.add(new DrawTwoCard(color));
+                cards.add(new ActionCard(CardType.SKIP, color));
+                cards.add(new ActionCard(CardType.REVERSE, color));
+                cards.add(new ActionCard(CardType.DRAW_TWO, color));
             }
         }
     }
