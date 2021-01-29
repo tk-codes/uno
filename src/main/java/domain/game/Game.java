@@ -86,6 +86,14 @@ public class Game extends Entity {
                 discard(playedCard);
                 reverse();
             }
+            case DRAW_TWO -> {
+                checkCardRule(playedCard, (topCard -> CardRules.isValidActionCard(topCard, (ActionCard) playedCard)));
+                discard(playedCard);
+
+                players.next();
+                drawTwoCards(players.getCurrentPlayer());
+                players.next();
+            }
             default -> rejectPlayedCard(playedCard);
         }
     }

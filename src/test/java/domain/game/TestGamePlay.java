@@ -112,7 +112,29 @@ public class TestGamePlay {
     }
 
     @ParameterizedTest
-    @MethodSource("provideInvalidNumberCards")
+    @MethodSource("provideValidDrawTwoCards")
+    public void WhenValidDrawTwoCardPlayed_ShouldBeAccepted(Card topCard, Card cardToPlay) {
+        // Arrange
+        var game = createGame(cardToPlay, topCard);
+
+        // Act
+        playCardFromCurrentPlayer(game, cardToPlay);
+
+        // Assert
+        assertGameState(game, cardToPlay, "3");
+    }
+
+    private static Stream<Arguments> provideValidDrawTwoCards() {
+        var cardToPlay = CardTestFactory.createDrawTwoCard(CardColor.YELLOW);
+
+        return Stream.of(
+            Arguments.of(CardTestFactory.createNumberCard(5, CardColor.YELLOW), cardToPlay),
+            Arguments.of(CardTestFactory.createWildColorCard(), cardToPlay)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideInvalidCardsForNumberCard")
     public void WhenInvalidCardPlayed_ShouldBeRejected(Card topCard, Card cardToPlay) {
         // Arrange
         var game = createGame(cardToPlay, topCard);
@@ -122,13 +144,14 @@ public class TestGamePlay {
         assertGameState(game, topCard, "1");
     }
 
-    private static Stream<Arguments> provideInvalidNumberCards() {
+    private static Stream<Arguments> provideInvalidCardsForNumberCard() {
         var topCard = CardTestFactory.createNumberCard(5, CardColor.BLUE);
 
         return Stream.of(
             Arguments.of(topCard, CardTestFactory.createNumberCard(4, CardColor.RED)),
             Arguments.of(topCard, CardTestFactory.createSkipCard(CardColor.RED)),
-            Arguments.of(topCard, CardTestFactory.createReverseCard(CardColor.RED))
+            Arguments.of(topCard, CardTestFactory.createReverseCard(CardColor.RED)),
+            Arguments.of(topCard, CardTestFactory.createDrawTwoCard(CardColor.RED))
         );
     }
 
