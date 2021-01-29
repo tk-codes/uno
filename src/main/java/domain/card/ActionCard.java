@@ -2,26 +2,11 @@ package domain.card;
 
 import java.util.Objects;
 
-public class ActionCard implements Card {
-    private final CardType type;
-    private final CardColor color;
-
+public class ActionCard extends AbstractCard {
     public ActionCard(CardType type, CardColor color) {
+        super(type, color);
         CardUtil.validateActionType(type);
         CardUtil.validateColor(color);
-
-        this.type = type;
-        this.color = color;
-    }
-
-    @Override
-    public CardType getType() {
-        return type;
-    }
-
-    @Override
-    public CardColor getColor() {
-        return color;
     }
 
     @Override
@@ -29,18 +14,18 @@ public class ActionCard implements Card {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ActionCard that = (ActionCard) o;
-        return type == that.type && color == that.color;
+        return getType() == that.getType() && getColor() == that.getColor();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(type, color);
+        return Objects.hash(getType(), getColor());
     }
 
     @Override
     public String toString() {
         return "ActionCard{" +
-            type + ", " + color +
+            getType() + ", " + getColor() +
             '}';
     }
 }
