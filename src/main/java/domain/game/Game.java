@@ -1,7 +1,6 @@
 package domain.game;
 
 import domain.card.Card;
-import domain.card.CardType;
 import domain.card.NumberCard;
 import domain.common.Entity;
 import domain.player.ImmutablePlayer;
@@ -34,7 +33,7 @@ public class Game extends Entity {
         return players.getCurrentPlayer().toImmutable();
     }
 
-    public Card peekLastPlayedCard() {
+    public Card peekTopCard() {
         return discardPile.peek();
     }
 
@@ -66,16 +65,16 @@ public class Game extends Entity {
     public void playCard(UUID playerId, Card card) {
         validatePlayedCard(playerId, card);
 
-        var lastPlayedCard = peekLastPlayedCard();
+        var topCard = peekTopCard();
 
         switch (card.getType()) {
             case NUMBER -> {
-                if (isValidCard((NumberCard) card, lastPlayedCard)) {
+                if (CardRules.isValidCard(topCard, (NumberCard) card)) {
                     discard(card);
                     players.next();
                 }
             }
-            default -> throw new IllegalArgumentException(String.format("Played card %s is not valid for %s", card, lastPlayedCard));
+            default -> throw new IllegalArgumentException(String.format("Played card %s is not valid for %s", card, topCard));
         }
     }
 
@@ -117,15 +116,5 @@ public class Game extends Entity {
         for (int i = 0; i < min; i++) {
             player.addToHandCards(drawPile.drawCard());
         }
-    }
-
-    private boolean isValidCard(NumberCard playedCard, Card topCard) {
-        if (topCard.getColor() == playedCard.getColor()) {
-            return true;
-        } else if (topCard.getType() == CardType.NUMBER) {
-            return ((NumberCard) topCard).getValue() == playedCard.getValue();
-        }
-
-        return false;
     }
 }

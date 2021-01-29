@@ -40,4 +40,12 @@ public class NumberCard implements Card {
     public int hashCode() {
         return Objects.hash(value, color);
     }
+
+    @Override
+    public String toString() {
+        return "NumberCard{" +
+            value +
+            ", " + color +
+            '}';
+    }
 }
