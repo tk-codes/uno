@@ -60,15 +60,39 @@ public class TestGamePlay {
     }
 
     private static Stream<Arguments> provideValidNumberCards() {
+        var cardToPlay = CardTestFactory.createNumberCard(4, CardColor.BLUE);
+
         return Stream.of(
-            Arguments.of(CardTestFactory.createNumberCard(5, CardColor.BLUE), CardTestFactory.createNumberCard(4, CardColor.BLUE)),
-            Arguments.of(CardTestFactory.createWildColorCard(), CardTestFactory.createNumberCard(4, CardColor.BLUE))
+            Arguments.of(CardTestFactory.createNumberCard(5, CardColor.BLUE), cardToPlay),
+            Arguments.of(CardTestFactory.createWildColorCard(), cardToPlay)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideValidSkipCards")
+    public void WhenValidSkipCardPlayed_ShouldBeAccepted(Card topCard, Card cardToPlay) {
+        // Arrange
+        var game = createGame(cardToPlay, topCard);
+
+        // Act
+        playCardFromCurrentPlayer(game, cardToPlay);
+
+        // Assert
+        assertGameState(game, cardToPlay, "3");
+    }
+
+    private static Stream<Arguments> provideValidSkipCards() {
+        var cardToPlay = CardTestFactory.createSkipCard(CardColor.YELLOW);
+
+        return Stream.of(
+            Arguments.of(CardTestFactory.createNumberCard(5, CardColor.YELLOW), cardToPlay),
+            Arguments.of(CardTestFactory.createWildColorCard(), cardToPlay)
         );
     }
 
     @ParameterizedTest
     @MethodSource("provideInvalidNumberCards")
-    public void WhenInvalidNumberCardPlayed_ShouldBeRejected(Card topCard, Card cardToPlay) {
+    public void WhenInvalidCardPlayed_ShouldBeRejected(Card topCard, Card cardToPlay) {
         // Arrange
         var game = createGame(cardToPlay, topCard);
 
@@ -78,8 +102,11 @@ public class TestGamePlay {
     }
 
     private static Stream<Arguments> provideInvalidNumberCards() {
+        var topCard = CardTestFactory.createNumberCard(5, CardColor.BLUE);
+
         return Stream.of(
-            Arguments.of(CardTestFactory.createNumberCard(5, CardColor.BLUE), CardTestFactory.createNumberCard(4, CardColor.RED))
+            Arguments.of(topCard, CardTestFactory.createNumberCard(4, CardColor.RED)),
+            Arguments.of(topCard, CardTestFactory.createSkipCard(CardColor.RED))
         );
     }
 

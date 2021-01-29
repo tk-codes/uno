@@ -42,7 +42,7 @@ public class TestCardRules {
 
     @ParameterizedTest
     @MethodSource("provideInvalidTopCardsForNumberCard")
-    public void WhenNumberCardPlayed_ShouldBeInvalid(Card topCard) {
+    public void WhenMisMatchNumberCardPlayed_ShouldBeInvalid(Card topCard) {
         var cardToPlay = CardTestFactory.createNumberCard(5, CardColor.RED);
 
         var result = CardRules.isValidNumberCard(topCard, cardToPlay);
@@ -59,7 +59,9 @@ public class TestCardRules {
             Arguments.of(CardTestFactory.createWildColorCard(CardColor.BLUE)),
             Arguments.of(CardTestFactory.createWildDrawFourCard(CardColor.BLUE)),
             Arguments.of(CardTestFactory.createWildColorCard()),
-            Arguments.of(CardTestFactory.createWildDrawFourCard())
+            Arguments.of(CardTestFactory.createWildColorCard(CardColor.BLUE)),
+            Arguments.of(CardTestFactory.createWildDrawFourCard()),
+            Arguments.of(CardTestFactory.createWildDrawFourCard(CardColor.BLUE))
         );
     }
 
@@ -85,6 +87,38 @@ public class TestCardRules {
             arguments.add(Arguments.of(cardToPlay, CardTestFactory.createDrawTwoCard(CardColor.YELLOW)));
             arguments.add(Arguments.of(cardToPlay, CardTestFactory.createWildColorCard(CardColor.YELLOW)));
             arguments.add(Arguments.of(cardToPlay, CardTestFactory.createWildDrawFourCard(CardColor.YELLOW)));
+        }
+
+        return arguments.stream();
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideInvalidTopCardsForActionCard")
+    public void WhenMismatchActionCardPlayed_ShouldBeInvalid(Card cardToPlay, Card topCard) {
+        var result = CardRules.isValidActionCard(topCard, (ActionCard) cardToPlay);
+
+        assertFalse(result, createTestMessage(topCard, cardToPlay));
+    }
+
+    private static Stream<Arguments> provideInvalidTopCardsForActionCard() {
+        var arguments = new ArrayList<Arguments>();
+        var actionTypes = new CardType[]{CardType.SKIP, CardType.REVERSE, CardType.DRAW_TWO};
+
+        for (var action : actionTypes) {
+            var cardToPlay = CardTestFactory.createActionCard(action, CardColor.YELLOW);
+
+            arguments.add(Arguments.of(cardToPlay, CardTestFactory.createNumberCard(5, CardColor.BLUE)));
+
+            for (var otherAction : actionTypes) {
+                if (otherAction != action) {
+                    arguments.add(Arguments.of(cardToPlay, CardTestFactory.createActionCard(otherAction, CardColor.BLUE)));
+                }
+            }
+
+            arguments.add(Arguments.of(cardToPlay, CardTestFactory.createWildColorCard()));
+            arguments.add(Arguments.of(cardToPlay, CardTestFactory.createWildColorCard(CardColor.BLUE)));
+            arguments.add(Arguments.of(cardToPlay, CardTestFactory.createWildDrawFourCard()));
+            arguments.add(Arguments.of(cardToPlay, CardTestFactory.createWildDrawFourCard(CardColor.BLUE)));
         }
 
         return arguments.stream();
