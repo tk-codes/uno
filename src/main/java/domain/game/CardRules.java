@@ -23,12 +23,8 @@ public class CardRules {
         return topCard.getType() == playedCard.getType();
     }
 
-    public static boolean isValidWildCard(Card topCard, WildCard playedCard) {
-        if(isSameColor(topCard, playedCard)){
-            return true;
-        }
-
-        return topCard.getType() == playedCard.getType();
+    public static boolean isValidWildCard(WildCard playedCard) {
+        return playedCard.getColor() != null;
     }
 
     private static boolean isSameColor(Card topCard, Card playedCard) {

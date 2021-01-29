@@ -1,9 +1,6 @@
 package domain.game;
 
-import domain.card.ActionCard;
-import domain.card.Card;
-import domain.card.CardType;
-import domain.card.NumberCard;
+import domain.card.*;
 import domain.common.Entity;
 import domain.player.ImmutablePlayer;
 import domain.player.Player;
@@ -11,7 +8,6 @@ import domain.player.PlayerRoundIterator;
 
 import java.util.Stack;
 import java.util.UUID;
-import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 public class Game extends Entity {
@@ -71,27 +67,36 @@ public class Game extends Entity {
 
         switch (playedCard.getType()) {
             case NUMBER -> {
-                checkCardRule(playedCard, (topCard) -> CardRules.isValidNumberCard(topCard, (NumberCard) playedCard));
+                checkNumberCardRule(playedCard);
                 discard(playedCard);
+
                 players.next();
             }
             case SKIP -> {
-                checkCardRule(playedCard, (topCard -> CardRules.isValidActionCard(topCard, (ActionCard) playedCard)));
+                checkActionCardRule(playedCard);
                 discard(playedCard);
+
                 players.next();
                 players.next();
             }
             case REVERSE -> {
-                checkCardRule(playedCard, (topCard -> CardRules.isValidActionCard(topCard, (ActionCard) playedCard)));
+                checkActionCardRule(playedCard);
                 discard(playedCard);
+
                 reverse();
             }
             case DRAW_TWO -> {
-                checkCardRule(playedCard, (topCard -> CardRules.isValidActionCard(topCard, (ActionCard) playedCard)));
+                checkActionCardRule(playedCard);
                 discard(playedCard);
 
                 players.next();
                 drawTwoCards(players.getCurrentPlayer());
+                players.next();
+            }
+            case WILD_COLOR -> {
+                checkWildCardRule(playedCard);
+                discard(playedCard);
+
                 players.next();
             }
             default -> rejectPlayedCard(playedCard);
@@ -109,17 +114,34 @@ public class Game extends Entity {
         }
     }
 
-    private void checkCardRule(Card playedCard, Predicate<Card> validateRule) {
+    private void checkNumberCardRule(Card playedCard) {
         var topCard = peekTopCard();
 
-        // The first player can choose any color since the first discard is a wild card
-        var isFirstDiscardWithoutColor = discardPile.size() == 1 && topCard.getType() == CardType.WILD_COLOR;
-
-        if (isFirstDiscardWithoutColor || validateRule.test(topCard)) {
+        if (isFirstDiscardAWildCard() || CardRules.isValidNumberCard(topCard, (NumberCard) playedCard)) {
             return;
         }
 
         rejectPlayedCard(playedCard);
+    }
+
+    private void checkActionCardRule(Card playedCard) {
+        var topCard = peekTopCard();
+
+        if (isFirstDiscardAWildCard() || CardRules.isValidActionCard(topCard, (ActionCard) playedCard)) {
+            return;
+        }
+
+        rejectPlayedCard(playedCard);
+    }
+
+    private void checkWildCardRule(Card playedCard) {
+        if (!CardRules.isValidWildCard((WildCard) playedCard)) {
+            rejectPlayedCard(playedCard);
+        }
+    }
+
+    private boolean isFirstDiscardAWildCard() {
+        return discardPile.size() == 1 && peekTopCard().getType() == CardType.WILD_COLOR;
     }
 
     private void recreateDrawPile(Card card) {
