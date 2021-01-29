@@ -44,8 +44,7 @@ public class NumberCard implements Card {
     @Override
     public String toString() {
         return "NumberCard{" +
-            value +
-            ", " + color +
+            value + ", " + color +
             '}';
     }
 }

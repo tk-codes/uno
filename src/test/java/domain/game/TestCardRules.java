@@ -14,10 +14,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestCardRules {
-    // NumberCard
-    // --> NumberCard (exact match, same color, same value)
-    // --> ActionCard (same color)
-    // --> WildCard (same color)
 
     @ParameterizedTest
     @MethodSource("provideValidTopCardsForNumberCard")
@@ -36,7 +32,9 @@ public class TestCardRules {
             Arguments.of(CardTestFactory.createNumberCard(5, CardColor.BLUE)),
             Arguments.of(CardTestFactory.createSkipCard(CardColor.RED)),
             Arguments.of(CardTestFactory.createReverseCard(CardColor.RED)),
-            Arguments.of(CardTestFactory.createDrawTwoCard(CardColor.RED))
+            Arguments.of(CardTestFactory.createDrawTwoCard(CardColor.RED)),
+            Arguments.of(CardTestFactory.createWildColorCard(CardColor.RED)),
+            Arguments.of(CardTestFactory.createWildDrawFourCard(CardColor.RED))
         );
     }
 
@@ -55,7 +53,11 @@ public class TestCardRules {
             Arguments.of(CardTestFactory.createNumberCard(4, CardColor.BLUE)),
             Arguments.of(CardTestFactory.createSkipCard(CardColor.BLUE)),
             Arguments.of(CardTestFactory.createReverseCard(CardColor.BLUE)),
-            Arguments.of(CardTestFactory.createDrawTwoCard(CardColor.BLUE))
+            Arguments.of(CardTestFactory.createDrawTwoCard(CardColor.BLUE)),
+            Arguments.of(CardTestFactory.createWildColorCard(CardColor.BLUE)),
+            Arguments.of(CardTestFactory.createWildDrawFourCard(CardColor.BLUE)),
+            Arguments.of(CardTestFactory.createWildColorCard()),
+            Arguments.of(CardTestFactory.createWildDrawFourCard())
         );
     }
 
