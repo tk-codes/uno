@@ -12,15 +12,27 @@ public class CardTestFactory {
     }
 
     public static SkipCard createSkipCard() {
-        return new SkipCard(CardColor.BLUE);
+        return createSkipCard(CardColor.BLUE);
+    }
+
+    public static SkipCard createSkipCard(CardColor color) {
+        return new SkipCard(color);
     }
 
     public static ReverseCard createReverseCard() {
-        return new ReverseCard(CardColor.BLUE);
+        return createReverseCard(CardColor.BLUE);
+    }
+
+    public static ReverseCard createReverseCard(CardColor color) {
+        return new ReverseCard(color);
     }
 
     public static DrawTwoCard createDrawTwoCard() {
-        return new DrawTwoCard(CardColor.YELLOW);
+        return createDrawTwoCard(CardColor.YELLOW);
+    }
+
+    public static DrawTwoCard createDrawTwoCard(CardColor color) {
+        return new DrawTwoCard(color);
     }
 
     public static WildColorCard createWildColorCard() {
