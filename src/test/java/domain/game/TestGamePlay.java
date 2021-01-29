@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.Arrays;
 import java.util.stream.Stream;
@@ -19,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class TestGamePlay {
-    private final Player[] players = PlayerTestFactory.createPlayers(3);
+    private final Player[] players = PlayerTestFactory.createPlayers(4);
     private final PlayerRoundIterator playersIterator = new PlayerRoundIterator(players);
 
     @Test
@@ -91,6 +90,28 @@ public class TestGamePlay {
     }
 
     @ParameterizedTest
+    @MethodSource("provideValidReverseCards")
+    public void WhenValidReverseCardPlayed_ShouldBeAccepted(Card topCard, Card cardToPlay) {
+        // Arrange
+        var game = createGame(cardToPlay, topCard);
+
+        // Act
+        playCardFromCurrentPlayer(game, cardToPlay);
+
+        // Assert
+        assertGameState(game, cardToPlay, "4");
+    }
+
+    private static Stream<Arguments> provideValidReverseCards() {
+        var cardToPlay = CardTestFactory.createReverseCard(CardColor.YELLOW);
+
+        return Stream.of(
+            Arguments.of(CardTestFactory.createNumberCard(5, CardColor.YELLOW), cardToPlay),
+            Arguments.of(CardTestFactory.createWildColorCard(), cardToPlay)
+        );
+    }
+
+    @ParameterizedTest
     @MethodSource("provideInvalidNumberCards")
     public void WhenInvalidCardPlayed_ShouldBeRejected(Card topCard, Card cardToPlay) {
         // Arrange
@@ -106,7 +127,8 @@ public class TestGamePlay {
 
         return Stream.of(
             Arguments.of(topCard, CardTestFactory.createNumberCard(4, CardColor.RED)),
-            Arguments.of(topCard, CardTestFactory.createSkipCard(CardColor.RED))
+            Arguments.of(topCard, CardTestFactory.createSkipCard(CardColor.RED)),
+            Arguments.of(topCard, CardTestFactory.createReverseCard(CardColor.RED))
         );
     }
 
