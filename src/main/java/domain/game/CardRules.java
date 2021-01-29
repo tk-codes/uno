@@ -3,6 +3,10 @@ package domain.game;
 import domain.card.*;
 
 public class CardRules {
+    private CardRules(){
+        throw new IllegalStateException("Utility class");
+    }
+
     public static boolean isValidNumberCard(Card topCard, NumberCard playedCard) {
         if(isSameColor(topCard, playedCard)){
             return true;

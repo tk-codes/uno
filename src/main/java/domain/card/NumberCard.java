@@ -2,16 +2,16 @@ package domain.card;
 
 import java.util.Objects;
 
-public class NumberCard implements Card {
+public class NumberCard extends AbstractCard {
     private final int value;
-    private final CardColor color;
 
     public NumberCard(int value, CardColor color) {
-        CardUtil.validateNumber(value);
+        super(CardType.NUMBER, color);
+
         CardUtil.validateColor(color);
 
+        CardUtil.validateNumber(value);
         this.value = value;
-        this.color = color;
     }
 
     public int getValue() {
@@ -19,32 +19,22 @@ public class NumberCard implements Card {
     }
 
     @Override
-    public CardColor getColor() {
-        return color;
-    }
-
-    @Override
-    public CardType getType() {
-        return CardType.NUMBER;
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         NumberCard that = (NumberCard) o;
-        return value == that.value && color == that.color;
+        return value == that.value && getColor() == that.getColor();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(value, color);
+        return Objects.hash(value, getColor());
     }
 
     @Override
     public String toString() {
         return "NumberCard{" +
-            value + ", " + color +
+            value + ", " + getColor() +
             '}';
     }
 }
