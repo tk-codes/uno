@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.Arrays;
 import java.util.stream.Stream;
@@ -47,7 +48,7 @@ public class TestGamePlay {
 
     @ParameterizedTest
     @MethodSource("provideValidNumberCards")
-    public void GivenNumberCardOnTop_WhenValidNumberCardPlayed_ShouldBeAccepted(Card topCard, Card cardToPlay) {
+    public void WhenValidNumberCardPlayed_ShouldBeAccepted(Card topCard, Card cardToPlay) {
         // Arrange
         var game = createGame(cardToPlay, topCard);
 
@@ -61,8 +62,24 @@ public class TestGamePlay {
     private static Stream<Arguments> provideValidNumberCards() {
         return Stream.of(
             Arguments.of(CardTestFactory.createNumberCard(5, CardColor.BLUE), CardTestFactory.createNumberCard(4, CardColor.BLUE)),
-            Arguments.of(CardTestFactory.createNumberCard(4, CardColor.BLUE), CardTestFactory.createNumberCard(4, CardColor.RED)),
-            Arguments.of(CardTestFactory.createNumberCard(4, CardColor.BLUE), CardTestFactory.createNumberCard(4, CardColor.BLUE))
+            Arguments.of(CardTestFactory.createWildColorCard(), CardTestFactory.createNumberCard(4, CardColor.BLUE))
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideInvalidNumberCards")
+    public void WhenInvalidNumberCardPlayed_ShouldBeRejected(Card topCard, Card cardToPlay) {
+        // Arrange
+        var game = createGame(cardToPlay, topCard);
+
+        // Assert
+        assertThrows(IllegalArgumentException.class, () -> playCardFromCurrentPlayer(game, cardToPlay));
+        assertGameState(game, topCard, "1");
+    }
+
+    private static Stream<Arguments> provideInvalidNumberCards() {
+        return Stream.of(
+            Arguments.of(CardTestFactory.createNumberCard(5, CardColor.BLUE), CardTestFactory.createNumberCard(4, CardColor.RED))
         );
     }
 

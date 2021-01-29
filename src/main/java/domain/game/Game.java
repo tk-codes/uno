@@ -1,6 +1,7 @@
 package domain.game;
 
 import domain.card.Card;
+import domain.card.CardType;
 import domain.card.NumberCard;
 import domain.common.Entity;
 import domain.player.ImmutablePlayer;
@@ -62,19 +63,23 @@ public class Game extends Entity {
         }
     }
 
-    public void playCard(UUID playerId, Card card) {
-        validatePlayedCard(playerId, card);
+    public void playCard(UUID playerId, Card playedCard) {
+        validatePlayedCard(playerId, playedCard);
 
         var topCard = peekTopCard();
 
-        switch (card.getType()) {
+        // The first player can choose any color since the first discard is a wild card
+        var isFirstDiscardWithoutColor = discardPile.size() == 1 && topCard.getType() == CardType.WILD_COLOR;
+
+        switch (playedCard.getType()) {
             case NUMBER -> {
-                if (CardRules.isValidCard(topCard, (NumberCard) card)) {
-                    discard(card);
+                if (CardRules.isValidCard(topCard, (NumberCard) playedCard) || isFirstDiscardWithoutColor) {
+                    discard(playedCard);
                     players.next();
                 }
+                rejectPlayedCard(playedCard);
             }
-            default -> throw new IllegalArgumentException(String.format("Played card %s is not valid for %s", card, topCard));
+            default -> rejectPlayedCard(playedCard);
         }
     }
 
@@ -116,5 +121,10 @@ public class Game extends Entity {
         for (int i = 0; i < min; i++) {
             player.addToHandCards(drawPile.drawCard());
         }
+    }
+
+    private void rejectPlayedCard(Card playedCard) {
+        throw new IllegalArgumentException(
+            String.format("Played card %s is not valid for %s", playedCard, peekTopCard()));
     }
 }
