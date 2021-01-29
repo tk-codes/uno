@@ -1,5 +1,6 @@
 package domain.game;
 
+import domain.card.ActionCard;
 import domain.card.Card;
 import domain.card.CardType;
 import domain.card.NumberCard;
@@ -10,6 +11,7 @@ import domain.player.PlayerRoundIterator;
 
 import java.util.Stack;
 import java.util.UUID;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 public class Game extends Entity {
@@ -66,23 +68,20 @@ public class Game extends Entity {
     public void playCard(UUID playerId, Card playedCard) {
         validatePlayedCard(playerId, playedCard);
 
-        var topCard = peekTopCard();
-
-        // The first player can choose any color since the first discard is a wild card
-        var isFirstDiscardWithoutColor = discardPile.size() == 1 && topCard.getType() == CardType.WILD_COLOR;
-
         switch (playedCard.getType()) {
             case NUMBER -> {
-                if (CardRules.isValidCard(topCard, (NumberCard) playedCard) || isFirstDiscardWithoutColor) {
-                    discard(playedCard);
-                    players.next();
-                    return;
-                }
+                checkCardRule(playedCard, (topCard) -> CardRules.isValidNumberCard(topCard, (NumberCard) playedCard));
+                discard(playedCard);
+                players.next();
+            }
+            case SKIP -> {
+                checkCardRule(playedCard, (topCard -> CardRules.isValidActionCard(topCard, (ActionCard) playedCard)));
+                discard(playedCard);
+                players.next();
+                players.next();
             }
             default -> rejectPlayedCard(playedCard);
         }
-
-        rejectPlayedCard(playedCard);
     }
 
     private void validatePlayedCard(UUID playerId, Card card) {
@@ -94,6 +93,19 @@ public class Game extends Entity {
         if (!currentPlayer.hasHandCard(card)) {
             throw new IllegalArgumentException(String.format("Card %s does not exist in player's hand cards", card));
         }
+    }
+
+    private void checkCardRule(Card playedCard, Predicate<Card> validateRule) {
+        var topCard = peekTopCard();
+
+        // The first player can choose any color since the first discard is a wild card
+        var isFirstDiscardWithoutColor = discardPile.size() == 1 && topCard.getType() == CardType.WILD_COLOR;
+
+        if (isFirstDiscardWithoutColor || validateRule.test(topCard)) {
+            return;
+        }
+
+        rejectPlayedCard(playedCard);
     }
 
     private void recreateDrawPile(Card card) {

@@ -11,6 +11,10 @@ public class CardTestFactory {
         return new NumberCard(value, color);
     }
 
+    public static ActionCard createActionCard(CardType type, CardColor color){
+        return new ActionCard(type, color);
+    }
+
     public static ActionCard createSkipCard() {
         return createSkipCard(CardColor.BLUE);
     }
