@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestPlayersIterator {
 
-    private final Player[] players = PlayerTestFactory.createPlayers(3);
+    private final Player[] players = PlayerTestFactory.createPlayers(4);
     private PlayerRoundIterator playerIterator;
 
     @BeforeEach
@@ -34,7 +34,7 @@ public class TestPlayersIterator {
         assertPlayer(current, "3");
 
         current = playerIterator.next();
-        assertPlayer(current, "1");
+        assertPlayer(current, "4");
     }
 
     @Test
@@ -45,13 +45,13 @@ public class TestPlayersIterator {
         assertPlayer(current, "1");
 
         current = playerIterator.next();
+        assertPlayer(current, "4");
+
+        current = playerIterator.next();
         assertPlayer(current, "3");
 
         current = playerIterator.next();
         assertPlayer(current, "2");
-
-        current = playerIterator.next();
-        assertPlayer(current, "1");
     }
 
     private void assertPlayer(Player player, String expectedName){

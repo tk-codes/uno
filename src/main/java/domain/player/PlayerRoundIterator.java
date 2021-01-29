@@ -31,6 +31,6 @@ public class PlayerRoundIterator {
 
     private int getNextIndex() {
         var increment = direction == Direction.CLOCKWISE ? 1 : -1;
-        return (players.length + current + increment) % 3;
+        return (players.length + current + increment) % players.length;
     }
 }

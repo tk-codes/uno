@@ -62,6 +62,7 @@ public class Game extends Entity {
                 recreateDrawPile(card);
                 startDiscardPile();
             }
+            default -> throw new UnsupportedOperationException("Unsupported card type " + card.getType());
         }
     }
 
@@ -79,6 +80,11 @@ public class Game extends Entity {
                 discard(playedCard);
                 players.next();
                 players.next();
+            }
+            case REVERSE -> {
+                checkCardRule(playedCard, (topCard -> CardRules.isValidActionCard(topCard, (ActionCard) playedCard)));
+                discard(playedCard);
+                reverse();
             }
             default -> rejectPlayedCard(playedCard);
         }
