@@ -27,6 +27,10 @@ public class Player extends Entity {
         handCards.addCard(card);
     }
 
+    public boolean hasHandCard(Card card) {
+        return this.handCards.hasCard(card);
+    }
+
     public ImmutablePlayer toImmutable() {
         return new ImmutablePlayer(this);
     }

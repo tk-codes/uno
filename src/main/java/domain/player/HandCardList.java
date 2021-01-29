@@ -17,6 +17,10 @@ public class HandCardList {
         return handCards.stream();
     }
 
+    public boolean hasCard(Card card) {
+        return getCardStream().anyMatch(c -> c.equals(card));
+    }
+
     public int size() {
         return handCards.size();
     }

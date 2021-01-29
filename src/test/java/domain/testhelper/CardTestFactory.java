@@ -7,6 +7,10 @@ public class CardTestFactory {
         return new NumberCard(1, CardColor.RED);
     }
 
+    public static NumberCard createNumberCard(int value, CardColor color) {
+        return new NumberCard(value, color);
+    }
+
     public static SkipCard createSkipCard() {
         return new SkipCard(CardColor.BLUE);
     }
