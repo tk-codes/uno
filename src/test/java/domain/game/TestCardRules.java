@@ -33,7 +33,10 @@ public class TestCardRules {
         return Stream.of(
             Arguments.of(CardTestFactory.createNumberCard(5, CardColor.RED)),
             Arguments.of(CardTestFactory.createNumberCard(4, CardColor.RED)),
-            Arguments.of(CardTestFactory.createNumberCard(5, CardColor.BLUE))
+            Arguments.of(CardTestFactory.createNumberCard(5, CardColor.BLUE)),
+            Arguments.of(CardTestFactory.createSkipCard(CardColor.RED)),
+            Arguments.of(CardTestFactory.createReverseCard(CardColor.RED)),
+            Arguments.of(CardTestFactory.createDrawTwoCard(CardColor.RED))
         );
     }
 
@@ -49,7 +52,10 @@ public class TestCardRules {
 
     private static Stream<Arguments> provideInvalidTopCardsForNumberCard() {
         return Stream.of(
-            Arguments.of(CardTestFactory.createNumberCard(4, CardColor.BLUE))
+            Arguments.of(CardTestFactory.createNumberCard(4, CardColor.BLUE)),
+            Arguments.of(CardTestFactory.createSkipCard(CardColor.BLUE)),
+            Arguments.of(CardTestFactory.createReverseCard(CardColor.BLUE)),
+            Arguments.of(CardTestFactory.createDrawTwoCard(CardColor.BLUE))
         );
     }
 
