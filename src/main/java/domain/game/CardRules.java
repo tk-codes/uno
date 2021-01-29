@@ -5,7 +5,7 @@ import domain.card.CardType;
 import domain.card.NumberCard;
 
 public class CardRules {
-    public static boolean isValidCard(Card topCard, NumberCard playedCard){
+    public static boolean isValidCard(Card topCard, NumberCard playedCard) {
         if (topCard.getColor() == playedCard.getColor()) {
             return true;
         }

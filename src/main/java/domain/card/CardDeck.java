@@ -48,8 +48,8 @@ public class CardDeck {
 
     private void createWildCards() {
         for (var i = 0; i < 4; i++) {
-            cards.add(new WildColorCard());
-            cards.add(new WildDrawFourCard());
+            cards.add(new WildCard(CardType.WILD_COLOR));
+            cards.add(new WildCard(CardType.WILD_DRAW_FOUR));
         }
     }
 }

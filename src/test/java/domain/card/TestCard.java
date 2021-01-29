@@ -1,5 +1,6 @@
 package domain.card;
 
+import domain.testhelper.CardTestFactory;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -48,16 +49,16 @@ public class TestCard {
 
     @Test
     public void GivenSameWildColorCard_ShouldBeEqual(){
-        var card = new WildColorCard();
-        var anotherCard = new WildColorCard();
+        var card = CardTestFactory.createWildColorCard();
+        var anotherCard = CardTestFactory.createWildColorCard();
 
         assertEquals(card, anotherCard);
     }
 
     @Test
     public void GivenSameWildDrawFourCard_ShouldBeEqual(){
-        var card = new WildDrawFourCard();
-        var anotherCard = new WildDrawFourCard();
+        var card = CardTestFactory.createWildDrawFourCard();
+        var anotherCard = CardTestFactory.createWildDrawFourCard();
 
         assertEquals(card, anotherCard);
     }

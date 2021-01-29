@@ -35,11 +35,19 @@ public class CardTestFactory {
         return new DrawTwoCard(color);
     }
 
-    public static WildColorCard createWildColorCard() {
-        return new WildColorCard();
+    public static WildCard createWildColorCard() {
+        return createWildColorCard(null);
     }
 
-    public static WildDrawFourCard createWildDrawFourCard() {
-        return new WildDrawFourCard();
+    public static WildCard createWildColorCard(CardColor color) {
+        return new WildCard(CardType.WILD_COLOR, color);
+    }
+
+    public static WildCard createWildDrawFourCard() {
+        return createWildDrawFourCard(null);
+    }
+
+    public static WildCard createWildDrawFourCard(CardColor color) {
+        return new WildCard(CardType.WILD_DRAW_FOUR, color);
     }
 }
