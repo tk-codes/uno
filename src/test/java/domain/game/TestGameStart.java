@@ -80,7 +80,7 @@ public class TestGameStart {
     }
 
     private void assertGameState(Game game, CardType expectedPlayedCardType, String expectedCurrentPlayer) {
-        assertEquals(expectedPlayedCardType, game.peekLastPlayedCard().getType());
+        assertEquals(expectedPlayedCardType, game.peekTopCard().getType());
         assertEquals(expectedCurrentPlayer, game.getCurrentPlayer().getName());
     }
 }
