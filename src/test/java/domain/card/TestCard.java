@@ -25,24 +25,24 @@ public class TestCard {
 
     @Test
     public void GivenSameSkipCard_ShouldBeEqual(){
-        var skipCard = new SkipCard(CardColor.RED);
-        var anotherSkipCard = new SkipCard(CardColor.RED);
+        var skipCard = CardTestFactory.createSkipCard(CardColor.RED);
+        var anotherSkipCard = CardTestFactory.createSkipCard(CardColor.RED);
 
         assertEquals(skipCard, anotherSkipCard);
     }
 
     @Test
     public void GivenDifferentSkipCard_ShouldNotBeEqual(){
-        var skipCard = new SkipCard(CardColor.RED);
-        var anotherSkipCard = new SkipCard(CardColor.GREEN);
+        var skipCard = CardTestFactory.createSkipCard(CardColor.RED);
+        var anotherSkipCard = CardTestFactory.createSkipCard(CardColor.GREEN);
 
         assertNotEquals(skipCard, anotherSkipCard);
     }
 
     @Test
     public void GivenDifferentActionCard_ShouldNotBeEqual(){
-        var skipCard = new SkipCard(CardColor.RED);
-        var reverseCard = new ReverseCard(CardColor.RED);
+        var skipCard = CardTestFactory.createSkipCard(CardColor.RED);
+        var reverseCard = CardTestFactory.createReverseCard(CardColor.RED);
 
         assertNotEquals(skipCard, reverseCard);
     }

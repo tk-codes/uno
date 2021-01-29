@@ -11,32 +11,32 @@ public class CardTestFactory {
         return new NumberCard(value, color);
     }
 
-    public static SkipCard createSkipCard() {
+    public static ActionCard createSkipCard() {
         return createSkipCard(CardColor.BLUE);
     }
 
-    public static SkipCard createSkipCard(CardColor color) {
-        return new SkipCard(color);
+    public static ActionCard createSkipCard(CardColor color) {
+        return new ActionCard(CardType.SKIP, color);
     }
 
-    public static ReverseCard createReverseCard() {
+    public static ActionCard createReverseCard() {
         return createReverseCard(CardColor.BLUE);
     }
 
-    public static ReverseCard createReverseCard(CardColor color) {
-        return new ReverseCard(color);
+    public static ActionCard createReverseCard(CardColor color) {
+        return new ActionCard(CardType.REVERSE, color);
     }
 
-    public static DrawTwoCard createDrawTwoCard() {
+    public static ActionCard createDrawTwoCard() {
         return createDrawTwoCard(CardColor.YELLOW);
     }
 
-    public static DrawTwoCard createDrawTwoCard(CardColor color) {
-        return new DrawTwoCard(color);
+    public static ActionCard createDrawTwoCard(CardColor color) {
+        return new ActionCard(CardType.DRAW_TWO, color);
     }
 
     public static WildCard createWildColorCard() {
-        return createWildColorCard(null);
+        return new WildCard(CardType.WILD_COLOR);
     }
 
     public static WildCard createWildColorCard(CardColor color) {
@@ -44,7 +44,7 @@ public class CardTestFactory {
     }
 
     public static WildCard createWildDrawFourCard() {
-        return createWildDrawFourCard(null);
+        return new WildCard(CardType.WILD_DRAW_FOUR);
     }
 
     public static WildCard createWildDrawFourCard(CardColor color) {

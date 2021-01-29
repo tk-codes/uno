@@ -12,4 +12,12 @@ public class CardUtil {
             throw new IllegalArgumentException("Card number should between 0 and 9");
         }
     }
+
+    public static void validateActionType(CardType type) {
+        if (type == CardType.SKIP || type == CardType.REVERSE || type == CardType.DRAW_TWO) {
+            return;
+        }
+
+        throw new IllegalArgumentException("Invalid action type");
+    }
 }

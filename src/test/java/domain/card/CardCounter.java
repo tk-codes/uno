@@ -39,8 +39,8 @@ public class CardCounter {
 
         cards.stream()
             .filter(c -> c.getType() == CardType.SKIP)
-            .map(c -> (SkipCard) c)
-            .forEach(c -> colorCounts[c.getColor().ordinal()] += 1);
+            .map(Card::getColor)
+            .forEach(color -> colorCounts[color.ordinal()] += 1);
 
         return colorCounts;
     }
@@ -50,8 +50,8 @@ public class CardCounter {
 
         cards.stream()
             .filter(c -> c.getType() == CardType.REVERSE)
-            .map(c -> (ReverseCard) c)
-            .forEach(c -> colorCounts[c.getColor().ordinal()] += 1);
+            .map(Card::getColor)
+            .forEach(color -> colorCounts[color.ordinal()] += 1);
 
         return colorCounts;
     }
@@ -61,8 +61,8 @@ public class CardCounter {
 
         cards.stream()
             .filter(c -> c.getType() == CardType.DRAW_TWO)
-            .map(c -> (DrawTwoCard) c)
-            .forEach(c -> colorCounts[c.getColor().ordinal()] += 1);
+            .map(Card::getColor)
+            .forEach(color -> colorCounts[color.ordinal()] += 1);
 
         return colorCounts;
     }
