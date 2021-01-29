@@ -5,6 +5,7 @@ import domain.card.Card;
 import domain.card.CardColor;
 import domain.card.CardType;
 import domain.testhelper.CardTestFactory;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -122,6 +123,24 @@ public class TestCardRules {
         }
 
         return arguments.stream();
+    }
+
+    @Test
+    public void WhenWildCardWithChosenColor_ShouldBeValid() {
+        var wildCard = CardTestFactory.createWildColorCard(CardColor.RED);
+
+        var result = CardRules.isValidWildCard(wildCard);
+
+        assertTrue(result, wildCard.toString());
+    }
+
+    @Test
+    public void WhenWildCardWithoutColor_ShouldBeInvalid() {
+        var wildCard = CardTestFactory.createWildColorCard();
+
+        var result = CardRules.isValidWildCard(wildCard);
+
+        assertFalse(result, wildCard.toString());
     }
 
     private String createTestMessage(Card topCard, Card playedCard) {

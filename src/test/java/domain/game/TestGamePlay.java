@@ -134,6 +134,28 @@ public class TestGamePlay {
     }
 
     @ParameterizedTest
+    @MethodSource("provideValidWildColorCards")
+    public void WhenValidWildColorCardPlayed_ShouldBeAccepted(Card topCard, Card cardToPlay) {
+        // Arrange
+        var game = createGame(cardToPlay, topCard);
+
+        // Act
+        playCardFromCurrentPlayer(game, cardToPlay);
+
+        // Assert
+        assertGameState(game, cardToPlay, "2");
+    }
+
+    private static Stream<Arguments> provideValidWildColorCards() {
+        var cardToPlay = CardTestFactory.createWildColorCard(CardColor.RED);
+
+        return Stream.of(
+            Arguments.of(CardTestFactory.createNumberCard(5, CardColor.YELLOW), cardToPlay),
+            Arguments.of(CardTestFactory.createWildColorCard(), cardToPlay)
+        );
+    }
+
+    @ParameterizedTest
     @MethodSource("provideInvalidCardsForNumberCard")
     public void WhenInvalidCardPlayed_ShouldBeRejected(Card topCard, Card cardToPlay) {
         // Arrange
@@ -151,7 +173,8 @@ public class TestGamePlay {
             Arguments.of(topCard, CardTestFactory.createNumberCard(4, CardColor.RED)),
             Arguments.of(topCard, CardTestFactory.createSkipCard(CardColor.RED)),
             Arguments.of(topCard, CardTestFactory.createReverseCard(CardColor.RED)),
-            Arguments.of(topCard, CardTestFactory.createDrawTwoCard(CardColor.RED))
+            Arguments.of(topCard, CardTestFactory.createDrawTwoCard(CardColor.RED)),
+            Arguments.of(topCard, CardTestFactory.createWildColorCard())
         );
     }
 
