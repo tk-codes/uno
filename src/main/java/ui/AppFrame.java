@@ -2,16 +2,21 @@ package ui;
 
 import domain.card.CardColor;
 import domain.card.NumberCard;
-import ui.card.CardView;
+import domain.player.ImmutablePlayer;
+import ui.view.CardView;
+import ui.view.PlayerView;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
-public class AppWindow extends JFrame {
+public class AppFrame extends JFrame {
     private final JPanel mainLayout;
+    private final List<ImmutablePlayer> players;
 
-    public AppWindow(){
+    public AppFrame(List<ImmutablePlayer> players){
         mainLayout = new JPanel();
+        this.players = players;
         setupLayout();
 
         showFrame();
@@ -19,7 +24,7 @@ public class AppWindow extends JFrame {
 
     private void showFrame() {
         setVisible(true);
-        setResizable(true);
+        setResizable(false);
         setLocation(200, 100);
         pack();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -30,8 +35,11 @@ public class AppWindow extends JFrame {
         mainLayout.setBackground(new Color(30,36,40));
         mainLayout.setLayout(new BorderLayout());
 
-        mainLayout.add(new CardView(new NumberCard(1, CardColor.RED)), BorderLayout.NORTH);
+        var playerView1 = new PlayerView(players.get(0));
+        var playerView2 = new PlayerView(players.get(1));
 
+        mainLayout.add(playerView1, BorderLayout.NORTH);
+        mainLayout.add(playerView2, BorderLayout.SOUTH);
         add(mainLayout);
     }
 }

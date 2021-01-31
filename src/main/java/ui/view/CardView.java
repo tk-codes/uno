@@ -1,4 +1,4 @@
-package ui.card;
+package ui.view;
 
 import domain.card.Card;
 import ui.common.StyleUtil;
@@ -11,11 +11,11 @@ public class CardView extends JPanel {
     private final Card card;
     private final String value = "1"; // TODO
 
-    private final int width = 100;
-    private final int height = 150;
+    private final int width = 50;
+    private final int height = 75;
     private final int margin = 5;
 
-    private final Dimension cardSize = new Dimension(width * 2, height * 2);
+    private final Dimension dimension = new Dimension(width * 2, height * 2);
 
     private Border defaultBorder = BorderFactory.createEtchedBorder(WHEN_FOCUSED, Color.black, Color.gray);
     private Border focusedBorder = BorderFactory.createEtchedBorder(WHEN_FOCUSED, Color.black, Color.gray);
@@ -26,8 +26,12 @@ public class CardView extends JPanel {
         initView();
     }
 
+    public Dimension getDimension() {
+        return dimension;
+    }
+
     private void initView() {
-        setPreferredSize(cardSize);
+        setPreferredSize(dimension);
         setBorder(defaultBorder);
     }
 

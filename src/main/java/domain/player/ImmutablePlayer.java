@@ -23,4 +23,8 @@ public class ImmutablePlayer {
     public Stream<Card> getHandCards() {
         return this.player.getHandCards();
     }
+
+    public int getTotalCards() {
+        return (int) getHandCards().count();
+    }
 }
