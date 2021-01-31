@@ -30,7 +30,7 @@ public class AppWindow extends JFrame {
         mainLayout.setBackground(new Color(30,36,40));
         mainLayout.setLayout(new BorderLayout());
 
-        mainLayout.add(new CardView(new NumberCard(1, CardColor.RED)));
+        mainLayout.add(new CardView(new NumberCard(1, CardColor.RED)), BorderLayout.NORTH);
 
         add(mainLayout);
     }
