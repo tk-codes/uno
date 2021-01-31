@@ -1,6 +1,8 @@
 package ui.common;
 
+import domain.card.Card;
 import domain.card.CardColor;
+import domain.card.NumberCard;
 
 import java.awt.*;
 
@@ -15,6 +17,9 @@ public class StyleUtil {
     public static Color COLOR_BLACK = new Color(0, 0, 0);
 
     public static String DEFAULT_FONT = "Helvetica";
+
+    private static final Character CHAR_REVERSE = (char) 8634;
+    private static final Character CHAR_SKIP = (char) Integer.parseInt("2718", 16);
 
     public static Color convertCardColor(CardColor color) {
         if (color == null) {
@@ -34,9 +39,31 @@ public class StyleUtil {
             case YELLOW -> {
                 return COLOR_YELLOW;
             }
-            default -> {
-                throw new IllegalArgumentException("Unsupported card color " + color);
+            default -> throw new IllegalArgumentException("Unsupported card color " + color);
+        }
+    }
+
+    public static String getValueToDisplay(Card card) {
+        switch (card.getType()) {
+            case NUMBER -> {
+                return Integer.toString(((NumberCard) card).getValue());
             }
+            case SKIP -> {
+                return CHAR_SKIP.toString();
+            }
+            case REVERSE -> {
+                return CHAR_REVERSE.toString();
+            }
+            case DRAW_TWO -> {
+                return "2+";
+            }
+            case WILD_COLOR -> {
+                return "W";
+            }
+            case WILD_DRAW_FOUR -> {
+                return "4+";
+            }
+            default -> throw new IllegalArgumentException("Unsupported card type " + card.getType());
         }
     }
 }
