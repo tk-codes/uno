@@ -2,10 +2,11 @@ package domain.player;
 
 import domain.card.Card;
 
+import java.io.Serializable;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-public class ImmutablePlayer {
+public class ImmutablePlayer implements Serializable {
     private final Player player;
 
     public ImmutablePlayer(Player player) {

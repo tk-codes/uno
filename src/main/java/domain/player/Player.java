@@ -3,6 +3,7 @@ package domain.player;
 import domain.card.Card;
 import domain.common.Entity;
 
+import java.io.Serializable;
 import java.util.stream.Stream;
 
 public class Player extends Entity {

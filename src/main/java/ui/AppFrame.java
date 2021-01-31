@@ -25,7 +25,7 @@ public class AppFrame extends JFrame {
         setResizable(false);
         setLocation(200, 100);
         pack();
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
     private void setupLayout() {

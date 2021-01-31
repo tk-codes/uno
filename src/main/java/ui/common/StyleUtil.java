@@ -10,36 +10,38 @@ public class StyleUtil {
     private StyleUtil() {
     }
 
-    public static Color COLOR_RED = new Color(192, 80, 77);
-    public static Color COLOR_BLUE = new Color(31, 73, 125);
-    public static Color COLOR_GREEN = new Color(0, 153, 0);
-    public static Color COLOR_YELLOW = new Color(255, 204, 0);
-    public static Color COLOR_BLACK = new Color(0, 0, 0);
+    public static final Color redColor = new Color(192, 80, 77);
+    public static final Color blueColor = new Color(31, 73, 125);
+    public static final Color greenColor = new Color(0, 153, 0);
+    public static final Color yellowColor = new Color(255, 204, 0);
+    public static final Color blackColor = new Color(0, 0, 0);
 
-    public static String DEFAULT_FONT = "Helvetica";
+    public static final String defaultFont = "Helvetica";
 
-    private static final Character CHAR_REVERSE = (char) 8634;
-    private static final Character CHAR_SKIP = (char) Integer.parseInt("2718", 16);
+    private static final Character reverseChar = (char) 8634;
+    private static final Character skipChar = (char) Integer.parseInt("2718", 16);
 
     public static Color convertCardColor(CardColor color) {
         if (color == null) {
-            return COLOR_BLACK;
+            return blackColor;
         }
 
         switch (color) {
             case RED -> {
-                return COLOR_RED;
+                return redColor;
             }
             case GREEN -> {
-                return COLOR_GREEN;
+                return greenColor;
             }
             case BLUE -> {
-                return COLOR_BLUE;
+                return blueColor;
             }
             case YELLOW -> {
-                return COLOR_YELLOW;
+                return yellowColor;
             }
-            default -> throw new IllegalArgumentException("Unsupported card color " + color);
+            default -> {
+                throw new IllegalArgumentException("Unsupported card color " + color);
+            }
         }
     }
 
@@ -49,10 +51,10 @@ public class StyleUtil {
                 return Integer.toString(((NumberCard) card).getValue());
             }
             case SKIP -> {
-                return CHAR_SKIP.toString();
+                return skipChar.toString();
             }
             case REVERSE -> {
-                return CHAR_REVERSE.toString();
+                return reverseChar.toString();
             }
             case DRAW_TWO -> {
                 return "2+";

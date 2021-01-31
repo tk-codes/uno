@@ -13,11 +13,11 @@ public class CardView extends JPanel {
     private final Card card;
     private final String value;
 
-    private final int width = 100;
-    private final int height = 150;
-    private final int margin = 5;
+    private final int cardWidth = 100;
+    private final int cardHeight = 150;
+    private static final int margin = 5;
 
-    private final Dimension dimension = new Dimension(width, height);
+    private final Dimension dimension = new Dimension(cardWidth, cardHeight);
 
     private final Border defaultBorder = BorderFactory.createEtchedBorder(WHEN_FOCUSED, Color.white, Color.gray);
     private final Border focusedBorder = BorderFactory.createEtchedBorder(WHEN_FOCUSED, Color.black, Color.gray);
@@ -67,34 +67,34 @@ public class CardView extends JPanel {
 
     private void fillBackground(Graphics2D g2, Color cardColor) {
         g2.setColor(Color.WHITE);
-        g2.fillRect(0, 0, width, height);
+        g2.fillRect(0, 0, cardWidth, cardHeight);
 
         g2.setColor(cardColor);
-        g2.fillRect(margin, margin, width - 2 * margin, height - 2 * margin);
+        g2.fillRect(margin, margin, cardWidth - 2 * margin, cardHeight - 2 * margin);
     }
 
     private void drawWhiteOvalInCenter(Graphics2D g2) {
         var transformer = g2.getTransform();
         g2.setColor(Color.white);
-        g2.rotate(45, (double) width * 3 / 4, (double) height * 3 / 4);
-        g2.fillOval(0, height / 4, width * 3 / 5, height);
+        g2.rotate(45, (double) cardWidth * 3 / 4, (double) cardHeight * 3 / 4);
+        g2.fillOval(0, cardHeight / 4, cardWidth * 3 / 5, cardHeight);
 
         g2.setTransform(transformer);
     }
 
     private void drawValueInCenter(Graphics2D g2, Color cardColor) {
-        var defaultFont = new Font(StyleUtil.DEFAULT_FONT, Font.BOLD, width / 2 + 5);
+        var defaultFont = new Font(StyleUtil.defaultFont, Font.BOLD, cardWidth / 2 + 5);
         var fontMetrics = this.getFontMetrics(defaultFont);
         int stringWidth = fontMetrics.stringWidth(value) / 2;
         int fontHeight = defaultFont.getSize() / 3;
 
         g2.setColor(cardColor);
         g2.setFont(defaultFont);
-        g2.drawString(value, width / 2 - stringWidth, height / 2 + fontHeight);
+        g2.drawString(value, cardWidth / 2 - stringWidth, cardHeight / 2 + fontHeight);
     }
 
     private void drawValueInCorner(Graphics2D g2) {
-        var defaultFont = new Font(StyleUtil.DEFAULT_FONT, Font.ITALIC, width / 5);
+        var defaultFont = new Font(StyleUtil.defaultFont, Font.ITALIC, cardWidth / 5);
 
         g2.setColor(Color.white);
         g2.setFont(defaultFont);

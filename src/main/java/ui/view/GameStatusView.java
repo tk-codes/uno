@@ -17,6 +17,7 @@ public class GameStatusView extends JPanel {
         updateText(text);
     }
 
+    @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         panelCenter = getWidth()/2;
