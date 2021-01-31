@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-public class GameAppService implements IGameAppService{
+public class GameAppService implements IGameAppService {
     private static final Logger logger = LogManager.getLogger("GameAppService");
 
     private final Game game;
@@ -22,7 +22,18 @@ public class GameAppService implements IGameAppService{
             .withPlayer("Player 2")
             .build();
 
-        // TODO: Log players and hand cards
+        logGameInfo();
+    }
+
+    private void logGameInfo() {
+        logger.info("Game created successfully");
+        getPlayers().forEach(p -> {
+            var joinedCardValues = p.getHandCards()
+                .map(Object::toString)
+                .collect(Collectors.joining(","));
+
+            logger.debug(String.format("Player %s with %s cards => [%s]", p.getName(), p.getTotalCards(), joinedCardValues));
+        });
     }
 
     @Override

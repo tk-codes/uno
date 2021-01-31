@@ -11,7 +11,7 @@ import java.awt.event.MouseEvent;
 
 public class CardView extends JPanel {
     private final Card card;
-    private final String value = "1"; // TODO
+    private final String value;
 
     private final int width = 100;
     private final int height = 150;
@@ -19,11 +19,12 @@ public class CardView extends JPanel {
 
     private final Dimension dimension = new Dimension(width, height);
 
-    private Border defaultBorder = BorderFactory.createEtchedBorder(WHEN_FOCUSED, Color.white, Color.gray);
-    private Border focusedBorder = BorderFactory.createEtchedBorder(WHEN_FOCUSED, Color.black, Color.gray);
+    private final Border defaultBorder = BorderFactory.createEtchedBorder(WHEN_FOCUSED, Color.white, Color.gray);
+    private final Border focusedBorder = BorderFactory.createEtchedBorder(WHEN_FOCUSED, Color.black, Color.gray);
 
     public CardView(Card card) {
         this.card = card;
+        this.value = StyleUtil.getValueToDisplay(card);
 
         initView();
     }
