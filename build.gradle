@@ -44,6 +44,7 @@ sonarqube {
     property "sonar.projectKey", "tk-codes_uno"
     property "sonar.organization", "tk-codes-github"
     property "sonar.host.url", "https://sonarcloud.io"
+    property "sonar.coverage.exclusions", "ui/**/*"
   }
 }
 
