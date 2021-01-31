@@ -6,6 +6,8 @@ import ui.common.StyleUtil;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class CardView extends JPanel {
     private final Card card;
@@ -17,7 +19,7 @@ public class CardView extends JPanel {
 
     private final Dimension dimension = new Dimension(width, height);
 
-    private Border defaultBorder = BorderFactory.createEtchedBorder(WHEN_FOCUSED, Color.black, Color.gray);
+    private Border defaultBorder = BorderFactory.createEtchedBorder(WHEN_FOCUSED, Color.white, Color.gray);
     private Border focusedBorder = BorderFactory.createEtchedBorder(WHEN_FOCUSED, Color.black, Color.gray);
 
     public CardView(Card card) {
@@ -33,6 +35,20 @@ public class CardView extends JPanel {
     private void initView() {
         setPreferredSize(dimension);
         setBorder(defaultBorder);
+
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                super.mouseEntered(e);
+                showHoverEffect();
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+               super.mouseExited(e);
+               removeHoverEffect();
+            }
+        });
     }
 
     @Override
@@ -82,5 +98,21 @@ public class CardView extends JPanel {
         g2.setColor(Color.white);
         g2.setFont(defaultFont);
         g2.drawString(value, margin, 5 * margin);
+    }
+
+    private void showHoverEffect(){
+        setBorder(focusedBorder);
+
+        Point p = getLocation();
+        p.y -= 20;
+        setLocation(p);
+    }
+
+    private void removeHoverEffect() {
+        setBorder(defaultBorder);
+
+        Point p = getLocation();
+        p.y += 20;
+        setLocation(p);
     }
 }
