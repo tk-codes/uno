@@ -2,6 +2,7 @@ package ui.view;
 
 import domain.game.DealerService;
 import domain.player.ImmutablePlayer;
+import ui.common.StyleUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -77,8 +78,7 @@ public class PlayerView extends JPanel {
 
     private int calculateOffset(int width, int totalCards) {
         if (totalCards <= DealerService.TOTAL_INITIAL_HAND_CARDS) {
-            int defaultCardOffset = 71;
-            return defaultCardOffset;
+            return 71;
         } else {
             return (width - 100) / (totalCards - 1);
         }
@@ -99,13 +99,13 @@ public class PlayerView extends JPanel {
     private void initNameLabel() {
         nameLabel = new JLabel(player.getName());
         nameLabel.setForeground(Color.WHITE);
-        nameLabel.setFont(new Font("Arial", Font.BOLD, 15));
+        nameLabel.setFont(new Font(StyleUtil.defaultFont, Font.BOLD, 15));
     }
 
     private void initSayNoButton() {
         sayUNO = new JButton("Say UNO");
         sayUNO.setBackground(new Color(149, 55, 53));
-        sayUNO.setFont(new Font("Arial", Font.BOLD, 20));
+        sayUNO.setFont(new Font(StyleUtil.defaultFont, Font.BOLD, 20));
         sayUNO.setFocusable(false);
     }
 
@@ -113,7 +113,7 @@ public class PlayerView extends JPanel {
         draw = new JButton("Draw");
 
         draw.setBackground(new Color(79, 129, 189));
-        draw.setFont(new Font("Arial", Font.BOLD, 20));
+        draw.setFont(new Font(StyleUtil.defaultFont, Font.BOLD, 20));
         draw.setFocusable(false);
     }
 }

@@ -1,6 +1,8 @@
 package domain.card;
 
-public interface Card {
+import java.io.Serializable;
+
+public interface Card extends Serializable {
     CardType getType();
     CardColor getColor();
 }
