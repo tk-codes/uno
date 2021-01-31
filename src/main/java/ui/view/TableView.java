@@ -1,20 +1,20 @@
 package ui.view;
 
-import domain.card.Card;
+import application.IGameAppService;
 import ui.common.StyleUtil;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class TableView extends JPanel {
-    private Card topCard;
     private final JPanel table;
+    private final IGameAppService appService;
 
-    public TableView(Card firstDiscard){
+    public TableView(IGameAppService appService){
+        this.appService = appService;
+
         setOpaque(false);
         setLayout(new GridBagLayout());
-
-        topCard = firstDiscard;
         table = new JPanel();
         table.setBackground(new Color(64,64,64));
 
@@ -30,7 +30,7 @@ public class TableView extends JPanel {
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
         c.gridy = 0;
-        table.add(new CardView(topCard), c);
+        table.add(new CardView(appService.peekTopCard()), c);
     }
 
     private void initInfoView() {
@@ -47,19 +47,19 @@ public class TableView extends JPanel {
         c.gridx = 1;
         c.gridy = 0;
         c.insets = new Insets(0, 1, 0, 1);
-        // add(infoPanel, c);
+
+        add(new GameStatusView(), c);
     }
 
-    public void discard(Card playedCard){
+    public void discard(){
         table.removeAll();
-        topCard = playedCard;
         initTable();
 
         setBackgroundColor();
     }
 
     private void setBackgroundColor(){
-        Color background = StyleUtil.convertCardColor(topCard.getColor());
+        Color background = StyleUtil.convertCardColor(appService.peekTopCard().getColor());
         table.setBackground(background);
     }
 }

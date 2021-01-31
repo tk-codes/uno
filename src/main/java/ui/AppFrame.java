@@ -1,23 +1,20 @@
 package ui;
 
-import domain.card.CardColor;
-import domain.card.NumberCard;
-import domain.player.ImmutablePlayer;
-import ui.view.CardView;
+import application.IGameAppService;
 import ui.view.PlayerView;
 import ui.view.TableView;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
 
 public class AppFrame extends JFrame {
     private final JPanel mainLayout;
-    private final List<ImmutablePlayer> players;
+    private final IGameAppService appService;
 
-    public AppFrame(List<ImmutablePlayer> players){
+    public AppFrame(IGameAppService appService){
+        this.appService = appService;
+
         mainLayout = new JPanel();
-        this.players = players;
         setupLayout();
 
         showFrame();
@@ -36,9 +33,11 @@ public class AppFrame extends JFrame {
         mainLayout.setBackground(new Color(30,36,40));
         mainLayout.setLayout(new BorderLayout());
 
-        var playerView1 = new PlayerView(players.get(0));
-        var playerView2 = new PlayerView(players.get(1));
-        var tableView = new TableView(new NumberCard(5, CardColor.GREEN));
+        // This desktop app supports only dual game play
+        var playerView1 = new PlayerView(appService.getPlayers().get(0));
+        var playerView2 = new PlayerView(appService.getPlayers().get(1));
+
+        var tableView = new TableView(appService);
 
         mainLayout.add(playerView1, BorderLayout.NORTH);
         mainLayout.add(tableView, BorderLayout.CENTER);
