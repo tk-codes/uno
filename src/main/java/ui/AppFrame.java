@@ -5,6 +5,7 @@ import domain.card.NumberCard;
 import domain.player.ImmutablePlayer;
 import ui.view.CardView;
 import ui.view.PlayerView;
+import ui.view.TableView;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,8 +38,10 @@ public class AppFrame extends JFrame {
 
         var playerView1 = new PlayerView(players.get(0));
         var playerView2 = new PlayerView(players.get(1));
+        var tableView = new TableView(new NumberCard(5, CardColor.GREEN));
 
         mainLayout.add(playerView1, BorderLayout.NORTH);
+        mainLayout.add(tableView, BorderLayout.CENTER);
         mainLayout.add(playerView2, BorderLayout.SOUTH);
         add(mainLayout);
     }
