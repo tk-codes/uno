@@ -12,7 +12,9 @@ public class UNOApp {
             .withPlayer("Player 3")
             .build();
 
-        SwingUtilities.invokeLater(()->{
+        game.getPlayers().forEach(p -> System.out.println("Player " + p.getName() + " - " + p.getTotalCards()));
+
+        SwingUtilities.invokeLater(() -> {
             var frame = new AppFrame(game.getPlayers().collect(Collectors.toList()));
         });
     }
