@@ -85,12 +85,12 @@ public class CardView extends JPanel {
     private void drawValueInCenter(Graphics2D g2, Color cardColor) {
         var defaultFont = new Font(StyleUtil.DEFAULT_FONT, Font.BOLD, width / 2 + 5);
         var fontMetrics = this.getFontMetrics(defaultFont);
-        int StringWidth = fontMetrics.stringWidth(value) / 2;
-        int FontHeight = defaultFont.getSize() / 3;
+        int stringWidth = fontMetrics.stringWidth(value) / 2;
+        int fontHeight = defaultFont.getSize() / 3;
 
         g2.setColor(cardColor);
         g2.setFont(defaultFont);
-        g2.drawString(value, width / 2 - StringWidth, height / 2 + FontHeight);
+        g2.drawString(value, width / 2 - stringWidth, height / 2 + fontHeight);
     }
 
     private void drawValueInCorner(Graphics2D g2) {

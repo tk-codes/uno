@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Random;
 
 public class DealerService {
-    public final static int TOTAL_INITIAL_HAND_CARDS = 7;
+    public static final int TOTAL_INITIAL_HAND_CARDS = 7;
 
     /**
      * Cards are shuffled using the modern version of Fisher-Yates shuffle.
