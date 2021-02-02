@@ -43,17 +43,17 @@ public class GameAppService implements IGameAppService {
 
     @Override
     public void playCard(UUID playerId, Card card) {
-
+        logger.info(String.format("Player %s played %s", playerId, card));
     }
 
     @Override
     public void drawCard(UUID playerId) {
-
+        logger.info(String.format("Player %s draws a card", playerId));
     }
 
     @Override
     public void sayUNO(UUID playerId) {
-
+        logger.info(String.format("Player %s said UNO", playerId));
     }
 
     @Override
