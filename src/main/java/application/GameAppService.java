@@ -44,6 +44,7 @@ public class GameAppService implements IGameAppService {
     @Override
     public void playCard(UUID playerId, Card card) {
         logger.info(String.format("Player %s played %s", playerId, card));
+        game.playCard(playerId, card);
     }
 
     @Override

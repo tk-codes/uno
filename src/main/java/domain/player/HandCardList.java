@@ -13,6 +13,10 @@ public class HandCardList {
         handCards.add(newCard);
     }
 
+    public boolean removeCard(Card card) {
+        return handCards.remove(card);
+    }
+
     public Stream<Card> getCardStream() {
         return handCards.stream();
     }

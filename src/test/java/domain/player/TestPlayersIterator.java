@@ -1,7 +1,5 @@
-package domain.game;
+package domain.player;
 
-import domain.player.Player;
-import domain.player.PlayerRoundIterator;
 import domain.testhelper.PlayerTestFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
