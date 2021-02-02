@@ -1,7 +1,9 @@
 package domain.game;
 
 import domain.card.*;
+import domain.common.DomainEventPublisher;
 import domain.common.Entity;
+import domain.game.events.CardPlayed;
 import domain.player.ImmutablePlayer;
 import domain.player.Player;
 import domain.player.PlayerRoundIterator;
@@ -109,6 +111,8 @@ public class Game extends Entity {
             }
             default -> rejectPlayedCard(playedCard);
         }
+
+        DomainEventPublisher.publish(new CardPlayed(playerId, playedCard));
     }
 
     private void validatePlayedCard(UUID playerId, Card card) {
@@ -162,6 +166,7 @@ public class Game extends Entity {
 
     private void discard(Card card) {
         discardPile.add(card);
+        players.getCurrentPlayer().removePlayedCard(card);
     }
 
     private void reverse() {
