@@ -1,5 +1,6 @@
 package ui.view;
 
+import application.IGameAppService;
 import domain.game.DealerService;
 import domain.player.ImmutablePlayer;
 import ui.common.StyleUtil;
@@ -18,8 +19,11 @@ public class PlayerView extends JPanel {
 
     private final ImmutablePlayer player;
 
-    public PlayerView(ImmutablePlayer player) {
+    private final IGameAppService appService;
+
+    public PlayerView(ImmutablePlayer player, IGameAppService appService) {
         this.player = player;
+        this.appService = appService;
 
         initView();
     }
@@ -54,7 +58,8 @@ public class PlayerView extends JPanel {
 
         int i = 0;
         for (var card : player.getHandCards().collect(Collectors.toList())) {
-            var cardView = new CardView(card);
+            var cardView = new CardView(card,
+                (playedCard) -> appService.playCard(player.getId(), playedCard));
 
             cardView.setBounds(originPoint.x, originPoint.y,
                 cardView.getDimension().width, cardView.getDimension().height);
