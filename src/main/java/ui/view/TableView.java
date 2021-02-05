@@ -1,12 +1,17 @@
 package ui.view;
 
 import application.IGameAppService;
+import domain.card.Card;
+import domain.common.DomainEvent;
+import domain.common.DomainEventPublisher;
+import domain.common.DomainEventSubscriber;
+import domain.game.events.CardPlayed;
 import ui.common.StyleUtil;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class TableView extends JPanel {
+public class TableView extends JPanel implements DomainEventSubscriber {
     private final JPanel table;
     private final IGameAppService appService;
 
@@ -20,9 +25,12 @@ public class TableView extends JPanel {
 
         initTable();
         initInfoView();
+
+        DomainEventPublisher.subscribe(this);
     }
 
     private void initTable(){
+        table.removeAll();
         table.setPreferredSize(new Dimension(500,200));
         table.setLayout(new GridBagLayout());
 
@@ -30,7 +38,14 @@ public class TableView extends JPanel {
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
         c.gridy = 0;
-        table.add(new CardView(appService.peekTopCard()), c);
+
+        Card topCard = appService.peekTopCard();
+        Color background = StyleUtil.convertCardColor(topCard.getColor());
+
+        table.setBackground(background);
+        table.add(new CardView(topCard), c);
+
+        table.repaint();
     }
 
     private void initInfoView() {
@@ -48,18 +63,13 @@ public class TableView extends JPanel {
         c.gridy = 0;
         c.insets = new Insets(0, 1, 0, 1);
 
-        add(new GameStatusView(), c);
+        add(new GameStatusView(appService), c);
     }
 
-    public void discard(){
-        table.removeAll();
-        initTable();
-
-        setBackgroundColor();
-    }
-
-    private void setBackgroundColor(){
-        Color background = StyleUtil.convertCardColor(appService.peekTopCard().getColor());
-        table.setBackground(background);
+    @Override
+    public void handleEvent(DomainEvent event) {
+        if(event instanceof CardPlayed) {
+            initTable();
+        }
     }
 }

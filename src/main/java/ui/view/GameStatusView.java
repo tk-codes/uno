@@ -1,20 +1,31 @@
 package ui.view;
 
+import application.IGameAppService;
+import domain.common.DomainEvent;
+import domain.common.DomainEventPublisher;
+import domain.common.DomainEventSubscriber;
+import domain.game.events.CardPlayed;
+
 import javax.swing.*;
 import java.awt.*;
 
-public class GameStatusView extends JPanel {
+public class GameStatusView extends JPanel implements DomainEventSubscriber {
     private String error;
     private String text;
     private int panelCenter;
 
-    public GameStatusView(){
+    private final IGameAppService appService;
+
+    public GameStatusView(IGameAppService appService){
+        this.appService = appService;
+
         setPreferredSize(new Dimension(275,200));
         setOpaque(false);
         error = "";
-        text = "Game Started";
 
-        updateText(text);
+        updateStatus();
+
+        DomainEventPublisher.subscribe(this);
     }
 
     @Override
@@ -54,11 +65,19 @@ public class GameStatusView extends JPanel {
         g.drawString(text, xPos, 75);
     }
 
-    public void updateText(String newText) {
-        text = newText;
+    private void updateStatus() {
+        text = String.format("%s's turn", appService.getCurrentPlayer().getName());
+        repaint();
     }
 
     public void setError(String errorMgs){
         error = errorMgs;
+    }
+
+    @Override
+    public void handleEvent(DomainEvent event) {
+        if(event instanceof CardPlayed) {
+            updateStatus();
+        }
     }
 }
