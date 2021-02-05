@@ -43,6 +43,11 @@ public class GameAppService implements IGameAppService {
     }
 
     @Override
+    public ImmutablePlayer getCurrentPlayer() {
+        return game.getCurrentPlayer();
+    }
+
+    @Override
     public Stream<Card> getHandCards(UUID playerId) {
         return game.getHandCards(playerId);
     }

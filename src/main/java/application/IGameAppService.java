@@ -11,6 +11,8 @@ import java.util.stream.Stream;
 public interface IGameAppService extends Serializable {
     List<ImmutablePlayer> getPlayers();
 
+    ImmutablePlayer getCurrentPlayer();
+
     Stream<Card> getHandCards(UUID playerId);
 
     void playCard(UUID playerId, Card card);

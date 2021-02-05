@@ -40,7 +40,7 @@ public class PlayerView extends JPanel implements DomainEventSubscriber {
         initControlPanel();
 
         layout.add(handCardsView);
-        layout.add(Box.createHorizontalStrut(40));
+        layout.add(Box.createHorizontalStrut(20));
         layout.add(controlPanel);
         add(layout);
 
