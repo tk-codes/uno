@@ -3,6 +3,7 @@ package domain.game;
 import domain.card.*;
 import domain.common.DomainEventPublisher;
 import domain.common.Entity;
+import domain.game.events.CardDrawn;
 import domain.game.events.CardPlayed;
 import domain.player.ImmutablePlayer;
 import domain.player.Player;
@@ -34,7 +35,7 @@ public class Game extends Entity {
         return players.getCurrentPlayer().toImmutable();
     }
 
-    public Stream<Card> getHandCards(UUID playerId){
+    public Stream<Card> getHandCards(UUID playerId) {
         return players.getPlayerById(playerId).getHandCards();
     }
 
@@ -119,6 +120,15 @@ public class Game extends Entity {
         DomainEventPublisher.publish(new CardPlayed(playerId, playedCard));
     }
 
+    public void drawCard(UUID playerId) {
+        if (getCurrentPlayer().getId().equals(playerId)) {
+            drawCards(players.getCurrentPlayer(), 1);
+            players.next();
+
+            DomainEventPublisher.publish(new CardDrawn(playerId));
+        }
+    }
+
     private void validatePlayedCard(UUID playerId, Card card) {
         var currentPlayer = players.getCurrentPlayer();
         if (!currentPlayer.getId().equals(playerId)) {
@@ -168,7 +178,7 @@ public class Game extends Entity {
         drawPile = DealerService.shuffle(drawPile, card);
     }
 
-    private void removePlayedCard(Card card){
+    private void removePlayedCard(Card card) {
         players.getCurrentPlayer().removePlayedCard(card);
         discard(card);
     }

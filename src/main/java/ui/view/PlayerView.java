@@ -5,6 +5,7 @@ import domain.common.DomainEvent;
 import domain.common.DomainEventPublisher;
 import domain.common.DomainEventSubscriber;
 import domain.game.DealerService;
+import domain.game.events.CardDrawn;
 import domain.game.events.CardPlayed;
 import domain.player.ImmutablePlayer;
 import ui.common.StyleUtil;
@@ -127,11 +128,14 @@ public class PlayerView extends JPanel implements DomainEventSubscriber {
         draw.setBackground(new Color(79, 129, 189));
         draw.setFont(new Font(StyleUtil.defaultFont, Font.BOLD, 20));
         draw.setFocusable(false);
+
+        draw.addActionListener(e -> appService.drawCard(player.getId()));
     }
 
     @Override
     public void handleEvent(DomainEvent event) {
-        if(event instanceof CardPlayed){
+        if (event instanceof CardPlayed
+            || event instanceof CardDrawn) {
             renderHandCardsView();
         }
     }

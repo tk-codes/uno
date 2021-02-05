@@ -31,6 +31,7 @@ public class TableView extends JPanel implements DomainEventSubscriber {
 
     private void initTable(){
         table.removeAll();
+
         table.setPreferredSize(new Dimension(500,200));
         table.setLayout(new GridBagLayout());
 
@@ -42,10 +43,11 @@ public class TableView extends JPanel implements DomainEventSubscriber {
         Card topCard = appService.peekTopCard();
         Color background = StyleUtil.convertCardColor(topCard.getColor());
 
-        table.setBackground(background);
-        table.add(new CardView(topCard), c);
+        var cardView = new CardView(topCard);
+        table.add(cardView, c);
 
-        table.repaint();
+        table.setBackground(background);
+        table.revalidate();
     }
 
     private void initInfoView() {
