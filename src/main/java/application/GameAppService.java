@@ -1,9 +1,9 @@
 package application;
 
+import application.dto.PlayerInfoDTO;
 import domain.card.Card;
 import domain.game.Game;
 import domain.game.GameBuilder;
-import domain.player.ImmutablePlayer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -28,7 +28,7 @@ public class GameAppService implements IGameAppService {
 
     private void logGameInfo() {
         logger.info("Game created successfully");
-        getPlayers().forEach(p -> {
+        game.getPlayers().forEach(p -> {
             var joinedCardValues = p.getHandCards()
                 .map(Object::toString)
                 .collect(Collectors.joining(","));
@@ -38,13 +38,16 @@ public class GameAppService implements IGameAppService {
     }
 
     @Override
-    public List<ImmutablePlayer> getPlayers() {
-        return game.getPlayers().collect(Collectors.toList());
+    public List<PlayerInfoDTO> getPlayerInfos() {
+        return game.getPlayers()
+            .map(p -> new PlayerInfoDTO(p.getId(), p.getName()))
+            .collect(Collectors.toList());
     }
 
     @Override
-    public ImmutablePlayer getCurrentPlayer() {
-        return game.getCurrentPlayer();
+    public PlayerInfoDTO getCurrentPlayer() {
+        var currentPlayer = game.getCurrentPlayer();
+        return new PlayerInfoDTO(currentPlayer.getId(), currentPlayer.getName());
     }
 
     @Override

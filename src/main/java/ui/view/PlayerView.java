@@ -1,6 +1,7 @@
 package ui.view;
 
 import application.IGameAppService;
+import application.dto.PlayerInfoDTO;
 import domain.common.DomainEvent;
 import domain.common.DomainEventPublisher;
 import domain.common.DomainEventSubscriber;
@@ -22,11 +23,11 @@ public class PlayerView extends JPanel implements DomainEventSubscriber {
     private JButton sayUNO;
     private JLabel nameLabel;
 
-    private final ImmutablePlayer player;
+    private final PlayerInfoDTO player;
 
     private final IGameAppService appService;
 
-    public PlayerView(ImmutablePlayer player, IGameAppService appService) {
+    public PlayerView(PlayerInfoDTO player, IGameAppService appService) {
         this.player = player;
         this.appService = appService;
 
@@ -59,11 +60,13 @@ public class PlayerView extends JPanel implements DomainEventSubscriber {
     private void renderHandCardsView() {
         handCardsView.removeAll();
 
-        Point originPoint = getPoint(handCardsView.getWidth(), player.getTotalCards());
-        int offset = calculateOffset(handCardsView.getWidth(), player.getTotalCards());
+        var handCards = appService.getHandCards(player.getId()).collect(Collectors.toList());
+
+        Point originPoint = getPoint(handCardsView.getWidth(), handCards.size());
+        int offset = calculateOffset(handCardsView.getWidth(), handCards.size());
 
         int i = 0;
-        for (var card : appService.getHandCards(player.getId()).collect(Collectors.toList())) {
+        for (var card : handCards) {
             var cardView = new CardView(card,
                 (playedCard) -> appService.playCard(player.getId(), playedCard));
 
