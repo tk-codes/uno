@@ -4,7 +4,9 @@ import domain.testhelper.PlayerTestFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestPlayersIterator {
 
@@ -50,6 +52,22 @@ public class TestPlayersIterator {
 
         current = playerIterator.next();
         assertPlayer(current, "2");
+    }
+
+    @Test
+    public void GivenValidPlayerId_ShouldFind(){
+        var playerToFind = players[2];
+
+        var foundPlayer = playerIterator.getPlayerById(playerToFind.getId());
+
+        assertEquals(playerToFind.getName(), foundPlayer.getName());
+    }
+
+    @Test
+    public void GivenInvalidPlayerId_ShouldNotFind(){
+        var foundPlayer = playerIterator.getPlayerById(UUID.randomUUID());
+
+        assertNull(foundPlayer);
     }
 
     private void assertPlayer(Player player, String expectedName){
