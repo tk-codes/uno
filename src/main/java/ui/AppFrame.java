@@ -35,14 +35,14 @@ public class AppFrame extends JFrame {
 
         // This desktop app supports only dual game play
         var players = appService.getPlayerInfos();
-        var playerView2 = new PlayerView(players.get(1), appService);
         var playerView1 = new PlayerView(players.get(0), appService);
+        var playerView2 = new PlayerView(players.get(1), appService);
 
         var tableView = new TableView(appService);
 
-        mainLayout.add(playerView1, BorderLayout.NORTH);
-        mainLayout.add(tableView, BorderLayout.CENTER);
         mainLayout.add(playerView2, BorderLayout.SOUTH);
+        mainLayout.add(tableView, BorderLayout.CENTER);
+        mainLayout.add(playerView1, BorderLayout.NORTH);
         add(mainLayout);
     }
 }
