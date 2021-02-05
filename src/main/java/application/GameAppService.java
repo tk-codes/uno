@@ -60,6 +60,7 @@ public class GameAppService implements IGameAppService {
 
     @Override
     public void drawCard(UUID playerId) {
+        game.drawCard(playerId);
         logger.info(String.format("Player %s draws a card", playerId));
     }
 
