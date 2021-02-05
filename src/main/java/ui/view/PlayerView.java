@@ -1,7 +1,11 @@
 package ui.view;
 
 import application.IGameAppService;
+import domain.common.DomainEvent;
+import domain.common.DomainEventPublisher;
+import domain.common.DomainEventSubscriber;
 import domain.game.DealerService;
+import domain.game.events.CardPlayed;
 import domain.player.ImmutablePlayer;
 import ui.common.StyleUtil;
 
@@ -9,7 +13,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.stream.Collectors;
 
-public class PlayerView extends JPanel {
+public class PlayerView extends JPanel implements DomainEventSubscriber {
     private JLayeredPane handCardsView;
     private Box controlPanel;
 
@@ -26,6 +30,7 @@ public class PlayerView extends JPanel {
         this.appService = appService;
 
         initView();
+        DomainEventPublisher.subscribe(this);
     }
 
     private void initView() {
@@ -57,7 +62,7 @@ public class PlayerView extends JPanel {
         int offset = calculateOffset(handCardsView.getWidth(), player.getTotalCards());
 
         int i = 0;
-        for (var card : player.getHandCards().collect(Collectors.toList())) {
+        for (var card : appService.getHandCards(player.getId()).collect(Collectors.toList())) {
             var cardView = new CardView(card,
                 (playedCard) -> appService.playCard(player.getId(), playedCard));
 
@@ -112,6 +117,8 @@ public class PlayerView extends JPanel {
         sayUNO.setBackground(new Color(149, 55, 53));
         sayUNO.setFont(new Font(StyleUtil.defaultFont, Font.BOLD, 20));
         sayUNO.setFocusable(false);
+
+        sayUNO.addActionListener(e -> renderHandCardsView());
     }
 
     private void initDrawButton() {
@@ -120,5 +127,12 @@ public class PlayerView extends JPanel {
         draw.setBackground(new Color(79, 129, 189));
         draw.setFont(new Font(StyleUtil.defaultFont, Font.BOLD, 20));
         draw.setFocusable(false);
+    }
+
+    @Override
+    public void handleEvent(DomainEvent event) {
+        if(event instanceof CardPlayed){
+            renderHandCardsView();
+        }
     }
 }

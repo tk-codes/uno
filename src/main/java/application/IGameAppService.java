@@ -6,9 +6,12 @@ import domain.player.ImmutablePlayer;
 import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 public interface IGameAppService extends Serializable {
     List<ImmutablePlayer> getPlayers();
+
+    Stream<Card> getHandCards(UUID playerId);
 
     void playCard(UUID playerId, Card card);
 

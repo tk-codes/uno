@@ -34,6 +34,10 @@ public class Game extends Entity {
         return players.getCurrentPlayer().toImmutable();
     }
 
+    public Stream<Card> getHandCards(UUID playerId){
+        return players.getPlayerById(playerId).getHandCards();
+    }
+
     public Card peekTopCard() {
         return discardPile.peek();
     }
@@ -70,26 +74,26 @@ public class Game extends Entity {
         switch (playedCard.getType()) {
             case NUMBER -> {
                 checkNumberCardRule(playedCard);
-                discard(playedCard);
+                removePlayedCard(playedCard);
 
                 players.next();
             }
             case SKIP -> {
                 checkActionCardRule(playedCard);
-                discard(playedCard);
+                removePlayedCard(playedCard);
 
                 players.next();
                 players.next();
             }
             case REVERSE -> {
                 checkActionCardRule(playedCard);
-                discard(playedCard);
+                removePlayedCard(playedCard);
 
                 reverse();
             }
             case DRAW_TWO -> {
                 checkActionCardRule(playedCard);
-                discard(playedCard);
+                removePlayedCard(playedCard);
 
                 players.next();
                 drawTwoCards(players.getCurrentPlayer());
@@ -97,13 +101,13 @@ public class Game extends Entity {
             }
             case WILD_COLOR -> {
                 checkWildCardRule(playedCard);
-                discard(playedCard);
+                removePlayedCard(playedCard);
 
                 players.next();
             }
             case WILD_DRAW_FOUR -> {
                 checkWildCardRule(playedCard);
-                discard(playedCard);
+                removePlayedCard(playedCard);
 
                 players.next();
                 drawFourCards(players.getCurrentPlayer());
@@ -164,9 +168,13 @@ public class Game extends Entity {
         drawPile = DealerService.shuffle(drawPile, card);
     }
 
+    private void removePlayedCard(Card card){
+        players.getCurrentPlayer().removePlayedCard(card);
+        discard(card);
+    }
+
     private void discard(Card card) {
         discardPile.add(card);
-        players.getCurrentPlayer().removePlayedCard(card);
     }
 
     private void reverse() {

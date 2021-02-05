@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class GameAppService implements IGameAppService {
     private static final Logger logger = LogManager.getLogger("GameAppService");
@@ -39,6 +40,11 @@ public class GameAppService implements IGameAppService {
     @Override
     public List<ImmutablePlayer> getPlayers() {
         return game.getPlayers().collect(Collectors.toList());
+    }
+
+    @Override
+    public Stream<Card> getHandCards(UUID playerId) {
+        return game.getHandCards(playerId);
     }
 
     @Override
