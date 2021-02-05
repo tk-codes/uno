@@ -5,7 +5,7 @@ import ui.AppFrame;
 
 import javax.swing.*;
 
-public class UNOApp {
+public class UnoApp {
     private static final Logger logger = LogManager.getLogger("UNOApp");
 
     public static void main(String[] args) {
