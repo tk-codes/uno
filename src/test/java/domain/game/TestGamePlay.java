@@ -294,6 +294,24 @@ public class TestGamePlay {
         // Assert
         assertGameState(game, cardToPlay, "2");
         assertEquals(1, currentPlayer.getHandCards().count());
+        assertFalse(game.isOver());
+    }
+
+    @Test
+    public void WhenPlayedLastCard_GameShouldBeOver() {// Arrange
+        var currentPlayer = players[0];
+        var cardToPlay = CardTestFactory.createNumberCard(3, CardColor.GREEN);
+        var topCard = CardTestFactory.createNumberCard(3, CardColor.RED);
+
+        var game = createGame(cardToPlay, topCard);
+
+        // Act
+        game.playCard(currentPlayer.getId(), cardToPlay);
+
+        // Assert
+        assertEquals(0, currentPlayer.getHandCards().count());
+        assertTrue(game.isOver());
+        assertEquals(currentPlayer.getId(), game.getWinner().getId());
     }
 
     private Game createGame(Card cardToPlay, Card... drawPileCards) {
