@@ -248,6 +248,54 @@ public class TestGamePlay {
         assertTrue(players[0].hasHandCard(cardToDraw));
     }
 
+    @Test
+    public void GivenTwoCards_WhenPlayedWithoutSayingUno_ShouldReceivePenalty() {
+        // Arrange
+        var currentPlayer = players[0];
+        var penaltyCard1 = CardTestFactory.createNumberCard(1, CardColor.BLUE);
+        var penaltyCard2 = CardTestFactory.createNumberCard(2, CardColor.BLUE);
+        var cardToPlay = CardTestFactory.createNumberCard(3, CardColor.GREEN);
+        var topCard = CardTestFactory.createNumberCard(3, CardColor.RED);
+
+        currentPlayer.addToHandCards(CardTestFactory.createSkipCard());
+
+        var game = createGame(cardToPlay,
+            penaltyCard1, penaltyCard2,
+            topCard);
+
+        // Act
+        game.playCard(currentPlayer.getId(), cardToPlay, false);
+
+        // Assert
+        assertGameState(game, cardToPlay, "2");
+        assertEquals(3, players[0].getHandCards().count());
+        assertTrue(currentPlayer.hasHandCard(penaltyCard1));
+        assertTrue(currentPlayer.hasHandCard(penaltyCard2));
+    }
+
+    @Test
+    public void GivenTwoCards_WhenPlayedWithSayingUno_ShouldNotReceivePenalty() {
+        // Arrange
+        var currentPlayer = players[0];
+        var penaltyCard1 = CardTestFactory.createNumberCard(1, CardColor.BLUE);
+        var penaltyCard2 = CardTestFactory.createNumberCard(2, CardColor.BLUE);
+        var cardToPlay = CardTestFactory.createNumberCard(3, CardColor.GREEN);
+        var topCard = CardTestFactory.createNumberCard(3, CardColor.RED);
+
+        currentPlayer.addToHandCards(CardTestFactory.createSkipCard());
+
+        var game = createGame(cardToPlay,
+            penaltyCard1, penaltyCard2,
+            topCard);
+
+        // Act
+        game.playCard(currentPlayer.getId(), cardToPlay, true);
+
+        // Assert
+        assertGameState(game, cardToPlay, "2");
+        assertEquals(1, currentPlayer.getHandCards().count());
+    }
+
     private Game createGame(Card cardToPlay, Card... drawPileCards) {
         var drawPile = createDrawPile(drawPileCards);
 

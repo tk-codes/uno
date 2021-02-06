@@ -32,6 +32,7 @@ public class TestDomainEventPublisher {
         DomainEventPublisher.subscribe(subscriber);
         DomainEventPublisher.publish(new CardPlayed(UUID.randomUUID(),
             CardTestFactory.createNumberCard(1, CardColor.RED)));
+        DomainEventPublisher.unsubscribe(subscriber);
 
         // assert
         assertEquals(1, subscriber.timesInvoked);
