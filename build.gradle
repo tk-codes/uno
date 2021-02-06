@@ -2,6 +2,7 @@ plugins {
   id 'java'
   id "org.sonarqube" version "3.0"
   id 'jacoco'
+  id 'application'
 }
 
 group 'tkcodes'
@@ -20,6 +21,10 @@ dependencies {
 
   testImplementation 'org.junit.jupiter:junit-jupiter-params:5.6.3'
   testRuntimeOnly 'org.junit.jupiter:junit-jupiter-params:5.6.3'
+}
+
+application {
+  mainClassName = 'UnoApp'
 }
 
 test {

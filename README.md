@@ -1,9 +1,28 @@
 # UNO - Card Game
 
-Coming soon with a new version built in Domain-Driven-Design...
+Rebuilt the core game logic in domain-driven-design.
 
-![uno](https://user-images.githubusercontent.com/3751899/106400516-23a96580-641f-11eb-8b20-be95b38185ff.gif)
+**User Interface**
+
+![uno-ui](./doc/new-uno-v2.gif)
+*Note: GUI is built merely to try out the core domain logic. It is not suitable for serious game.*
 
 ## Event Storming
 
-[Event Storming](/doc/event-storming.pdf).
+![event-storming](./doc/event-storming.jpg).
+
+## Instructions
+
+**Run Application**
+
+Run the `main` method in the UnoApp class or use the following command in the terminal:
+
+```
+./gradlew run
+```
+
+**Run Unit Tests**
+
+```
+./gradlew test
+```

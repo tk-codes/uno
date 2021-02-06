@@ -28,7 +28,7 @@ class TestHandCardList {
         var result = handCards.removeCard(numberCard1);
 
         assertTrue(result);
-        assertEquals(2, handCards.size());
+        assertEquals(1, handCards.size());
     }
 
     @Test
