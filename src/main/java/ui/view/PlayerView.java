@@ -51,14 +51,14 @@ public class PlayerView extends JPanel implements DomainEventSubscriber {
         add(layout);
 
         setOpaque(false);
+
+        refresh();
     }
 
     private void initHandCardsView() {
         handCardsView = new JLayeredPane();
         handCardsView.setPreferredSize(new Dimension(600, 175));
         handCardsView.setOpaque(false);
-
-        renderHandCardsView();
     }
 
     private void renderHandCardsView() {
@@ -66,7 +66,7 @@ public class PlayerView extends JPanel implements DomainEventSubscriber {
 
         var handCards = appService.getHandCards(player.getId()).collect(Collectors.toList());
 
-        Point originPoint = getPoint(handCardsView.getWidth(), handCards.size());
+        Point originPoint = getFirstCardPoint(handCards.size());
         int offset = calculateOffset(handCardsView.getWidth(), handCards.size());
 
         int i = 0;
@@ -84,9 +84,11 @@ public class PlayerView extends JPanel implements DomainEventSubscriber {
         handCardsView.revalidate();
     }
 
-    private Point getPoint(int width, int totalCards) {
+    private Point getFirstCardPoint(int totalCards) {
         Point p = new Point(0, 20);
         if (totalCards < DealerService.TOTAL_INITIAL_HAND_CARDS) {
+            var width = handCardsView.getWidth() == 0 ? handCardsView.getPreferredSize().width : handCardsView.getWidth();
+
             var offset = calculateOffset(width, totalCards);
             p.x = (width - offset * totalCards) / 2;
         }
@@ -111,8 +113,6 @@ public class PlayerView extends JPanel implements DomainEventSubscriber {
         controlPanel.add(drawButton);
         controlPanel.add(Box.createVerticalStrut(15));
         controlPanel.add(sayUnoButton);
-
-        toggleControlPanel();
     }
 
     private void toggleControlPanel() {
@@ -168,6 +168,8 @@ public class PlayerView extends JPanel implements DomainEventSubscriber {
     private void refresh() {
         renderHandCardsView();
         toggleControlPanel();
+
+        repaint();
     }
 
     @Override
