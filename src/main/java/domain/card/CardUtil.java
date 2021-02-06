@@ -20,4 +20,8 @@ public class CardUtil {
 
         throw new IllegalArgumentException("Invalid action type");
     }
+
+    public static boolean isWildCard(Card card) {
+        return card.getType() == CardType.WILD_COLOR || card.getType() == CardType.WILD_DRAW_FOUR;
+    }
 }

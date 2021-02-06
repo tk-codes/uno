@@ -1,6 +1,8 @@
 package domain.player;
 
 import domain.card.Card;
+import domain.card.CardType;
+import domain.card.CardUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +16,18 @@ public class HandCardList {
     }
 
     public boolean removeCard(Card card) {
-        return handCards.remove(card);
+        var cardToRemove = CardUtil.isWildCard(card) ? findCardOfType(card.getType()) : card;
+        return handCards.remove(cardToRemove);
+    }
+
+    private Card findCardOfType(CardType type) {
+        for (var card : handCards) {
+            if (card.getType() == type) {
+                return card;
+            }
+        }
+
+        return null;
     }
 
     public Stream<Card> getCardStream() {
@@ -22,7 +35,9 @@ public class HandCardList {
     }
 
     public boolean hasCard(Card card) {
-        return getCardStream().anyMatch(c -> c.equals(card));
+        return CardUtil.isWildCard(card)
+            ? getCardStream().anyMatch(c -> c.getType() == card.getType())
+            : getCardStream().anyMatch(c -> c.equals(card));
     }
 
     public int size() {

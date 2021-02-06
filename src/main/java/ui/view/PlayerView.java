@@ -2,13 +2,15 @@ package ui.view;
 
 import application.IGameAppService;
 import application.dto.PlayerInfoDTO;
+import domain.card.Card;
+import domain.card.CardType;
+import domain.card.WildCard;
 import domain.common.DomainEvent;
 import domain.common.DomainEventPublisher;
 import domain.common.DomainEventSubscriber;
 import domain.game.DealerService;
 import domain.game.events.CardDrawn;
 import domain.game.events.CardPlayed;
-import domain.player.ImmutablePlayer;
 import ui.common.StyleUtil;
 
 import javax.swing.*;
@@ -67,8 +69,7 @@ public class PlayerView extends JPanel implements DomainEventSubscriber {
 
         int i = 0;
         for (var card : handCards) {
-            var cardView = new CardView(card,
-                (playedCard) -> appService.playCard(player.getId(), playedCard));
+            var cardView = new CardView(card, this::playCard);
 
             cardView.setBounds(originPoint.x, originPoint.y,
                 cardView.getDimension().width, cardView.getDimension().height);
@@ -78,6 +79,7 @@ public class PlayerView extends JPanel implements DomainEventSubscriber {
             originPoint.x += offset;
         }
 
+        handCardsView.revalidate();
         repaint();
     }
 
@@ -122,7 +124,10 @@ public class PlayerView extends JPanel implements DomainEventSubscriber {
         sayUNO.setFont(new Font(StyleUtil.defaultFont, Font.BOLD, 20));
         sayUNO.setFocusable(false);
 
-        sayUNO.addActionListener(e -> renderHandCardsView());
+        sayUNO.addActionListener(e -> {
+            var color = ColorPicker.getInstance().show();
+            System.out.println(color);
+        });
     }
 
     private void initDrawButton() {
@@ -133,6 +138,17 @@ public class PlayerView extends JPanel implements DomainEventSubscriber {
         draw.setFocusable(false);
 
         draw.addActionListener(e -> appService.drawCard(player.getId()));
+    }
+
+    private void playCard(Card selectedCard) {
+        Card cardToPlay = selectedCard;
+
+        if(selectedCard.getType() == CardType.WILD_COLOR || selectedCard.getType() == CardType.WILD_DRAW_FOUR) {
+            var chosenColor = ColorPicker.getInstance().show();
+            cardToPlay = new WildCard(selectedCard.getType(), chosenColor);
+        }
+
+        appService.playCard(player.getId(), cardToPlay);
     }
 
     @Override
