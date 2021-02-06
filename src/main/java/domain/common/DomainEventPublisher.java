@@ -12,7 +12,7 @@ public class DomainEventPublisher {
     }
 
     public static void subscribe(DomainEventSubscriber subscriber) {
-        if (isPublishing.get()) {
+        if (Boolean.TRUE.equals(isPublishing.get())) {
             return;
         }
 
@@ -21,7 +21,7 @@ public class DomainEventPublisher {
     }
 
     public static void unsubscribe(DomainEventSubscriber subscriber) {
-        if(isPublishing.get()){
+        if(Boolean.TRUE.equals(isPublishing.get())){
             return;
         }
 
@@ -29,7 +29,7 @@ public class DomainEventPublisher {
     }
 
     public static void publish(final DomainEvent event) {
-        if (isPublishing.get()) {
+        if (Boolean.TRUE.equals(isPublishing.get())) {
             return;
         }
 
