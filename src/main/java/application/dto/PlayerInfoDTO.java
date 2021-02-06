@@ -1,8 +1,9 @@
 package application.dto;
 
+import java.io.Serializable;
 import java.util.UUID;
 
-public class PlayerInfoDTO {
+public class PlayerInfoDTO implements Serializable {
     private final UUID id;
     private final String name;
 

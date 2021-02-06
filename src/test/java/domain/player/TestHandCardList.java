@@ -6,10 +6,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TestHandCardList {
+class TestHandCardList {
 
     @Test
-    public void WhenEmpty_ShouldNotRemove() {
+    void WhenEmpty_ShouldNotRemove() {
         var handCards = new HandCardList();
 
         var result = handCards.removeCard(CardTestFactory.createSkipCard());
@@ -18,7 +18,7 @@ public class TestHandCardList {
     }
 
     @Test
-    public void GivenTwoCardsWithSameValues_ShouldRemoveOnlyOnce() {
+    void GivenTwoCardsWithSameValues_ShouldRemoveOnlyOnce() {
         var handCards = new HandCardList();
         var numberCard1 = CardTestFactory.createNumberCard(1, CardColor.RED);
         var numberCard2 = CardTestFactory.createNumberCard(1, CardColor.RED);
@@ -32,7 +32,7 @@ public class TestHandCardList {
     }
 
     @Test
-    public void GivenTwoCardsWithSameReference_ShouldRemoveOnlyOnce() {
+    void GivenTwoCardsWithSameReference_ShouldRemoveOnlyOnce() {
         var handCards = new HandCardList();
         var numberCard1 = CardTestFactory.createNumberCard(1, CardColor.RED);
         handCards.addCard(numberCard1);
@@ -45,7 +45,7 @@ public class TestHandCardList {
     }
 
     @Test
-    public void GivenWildColorWithColor_ShouldRemoveOnlyOnce() {
+    void GivenWildColorWithColor_ShouldRemoveOnlyOnce() {
         var handCards = new HandCardList();
         handCards.addCard(CardTestFactory.createWildColorCard());
         handCards.addCard(CardTestFactory.createWildColorCard());
@@ -57,7 +57,7 @@ public class TestHandCardList {
     }
 
     @Test
-    public void GivenWildDrawFourWithColor_WhenTypeDoesNotExist_ShouldNotRemove() {
+    void GivenWildDrawFourWithColor_WhenTypeDoesNotExist_ShouldNotRemove() {
         var handCards = new HandCardList();
         handCards.addCard(CardTestFactory.createWildColorCard());
         handCards.addCard(CardTestFactory.createWildColorCard());

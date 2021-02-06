@@ -11,7 +11,7 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class TestDomainEventPublisher {
+class TestDomainEventPublisher {
     class TestSubscriber implements DomainEventSubscriber {
         int timesInvoked = 0;
         Card playedCard = null;
@@ -24,7 +24,7 @@ public class TestDomainEventPublisher {
     }
 
     @Test
-    public void WhenEventPublished_ShouldInvokeSubscriber() {
+    void WhenEventPublished_ShouldInvokeSubscriber() {
         // Arrange
         var subscriber = new TestSubscriber();
 
@@ -40,7 +40,7 @@ public class TestDomainEventPublisher {
     }
 
     @Test
-    public void WhenUnsubscribed_ShouldNotInvokeSubscriber() {
+    void WhenUnsubscribed_ShouldNotInvokeSubscriber() {
         // Arrange
         var subscriber = new TestSubscriber();
 
