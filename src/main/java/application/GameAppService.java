@@ -57,14 +57,14 @@ public class GameAppService implements IGameAppService {
 
     @Override
     public void playCard(UUID playerId, Card card) {
-        logger.info(String.format("Player %s played %s", playerId, card));
+        logger.info(String.format("Player %s plays %s", playerId, card));
         game.playCard(playerId, card);
     }
 
     @Override
     public void drawCard(UUID playerId) {
-        game.drawCard(playerId);
         logger.info(String.format("Player %s draws a card", playerId));
+        game.drawCard(playerId);
     }
 
     @Override
