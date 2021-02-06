@@ -1,5 +1,6 @@
 package application;
 
+import application.dto.PlayerInfoDTO;
 import domain.card.Card;
 import domain.game.Game;
 import domain.game.GameBuilder;
@@ -10,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class GameAppService implements IGameAppService {
     private static final Logger logger = LogManager.getLogger("GameAppService");
@@ -27,7 +29,7 @@ public class GameAppService implements IGameAppService {
 
     private void logGameInfo() {
         logger.info("Game created successfully");
-        getPlayers().forEach(p -> {
+        game.getPlayers().forEach(p -> {
             var joinedCardValues = p.getHandCards()
                 .map(Object::toString)
                 .collect(Collectors.joining(","));
@@ -37,27 +39,49 @@ public class GameAppService implements IGameAppService {
     }
 
     @Override
-    public List<ImmutablePlayer> getPlayers() {
-        return game.getPlayers().collect(Collectors.toList());
+    public List<PlayerInfoDTO> getPlayerInfos() {
+        return game.getPlayers()
+            .map(p -> new PlayerInfoDTO(p.getId(), p.getName()))
+            .collect(Collectors.toList());
     }
 
     @Override
-    public void playCard(UUID playerId, Card card) {
+    public PlayerInfoDTO getCurrentPlayer() {
+        var currentPlayer = game.getCurrentPlayer();
+        return new PlayerInfoDTO(currentPlayer.getId(), currentPlayer.getName());
+    }
 
+    @Override
+    public Stream<Card> getHandCards(UUID playerId) {
+        return game.getHandCards(playerId);
+    }
+
+    @Override
+    public void playCard(UUID playerId, Card card, boolean hasSaidUno) {
+        var message = String.format("Player %s plays %s %s", playerId, card, hasSaidUno ? "and said UNO!!!" : "");
+        logger.info(message);
+        game.playCard(playerId, card, hasSaidUno);
     }
 
     @Override
     public void drawCard(UUID playerId) {
-
-    }
-
-    @Override
-    public void sayUNO(UUID playerId) {
-
+        var message = String.format("Player %s draws a card", playerId);
+        logger.info(message);
+        game.drawCard(playerId);
     }
 
     @Override
     public Card peekTopCard() {
         return game.peekTopCard();
+    }
+
+    @Override
+    public boolean isGameOver() {
+        return game.isOver();
+    }
+
+    @Override
+    public ImmutablePlayer getWinner() {
+        return game.getWinner();
     }
 }

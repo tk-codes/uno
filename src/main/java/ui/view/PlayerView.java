@@ -1,27 +1,42 @@
 package ui.view;
 
+import application.IGameAppService;
+import application.dto.PlayerInfoDTO;
+import domain.card.Card;
+import domain.card.CardType;
+import domain.card.WildCard;
+import domain.common.DomainEvent;
+import domain.common.DomainEventPublisher;
+import domain.common.DomainEventSubscriber;
 import domain.game.DealerService;
-import domain.player.ImmutablePlayer;
+import domain.game.events.CardDrawn;
+import domain.game.events.CardPlayed;
+import domain.game.events.GameOver;
 import ui.common.StyleUtil;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.stream.Collectors;
 
-public class PlayerView extends JPanel {
+public class PlayerView extends JPanel implements DomainEventSubscriber {
     private JLayeredPane handCardsView;
     private Box controlPanel;
 
-    private JButton draw;
-    private JButton sayUNO;
     private JLabel nameLabel;
+    private JButton drawButton;
+    private JButton sayUnoButton;
+    private boolean hasSaidUno = false;
 
-    private final ImmutablePlayer player;
+    private final PlayerInfoDTO player;
 
-    public PlayerView(ImmutablePlayer player) {
+    private final IGameAppService appService;
+
+    public PlayerView(PlayerInfoDTO player, IGameAppService appService) {
         this.player = player;
+        this.appService = appService;
 
         initView();
+        DomainEventPublisher.subscribe(this);
     }
 
     private void initView() {
@@ -31,30 +46,32 @@ public class PlayerView extends JPanel {
         initControlPanel();
 
         layout.add(handCardsView);
-        layout.add(Box.createHorizontalStrut(40));
+        layout.add(Box.createHorizontalStrut(20));
         layout.add(controlPanel);
         add(layout);
 
         setOpaque(false);
+
+        refresh();
     }
 
     private void initHandCardsView() {
         handCardsView = new JLayeredPane();
         handCardsView.setPreferredSize(new Dimension(600, 175));
         handCardsView.setOpaque(false);
-
-        renderHandCardsView();
     }
 
     private void renderHandCardsView() {
         handCardsView.removeAll();
 
-        Point originPoint = getPoint(handCardsView.getWidth(), player.getTotalCards());
-        int offset = calculateOffset(handCardsView.getWidth(), player.getTotalCards());
+        var handCards = appService.getHandCards(player.getId()).collect(Collectors.toList());
+
+        Point originPoint = getFirstCardPoint(handCards.size());
+        int offset = calculateOffset(handCardsView.getWidth(), handCards.size());
 
         int i = 0;
-        for (var card : player.getHandCards().collect(Collectors.toList())) {
-            var cardView = new CardView(card);
+        for (var card : handCards) {
+            var cardView = new CardView(card, this::playCard);
 
             cardView.setBounds(originPoint.x, originPoint.y,
                 cardView.getDimension().width, cardView.getDimension().height);
@@ -64,12 +81,14 @@ public class PlayerView extends JPanel {
             originPoint.x += offset;
         }
 
-        repaint();
+        handCardsView.revalidate();
     }
 
-    private Point getPoint(int width, int totalCards) {
+    private Point getFirstCardPoint(int totalCards) {
         Point p = new Point(0, 20);
         if (totalCards < DealerService.TOTAL_INITIAL_HAND_CARDS) {
+            var width = handCardsView.getWidth() == 0 ? handCardsView.getPreferredSize().width : handCardsView.getWidth();
+
             var offset = calculateOffset(width, totalCards);
             p.x = (width - offset * totalCards) / 2;
         }
@@ -91,9 +110,22 @@ public class PlayerView extends JPanel {
 
         controlPanel = Box.createVerticalBox();
         controlPanel.add(nameLabel);
-        controlPanel.add(draw);
+        controlPanel.add(drawButton);
         controlPanel.add(Box.createVerticalStrut(15));
-        controlPanel.add(sayUNO);
+        controlPanel.add(sayUnoButton);
+    }
+
+    private void toggleControlPanel() {
+        var isMyTurn = appService.getCurrentPlayer().getId().equals(player.getId());
+
+        if (appService.isGameOver()) {
+            isMyTurn = false;
+        }
+
+        drawButton.setVisible(isMyTurn);
+        sayUnoButton.setVisible(isMyTurn);
+
+        controlPanel.revalidate();
     }
 
     private void initNameLabel() {
@@ -103,17 +135,49 @@ public class PlayerView extends JPanel {
     }
 
     private void initSayNoButton() {
-        sayUNO = new JButton("Say UNO");
-        sayUNO.setBackground(new Color(149, 55, 53));
-        sayUNO.setFont(new Font(StyleUtil.defaultFont, Font.BOLD, 20));
-        sayUNO.setFocusable(false);
+        sayUnoButton = new JButton("Say UNO");
+        sayUnoButton.setBackground(new Color(149, 55, 53));
+        sayUnoButton.setFont(new Font(StyleUtil.defaultFont, Font.BOLD, 20));
+        sayUnoButton.setFocusable(false);
+
+        sayUnoButton.addActionListener(e -> hasSaidUno = true);
     }
 
     private void initDrawButton() {
-        draw = new JButton("Draw");
+        drawButton = new JButton("Draw");
 
-        draw.setBackground(new Color(79, 129, 189));
-        draw.setFont(new Font(StyleUtil.defaultFont, Font.BOLD, 20));
-        draw.setFocusable(false);
+        drawButton.setBackground(new Color(79, 129, 189));
+        drawButton.setFont(new Font(StyleUtil.defaultFont, Font.BOLD, 20));
+        drawButton.setFocusable(false);
+
+        drawButton.addActionListener(e -> appService.drawCard(player.getId()));
+    }
+
+    private void playCard(Card selectedCard) {
+        Card cardToPlay = selectedCard;
+
+        if (selectedCard.getType() == CardType.WILD_COLOR || selectedCard.getType() == CardType.WILD_DRAW_FOUR) {
+            var chosenColor = ColorPicker.getInstance().show();
+            cardToPlay = new WildCard(selectedCard.getType(), chosenColor);
+        }
+
+        appService.playCard(player.getId(), cardToPlay, hasSaidUno);
+        hasSaidUno = false;
+    }
+
+    private void refresh() {
+        renderHandCardsView();
+        toggleControlPanel();
+
+        repaint();
+    }
+
+    @Override
+    public void handleEvent(DomainEvent event) {
+        if (event instanceof CardPlayed
+            || event instanceof CardDrawn
+            || event instanceof GameOver) {
+            refresh();
+        }
     }
 }

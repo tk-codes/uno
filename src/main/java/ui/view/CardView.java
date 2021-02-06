@@ -8,6 +8,8 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.Serializable;
+import java.util.function.Consumer;
 
 public class CardView extends JPanel {
     private final Card card;
@@ -22,8 +24,15 @@ public class CardView extends JPanel {
     private final Border defaultBorder = BorderFactory.createEtchedBorder(WHEN_FOCUSED, Color.white, Color.gray);
     private final Border focusedBorder = BorderFactory.createEtchedBorder(WHEN_FOCUSED, Color.black, Color.gray);
 
+    private final Consumer<Card> handleCardClick;
+
     public CardView(Card card) {
+        this(card, null);
+    }
+
+    public CardView(Card card, Consumer<Card> onCardClick){
         this.card = card;
+        this.handleCardClick = onCardClick;
         this.value = StyleUtil.getValueToDisplay(card);
 
         initView();
@@ -48,6 +57,13 @@ public class CardView extends JPanel {
             public void mouseExited(MouseEvent e) {
                super.mouseExited(e);
                removeHoverEffect();
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if(handleCardClick != null) {
+                    handleCardClick.accept(card);
+                }
             }
         });
     }

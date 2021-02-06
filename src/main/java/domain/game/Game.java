@@ -1,11 +1,17 @@
 package domain.game;
 
 import domain.card.*;
+import domain.common.DomainEventPublisher;
 import domain.common.Entity;
+import domain.game.events.CardDrawn;
+import domain.game.events.CardPlayed;
+import domain.game.events.GameOver;
 import domain.player.ImmutablePlayer;
 import domain.player.Player;
 import domain.player.PlayerRoundIterator;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 import java.util.UUID;
 import java.util.stream.Stream;
@@ -15,6 +21,8 @@ public class Game extends Entity {
 
     private DrawPile drawPile;
     private final Stack<Card> discardPile = new Stack<>();
+
+    private ImmutablePlayer winner = null;
 
     public Game(DrawPile drawPile, PlayerRoundIterator players) {
         super();
@@ -30,6 +38,10 @@ public class Game extends Entity {
 
     public ImmutablePlayer getCurrentPlayer() {
         return players.getCurrentPlayer().toImmutable();
+    }
+
+    public Stream<Card> getHandCards(UUID playerId) {
+        return players.getPlayerById(playerId).getHandCards();
     }
 
     public Card peekTopCard() {
@@ -63,31 +75,39 @@ public class Game extends Entity {
     }
 
     public void playCard(UUID playerId, Card playedCard) {
+        playCard(playerId, playedCard, false);
+    }
+
+    public void playCard(UUID playerId, Card playedCard, boolean hasSaidUno) {
+        if (isOver()) {
+            throw new IllegalStateException("Game is over");
+        }
+
         validatePlayedCard(playerId, playedCard);
 
         switch (playedCard.getType()) {
             case NUMBER -> {
                 checkNumberCardRule(playedCard);
-                discard(playedCard);
+                acceptPlayedCard(playedCard, hasSaidUno);
 
                 players.next();
             }
             case SKIP -> {
                 checkActionCardRule(playedCard);
-                discard(playedCard);
+                acceptPlayedCard(playedCard, hasSaidUno);
 
                 players.next();
                 players.next();
             }
             case REVERSE -> {
                 checkActionCardRule(playedCard);
-                discard(playedCard);
+                acceptPlayedCard(playedCard, hasSaidUno);
 
                 reverse();
             }
             case DRAW_TWO -> {
                 checkActionCardRule(playedCard);
-                discard(playedCard);
+                acceptPlayedCard(playedCard, hasSaidUno);
 
                 players.next();
                 drawTwoCards(players.getCurrentPlayer());
@@ -95,19 +115,55 @@ public class Game extends Entity {
             }
             case WILD_COLOR -> {
                 checkWildCardRule(playedCard);
-                discard(playedCard);
+                acceptPlayedCard(playedCard, hasSaidUno);
 
                 players.next();
             }
             case WILD_DRAW_FOUR -> {
                 checkWildCardRule(playedCard);
-                discard(playedCard);
+                acceptPlayedCard(playedCard, hasSaidUno);
 
                 players.next();
                 drawFourCards(players.getCurrentPlayer());
                 players.next();
             }
             default -> rejectPlayedCard(playedCard);
+        }
+
+        DomainEventPublisher.publish(new CardPlayed(playerId, playedCard));
+
+        if (isOver()) {
+            DomainEventPublisher.publish(new GameOver(winner));
+        }
+    }
+
+    public void drawCard(UUID playerId) {
+        if (getCurrentPlayer().getId().equals(playerId)) {
+            var drawnCards = drawCards(players.getCurrentPlayer(), 1);
+
+            tryToPlayDrawnCard(playerId, drawnCards.get(0));
+        }
+    }
+
+    public boolean isOver() {
+        return winner != null;
+    }
+
+    public ImmutablePlayer getWinner() {
+        return winner;
+    }
+
+    private void tryToPlayDrawnCard(UUID playerId, Card drawnCard) {
+        try {
+            var cardToPlay = CardUtil.isWildCard(drawnCard)
+                ? new WildCard(drawnCard.getType(), peekTopCard().getColor())
+                : drawnCard;
+
+            playCard(playerId, cardToPlay);
+        } catch (Exception ex) {
+            // Drawn couldn't be played, so just switch turn
+            players.next();
+            DomainEventPublisher.publish(new CardDrawn(playerId));
         }
     }
 
@@ -160,6 +216,24 @@ public class Game extends Entity {
         drawPile = DealerService.shuffle(drawPile, card);
     }
 
+    private void acceptPlayedCard(Card card, boolean hasSaidUno) {
+        players.getCurrentPlayer().removePlayedCard(card);
+        discard(card);
+
+        var remainingTotalCards = getCurrentPlayer().getTotalCards();
+        checkSaidUno(remainingTotalCards, hasSaidUno);
+
+        if (remainingTotalCards == 0) {
+            winner = getCurrentPlayer();
+        }
+    }
+
+    private void checkSaidUno(int remainingTotalCards, boolean hasSaidUno) {
+        if (remainingTotalCards == 1 && !hasSaidUno) {
+            drawCards(players.getCurrentPlayer(), 2);
+        }
+    }
+
     private void discard(Card card) {
         discardPile.add(card);
     }
@@ -177,12 +251,18 @@ public class Game extends Entity {
         drawCards(player, 4);
     }
 
-    private void drawCards(Player player, int total) {
+    private List<Card> drawCards(Player player, int total) {
         int min = Math.min(total, drawPile.getSize());
+        var drawnCards = new ArrayList<Card>();
 
         for (int i = 0; i < min; i++) {
-            player.addToHandCards(drawPile.drawCard());
+            var drawnCard = drawPile.drawCard();
+            drawnCards.add(drawnCard);
+
+            player.addToHandCards(drawnCard);
         }
+
+        return drawnCards;
     }
 
     private void rejectPlayedCard(Card playedCard) {

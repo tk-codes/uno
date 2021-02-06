@@ -28,6 +28,10 @@ public class Player extends Entity {
         handCards.addCard(card);
     }
 
+    public boolean removePlayedCard(Card card) {
+        return handCards.removeCard(card);
+    }
+
     public boolean hasHandCard(Card card) {
         return this.handCards.hasCard(card);
     }

@@ -39,6 +39,10 @@ public class CardTestFactory {
         return new ActionCard(CardType.DRAW_TWO, color);
     }
 
+    public static WildCard createWildCard(CardType type) {
+        return new WildCard(type);
+    }
+
     public static WildCard createWildColorCard() {
         return new WildCard(CardType.WILD_COLOR);
     }

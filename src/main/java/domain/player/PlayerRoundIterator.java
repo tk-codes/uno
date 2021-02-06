@@ -1,6 +1,7 @@
 package domain.player;
 
 import java.util.Arrays;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 public class PlayerRoundIterator {
@@ -18,6 +19,15 @@ public class PlayerRoundIterator {
 
     public Player getCurrentPlayer() {
         return players[current];
+    }
+
+    public Player getPlayerById(UUID playerId) {
+        for (var player : players) {
+            if (player.getId().equals(playerId)) {
+                return player;
+            }
+        }
+        return null;
     }
 
     public void reverseDirection() {

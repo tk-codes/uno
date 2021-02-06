@@ -2,6 +2,7 @@ package domain.game;
 
 import domain.card.Card;
 import domain.card.CardColor;
+import domain.card.CardUtil;
 import domain.player.Player;
 import domain.player.PlayerRoundIterator;
 import domain.testhelper.CardTestFactory;
@@ -14,10 +15,9 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class TestGamePlay {
+class TestGamePlay {
     private final Player[] players = PlayerTestFactory.createPlayers(4);
     private final PlayerRoundIterator playersIterator = new PlayerRoundIterator(players);
 
@@ -47,7 +47,7 @@ public class TestGamePlay {
 
     @ParameterizedTest
     @MethodSource("provideValidNumberCards")
-    public void WhenValidNumberCardPlayed_ShouldBeAccepted(Card topCard, Card cardToPlay) {
+    void WhenValidNumberCardPlayed_ShouldBeAccepted(Card topCard, Card cardToPlay) {
         // Arrange
         var game = createGame(cardToPlay, topCard);
 
@@ -69,7 +69,7 @@ public class TestGamePlay {
 
     @ParameterizedTest
     @MethodSource("provideValidSkipCards")
-    public void WhenValidSkipCardPlayed_ShouldBeAccepted(Card topCard, Card cardToPlay) {
+    void WhenValidSkipCardPlayed_ShouldBeAccepted(Card topCard, Card cardToPlay) {
         // Arrange
         var game = createGame(cardToPlay, topCard);
 
@@ -91,7 +91,7 @@ public class TestGamePlay {
 
     @ParameterizedTest
     @MethodSource("provideValidReverseCards")
-    public void WhenValidReverseCardPlayed_ShouldBeAccepted(Card topCard, Card cardToPlay) {
+    void WhenValidReverseCardPlayed_ShouldBeAccepted(Card topCard, Card cardToPlay) {
         // Arrange
         var game = createGame(cardToPlay, topCard);
 
@@ -113,7 +113,7 @@ public class TestGamePlay {
 
     @ParameterizedTest
     @MethodSource("provideValidDrawTwoCards")
-    public void WhenValidDrawTwoCardPlayed_ShouldBeAccepted(Card topCard, Card cardToPlay) {
+    void WhenValidDrawTwoCardPlayed_ShouldBeAccepted(Card topCard, Card cardToPlay) {
         // Arrange
         var game = createGame(
             cardToPlay,
@@ -140,7 +140,7 @@ public class TestGamePlay {
 
     @ParameterizedTest
     @MethodSource("provideValidWildColorCards")
-    public void WhenValidWildColorCardPlayed_ShouldBeAccepted(Card topCard, Card cardToPlay) {
+    void WhenValidWildColorCardPlayed_ShouldBeAccepted(Card topCard, Card cardToPlay) {
         // Arrange
         var game = createGame(cardToPlay, topCard);
 
@@ -162,7 +162,7 @@ public class TestGamePlay {
 
     @ParameterizedTest
     @MethodSource("provideValidWildDrawFourCards")
-    public void WhenValidWildDrawFourCardPlayed_ShouldBeAccepted(Card topCard, Card cardToPlay) {
+    void WhenValidWildDrawFourCardPlayed_ShouldBeAccepted(Card topCard, Card cardToPlay) {
         // Arrange
         var game = createGame(
             cardToPlay,
@@ -191,7 +191,7 @@ public class TestGamePlay {
 
     @ParameterizedTest
     @MethodSource("provideInvalidCardsForNumberCard")
-    public void WhenInvalidCardPlayed_ShouldBeRejected(Card topCard, Card cardToPlay) {
+    void WhenInvalidCardPlayed_ShouldBeRejected(Card topCard, Card cardToPlay) {
         // Arrange
         var game = createGame(cardToPlay, topCard);
 
@@ -213,11 +213,117 @@ public class TestGamePlay {
         );
     }
 
+    @Test
+    void WhenDrawnCardIsPlayable_ShouldPlay() {
+        // Arrange
+        var cardToDraw = CardTestFactory.createWildColorCard();
+        var game = createGame(
+            CardTestFactory.createSkipCard(CardColor.GREEN),
+            cardToDraw,
+            CardTestFactory.createNumberCard(2, CardColor.RED));
+
+        // Act
+        game.drawCard(game.getCurrentPlayer().getId());
+
+        // Assert
+        assertGameState(game, CardTestFactory.createWildColorCard(CardColor.RED), "2");
+        assertEquals(1, players[0].getHandCards().count());
+    }
+
+    @Test
+    void WhenDrawnCardIsNotPlayable_ShouldNotPlay() {
+        // Arrange
+        var cardToDraw = CardTestFactory.createNumberCard(3, CardColor.GREEN);
+        var topCard = CardTestFactory.createNumberCard(2, CardColor.RED);
+
+        var game = createGame(
+            CardTestFactory.createSkipCard(CardColor.GREEN), cardToDraw, topCard);
+
+        // Act
+        game.drawCard(game.getCurrentPlayer().getId());
+
+        // Assert
+        assertGameState(game, topCard, "2");
+        assertEquals(2, players[0].getHandCards().count());
+        assertTrue(players[0].hasHandCard(cardToDraw));
+    }
+
+    @Test
+    void GivenTwoCards_WhenPlayedWithoutSayingUno_ShouldReceivePenalty() {
+        // Arrange
+        var currentPlayer = players[0];
+        var penaltyCard1 = CardTestFactory.createNumberCard(1, CardColor.BLUE);
+        var penaltyCard2 = CardTestFactory.createNumberCard(2, CardColor.BLUE);
+        var cardToPlay = CardTestFactory.createNumberCard(3, CardColor.GREEN);
+        var topCard = CardTestFactory.createNumberCard(3, CardColor.RED);
+
+        currentPlayer.addToHandCards(CardTestFactory.createSkipCard());
+
+        var game = createGame(cardToPlay,
+            penaltyCard1, penaltyCard2,
+            topCard);
+
+        // Act
+        game.playCard(currentPlayer.getId(), cardToPlay, false);
+
+        // Assert
+        assertGameState(game, cardToPlay, "2");
+        assertEquals(3, players[0].getHandCards().count());
+        assertTrue(currentPlayer.hasHandCard(penaltyCard1));
+        assertTrue(currentPlayer.hasHandCard(penaltyCard2));
+    }
+
+    @Test
+    void GivenTwoCards_WhenPlayedWithSayingUno_ShouldNotReceivePenalty() {
+        // Arrange
+        var currentPlayer = players[0];
+        var penaltyCard1 = CardTestFactory.createNumberCard(1, CardColor.BLUE);
+        var penaltyCard2 = CardTestFactory.createNumberCard(2, CardColor.BLUE);
+        var cardToPlay = CardTestFactory.createNumberCard(3, CardColor.GREEN);
+        var topCard = CardTestFactory.createNumberCard(3, CardColor.RED);
+
+        currentPlayer.addToHandCards(CardTestFactory.createSkipCard());
+
+        var game = createGame(cardToPlay,
+            penaltyCard1, penaltyCard2,
+            topCard);
+
+        // Act
+        game.playCard(currentPlayer.getId(), cardToPlay, true);
+
+        // Assert
+        assertGameState(game, cardToPlay, "2");
+        assertEquals(1, currentPlayer.getHandCards().count());
+        assertFalse(game.isOver());
+    }
+
+    @Test
+    void WhenPlayedLastCard_GameShouldBeOver() {// Arrange
+        var currentPlayer = players[0];
+        var cardToPlay = CardTestFactory.createNumberCard(3, CardColor.GREEN);
+        var topCard = CardTestFactory.createNumberCard(3, CardColor.RED);
+
+        var game = createGame(cardToPlay, topCard);
+
+        // Act
+        game.playCard(currentPlayer.getId(), cardToPlay);
+
+        // Assert
+        assertEquals(0, currentPlayer.getHandCards().count());
+        assertTrue(game.isOver());
+        assertEquals(currentPlayer.getId(), game.getWinner().getId());
+    }
+
     private Game createGame(Card cardToPlay, Card... drawPileCards) {
         var drawPile = createDrawPile(drawPileCards);
 
         var game = new Game(drawPile, playersIterator);
-        playersIterator.getCurrentPlayer().addToHandCards(cardToPlay);
+
+        var cardToAdd = CardUtil.isWildCard(cardToPlay)
+            ? CardTestFactory.createWildCard(cardToPlay.getType())
+            : cardToPlay;
+
+        playersIterator.getCurrentPlayer().addToHandCards(cardToAdd);
 
         return game;
     }
