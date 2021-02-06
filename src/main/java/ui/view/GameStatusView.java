@@ -6,6 +6,7 @@ import domain.common.DomainEventPublisher;
 import domain.common.DomainEventSubscriber;
 import domain.game.events.CardDrawn;
 import domain.game.events.CardPlayed;
+import domain.game.events.GameOver;
 
 import javax.swing.*;
 import java.awt.*;
@@ -67,7 +68,12 @@ public class GameStatusView extends JPanel implements DomainEventSubscriber {
     }
 
     private void updateStatus() {
-        text = String.format("%s's turn", appService.getCurrentPlayer().getName());
+        if (appService.isGameOver()) {
+            text = String.format("%s won", appService.getWinner().getName());
+        } else {
+            text = String.format("%s's turn", appService.getCurrentPlayer().getName());
+        }
+
         repaint();
     }
 
@@ -78,7 +84,8 @@ public class GameStatusView extends JPanel implements DomainEventSubscriber {
     @Override
     public void handleEvent(DomainEvent event) {
         if (event instanceof CardPlayed
-            || event instanceof CardDrawn) {
+            || event instanceof CardDrawn
+            || event instanceof GameOver) {
             updateStatus();
         }
     }

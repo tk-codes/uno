@@ -4,6 +4,7 @@ import application.dto.PlayerInfoDTO;
 import domain.card.Card;
 import domain.game.Game;
 import domain.game.GameBuilder;
+import domain.player.ImmutablePlayer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -70,5 +71,15 @@ public class GameAppService implements IGameAppService {
     @Override
     public Card peekTopCard() {
         return game.peekTopCard();
+    }
+
+    @Override
+    public boolean isGameOver() {
+        return game.isOver();
+    }
+
+    @Override
+    public ImmutablePlayer getWinner() {
+        return game.getWinner();
     }
 }
