@@ -71,32 +71,36 @@ public class Game extends Entity {
         }
     }
 
-    public void playCard(UUID playerId, Card playedCard) {
+    public void playCard(UUID playerId, Card playedCard){
+        playCard(playerId, playedCard, false);
+    }
+
+    public void playCard(UUID playerId, Card playedCard, boolean hasSaidUno) {
         validatePlayedCard(playerId, playedCard);
 
         switch (playedCard.getType()) {
             case NUMBER -> {
                 checkNumberCardRule(playedCard);
-                removePlayedCard(playedCard);
+                acceptPlayedCard(playedCard, hasSaidUno);
 
                 players.next();
             }
             case SKIP -> {
                 checkActionCardRule(playedCard);
-                removePlayedCard(playedCard);
+                acceptPlayedCard(playedCard, hasSaidUno);
 
                 players.next();
                 players.next();
             }
             case REVERSE -> {
                 checkActionCardRule(playedCard);
-                removePlayedCard(playedCard);
+                acceptPlayedCard(playedCard, hasSaidUno);
 
                 reverse();
             }
             case DRAW_TWO -> {
                 checkActionCardRule(playedCard);
-                removePlayedCard(playedCard);
+                acceptPlayedCard(playedCard, hasSaidUno);
 
                 players.next();
                 drawTwoCards(players.getCurrentPlayer());
@@ -104,13 +108,13 @@ public class Game extends Entity {
             }
             case WILD_COLOR -> {
                 checkWildCardRule(playedCard);
-                removePlayedCard(playedCard);
+                acceptPlayedCard(playedCard, hasSaidUno);
 
                 players.next();
             }
             case WILD_DRAW_FOUR -> {
                 checkWildCardRule(playedCard);
-                removePlayedCard(playedCard);
+                acceptPlayedCard(playedCard, hasSaidUno);
 
                 players.next();
                 drawFourCards(players.getCurrentPlayer());
@@ -193,9 +197,17 @@ public class Game extends Entity {
         drawPile = DealerService.shuffle(drawPile, card);
     }
 
-    private void removePlayedCard(Card card) {
+    private void acceptPlayedCard(Card card, boolean hasSaidUno) {
         players.getCurrentPlayer().removePlayedCard(card);
         discard(card);
+
+        checkSaidUno(hasSaidUno);
+    }
+
+    private void checkSaidUno(boolean hasSaidUno) {
+        if(getCurrentPlayer().getTotalCards() == 1 && !hasSaidUno) {
+            drawCards(players.getCurrentPlayer(), 2);
+        }
     }
 
     private void discard(Card card) {

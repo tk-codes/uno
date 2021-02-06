@@ -21,9 +21,10 @@ public class PlayerView extends JPanel implements DomainEventSubscriber {
     private JLayeredPane handCardsView;
     private Box controlPanel;
 
-    private JButton draw;
-    private JButton sayUNO;
     private JLabel nameLabel;
+    private JButton drawButton;
+    private JButton sayUnoButton;
+    private boolean hasSaidUno = false;
 
     private final PlayerInfoDTO player;
 
@@ -107,9 +108,9 @@ public class PlayerView extends JPanel implements DomainEventSubscriber {
 
         controlPanel = Box.createVerticalBox();
         controlPanel.add(nameLabel);
-        controlPanel.add(draw);
+        controlPanel.add(drawButton);
         controlPanel.add(Box.createVerticalStrut(15));
-        controlPanel.add(sayUNO);
+        controlPanel.add(sayUnoButton);
 
         toggleControlPanel();
     }
@@ -117,8 +118,8 @@ public class PlayerView extends JPanel implements DomainEventSubscriber {
     private void toggleControlPanel() {
         var isMyTurn = appService.getCurrentPlayer().getId().equals(player.getId());
 
-        draw.setVisible(isMyTurn);
-        sayUNO.setVisible(isMyTurn);
+        drawButton.setVisible(isMyTurn);
+        sayUnoButton.setVisible(isMyTurn);
     }
 
     private void initNameLabel() {
@@ -128,25 +129,22 @@ public class PlayerView extends JPanel implements DomainEventSubscriber {
     }
 
     private void initSayNoButton() {
-        sayUNO = new JButton("Say UNO");
-        sayUNO.setBackground(new Color(149, 55, 53));
-        sayUNO.setFont(new Font(StyleUtil.defaultFont, Font.BOLD, 20));
-        sayUNO.setFocusable(false);
+        sayUnoButton = new JButton("Say UNO");
+        sayUnoButton.setBackground(new Color(149, 55, 53));
+        sayUnoButton.setFont(new Font(StyleUtil.defaultFont, Font.BOLD, 20));
+        sayUnoButton.setFocusable(false);
 
-        sayUNO.addActionListener(e -> {
-            var color = ColorPicker.getInstance().show();
-            System.out.println(color);
-        });
+        sayUnoButton.addActionListener(e -> hasSaidUno = true);
     }
 
     private void initDrawButton() {
-        draw = new JButton("Draw");
+        drawButton = new JButton("Draw");
 
-        draw.setBackground(new Color(79, 129, 189));
-        draw.setFont(new Font(StyleUtil.defaultFont, Font.BOLD, 20));
-        draw.setFocusable(false);
+        drawButton.setBackground(new Color(79, 129, 189));
+        drawButton.setFont(new Font(StyleUtil.defaultFont, Font.BOLD, 20));
+        drawButton.setFocusable(false);
 
-        draw.addActionListener(e -> appService.drawCard(player.getId()));
+        drawButton.addActionListener(e -> appService.drawCard(player.getId()));
     }
 
     private void playCard(Card selectedCard) {
@@ -157,7 +155,8 @@ public class PlayerView extends JPanel implements DomainEventSubscriber {
             cardToPlay = new WildCard(selectedCard.getType(), chosenColor);
         }
 
-        appService.playCard(player.getId(), cardToPlay);
+        appService.playCard(player.getId(), cardToPlay, hasSaidUno);
+        hasSaidUno = false;
     }
 
     private void refresh() {

@@ -15,11 +15,9 @@ public interface IGameAppService extends Serializable {
 
     Stream<Card> getHandCards(UUID playerId);
 
-    void playCard(UUID playerId, Card card);
+    void playCard(UUID playerId, Card card, boolean hasSaidUno);
 
     void drawCard(UUID playerId);
-
-    void sayUNO(UUID playerId);
 
     Card peekTopCard();
 }
