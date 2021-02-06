@@ -2,6 +2,7 @@ package domain.game;
 
 import domain.card.Card;
 import domain.card.CardColor;
+import domain.card.CardUtil;
 import domain.player.Player;
 import domain.player.PlayerRoundIterator;
 import domain.testhelper.CardTestFactory;
@@ -217,7 +218,12 @@ public class TestGamePlay {
         var drawPile = createDrawPile(drawPileCards);
 
         var game = new Game(drawPile, playersIterator);
-        playersIterator.getCurrentPlayer().addToHandCards(cardToPlay);
+
+        var cardToAdd = CardUtil.isWildCard(cardToPlay)
+            ? CardTestFactory.createWildCard(cardToPlay.getType())
+            : cardToPlay;
+
+        playersIterator.getCurrentPlayer().addToHandCards(cardToAdd);
 
         return game;
     }
