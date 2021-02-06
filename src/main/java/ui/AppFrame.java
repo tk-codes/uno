@@ -40,9 +40,9 @@ public class AppFrame extends JFrame {
 
         var tableView = new TableView(appService);
 
-        mainLayout.add(playerView2, BorderLayout.SOUTH);
+        mainLayout.add(playerView1, BorderLayout.SOUTH);
         mainLayout.add(tableView, BorderLayout.CENTER);
-        mainLayout.add(playerView1, BorderLayout.NORTH);
+        mainLayout.add(playerView2, BorderLayout.NORTH);
         add(mainLayout);
     }
 }

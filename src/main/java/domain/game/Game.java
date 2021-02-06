@@ -9,6 +9,8 @@ import domain.player.ImmutablePlayer;
 import domain.player.Player;
 import domain.player.PlayerRoundIterator;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 import java.util.UUID;
 import java.util.stream.Stream;
@@ -122,9 +124,22 @@ public class Game extends Entity {
 
     public void drawCard(UUID playerId) {
         if (getCurrentPlayer().getId().equals(playerId)) {
-            drawCards(players.getCurrentPlayer(), 1);
-            players.next();
+            var drawnCards = drawCards(players.getCurrentPlayer(), 1);
 
+            tryToPlayDrawnCard(playerId, drawnCards.get(0));
+        }
+    }
+
+    private void tryToPlayDrawnCard(UUID playerId, Card drawnCard) {
+        try {
+            var cardToPlay = CardUtil.isWildCard(drawnCard)
+                ? new WildCard(drawnCard.getType(), peekTopCard().getColor())
+                : drawnCard;
+
+            playCard(playerId, cardToPlay);
+        } catch(Exception ex) {
+            // Drawn couldn't be played, so just switch turn
+            players.next();
             DomainEventPublisher.publish(new CardDrawn(playerId));
         }
     }
@@ -200,12 +215,18 @@ public class Game extends Entity {
         drawCards(player, 4);
     }
 
-    private void drawCards(Player player, int total) {
+    private List<Card> drawCards(Player player, int total) {
         int min = Math.min(total, drawPile.getSize());
+        var drawnCards = new ArrayList<Card>();
 
         for (int i = 0; i < min; i++) {
-            player.addToHandCards(drawPile.drawCard());
+            var drawnCard = drawPile.drawCard();
+            drawnCards.add(drawnCard);
+
+            player.addToHandCards(drawnCard);
         }
+
+        return drawnCards;
     }
 
     private void rejectPlayedCard(Card playedCard) {
