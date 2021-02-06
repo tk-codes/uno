@@ -5,6 +5,7 @@ import domain.common.DomainEventPublisher;
 import domain.common.Entity;
 import domain.game.events.CardDrawn;
 import domain.game.events.CardPlayed;
+import domain.game.events.GameOver;
 import domain.player.ImmutablePlayer;
 import domain.player.Player;
 import domain.player.PlayerRoundIterator;
@@ -20,6 +21,8 @@ public class Game extends Entity {
 
     private DrawPile drawPile;
     private final Stack<Card> discardPile = new Stack<>();
+
+    private ImmutablePlayer winner = null;
 
     public Game(DrawPile drawPile, PlayerRoundIterator players) {
         super();
@@ -71,11 +74,15 @@ public class Game extends Entity {
         }
     }
 
-    public void playCard(UUID playerId, Card playedCard){
+    public void playCard(UUID playerId, Card playedCard) {
         playCard(playerId, playedCard, false);
     }
 
     public void playCard(UUID playerId, Card playedCard, boolean hasSaidUno) {
+        if (isOver()) {
+            throw new IllegalStateException("Game is over");
+        }
+
         validatePlayedCard(playerId, playedCard);
 
         switch (playedCard.getType()) {
@@ -124,6 +131,10 @@ public class Game extends Entity {
         }
 
         DomainEventPublisher.publish(new CardPlayed(playerId, playedCard));
+
+        if (isOver()) {
+            DomainEventPublisher.publish(new GameOver(winner));
+        }
     }
 
     public void drawCard(UUID playerId) {
@@ -134,6 +145,14 @@ public class Game extends Entity {
         }
     }
 
+    public boolean isOver() {
+        return winner != null;
+    }
+
+    public ImmutablePlayer getWinner() {
+        return winner;
+    }
+
     private void tryToPlayDrawnCard(UUID playerId, Card drawnCard) {
         try {
             var cardToPlay = CardUtil.isWildCard(drawnCard)
@@ -141,7 +160,7 @@ public class Game extends Entity {
                 : drawnCard;
 
             playCard(playerId, cardToPlay);
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             // Drawn couldn't be played, so just switch turn
             players.next();
             DomainEventPublisher.publish(new CardDrawn(playerId));
@@ -201,11 +220,16 @@ public class Game extends Entity {
         players.getCurrentPlayer().removePlayedCard(card);
         discard(card);
 
-        checkSaidUno(hasSaidUno);
+        var remainingTotalCards = getCurrentPlayer().getTotalCards();
+        checkSaidUno(remainingTotalCards, hasSaidUno);
+
+        if (remainingTotalCards == 0) {
+            winner = getCurrentPlayer();
+        }
     }
 
-    private void checkSaidUno(boolean hasSaidUno) {
-        if(getCurrentPlayer().getTotalCards() == 1 && !hasSaidUno) {
+    private void checkSaidUno(int remainingTotalCards, boolean hasSaidUno) {
+        if (remainingTotalCards == 1 && !hasSaidUno) {
             drawCards(players.getCurrentPlayer(), 2);
         }
     }
