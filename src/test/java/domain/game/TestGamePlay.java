@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TestGamePlay {
+class TestGamePlay {
     private final Player[] players = PlayerTestFactory.createPlayers(4);
     private final PlayerRoundIterator playersIterator = new PlayerRoundIterator(players);
 
@@ -47,7 +47,7 @@ public class TestGamePlay {
 
     @ParameterizedTest
     @MethodSource("provideValidNumberCards")
-    public void WhenValidNumberCardPlayed_ShouldBeAccepted(Card topCard, Card cardToPlay) {
+    void WhenValidNumberCardPlayed_ShouldBeAccepted(Card topCard, Card cardToPlay) {
         // Arrange
         var game = createGame(cardToPlay, topCard);
 
@@ -69,7 +69,7 @@ public class TestGamePlay {
 
     @ParameterizedTest
     @MethodSource("provideValidSkipCards")
-    public void WhenValidSkipCardPlayed_ShouldBeAccepted(Card topCard, Card cardToPlay) {
+    void WhenValidSkipCardPlayed_ShouldBeAccepted(Card topCard, Card cardToPlay) {
         // Arrange
         var game = createGame(cardToPlay, topCard);
 
@@ -91,7 +91,7 @@ public class TestGamePlay {
 
     @ParameterizedTest
     @MethodSource("provideValidReverseCards")
-    public void WhenValidReverseCardPlayed_ShouldBeAccepted(Card topCard, Card cardToPlay) {
+    void WhenValidReverseCardPlayed_ShouldBeAccepted(Card topCard, Card cardToPlay) {
         // Arrange
         var game = createGame(cardToPlay, topCard);
 
@@ -113,7 +113,7 @@ public class TestGamePlay {
 
     @ParameterizedTest
     @MethodSource("provideValidDrawTwoCards")
-    public void WhenValidDrawTwoCardPlayed_ShouldBeAccepted(Card topCard, Card cardToPlay) {
+    void WhenValidDrawTwoCardPlayed_ShouldBeAccepted(Card topCard, Card cardToPlay) {
         // Arrange
         var game = createGame(
             cardToPlay,
@@ -140,7 +140,7 @@ public class TestGamePlay {
 
     @ParameterizedTest
     @MethodSource("provideValidWildColorCards")
-    public void WhenValidWildColorCardPlayed_ShouldBeAccepted(Card topCard, Card cardToPlay) {
+    void WhenValidWildColorCardPlayed_ShouldBeAccepted(Card topCard, Card cardToPlay) {
         // Arrange
         var game = createGame(cardToPlay, topCard);
 
@@ -162,7 +162,7 @@ public class TestGamePlay {
 
     @ParameterizedTest
     @MethodSource("provideValidWildDrawFourCards")
-    public void WhenValidWildDrawFourCardPlayed_ShouldBeAccepted(Card topCard, Card cardToPlay) {
+    void WhenValidWildDrawFourCardPlayed_ShouldBeAccepted(Card topCard, Card cardToPlay) {
         // Arrange
         var game = createGame(
             cardToPlay,
@@ -191,7 +191,7 @@ public class TestGamePlay {
 
     @ParameterizedTest
     @MethodSource("provideInvalidCardsForNumberCard")
-    public void WhenInvalidCardPlayed_ShouldBeRejected(Card topCard, Card cardToPlay) {
+    void WhenInvalidCardPlayed_ShouldBeRejected(Card topCard, Card cardToPlay) {
         // Arrange
         var game = createGame(cardToPlay, topCard);
 
@@ -214,7 +214,7 @@ public class TestGamePlay {
     }
 
     @Test
-    public void WhenDrawnCardIsPlayable_ShouldPlay() {
+    void WhenDrawnCardIsPlayable_ShouldPlay() {
         // Arrange
         var cardToDraw = CardTestFactory.createWildColorCard();
         var game = createGame(
@@ -231,7 +231,7 @@ public class TestGamePlay {
     }
 
     @Test
-    public void WhenDrawnCardIsNotPlayable_ShouldNotPlay() {
+    void WhenDrawnCardIsNotPlayable_ShouldNotPlay() {
         // Arrange
         var cardToDraw = CardTestFactory.createNumberCard(3, CardColor.GREEN);
         var topCard = CardTestFactory.createNumberCard(2, CardColor.RED);
@@ -249,7 +249,7 @@ public class TestGamePlay {
     }
 
     @Test
-    public void GivenTwoCards_WhenPlayedWithoutSayingUno_ShouldReceivePenalty() {
+    void GivenTwoCards_WhenPlayedWithoutSayingUno_ShouldReceivePenalty() {
         // Arrange
         var currentPlayer = players[0];
         var penaltyCard1 = CardTestFactory.createNumberCard(1, CardColor.BLUE);
@@ -274,7 +274,7 @@ public class TestGamePlay {
     }
 
     @Test
-    public void GivenTwoCards_WhenPlayedWithSayingUno_ShouldNotReceivePenalty() {
+    void GivenTwoCards_WhenPlayedWithSayingUno_ShouldNotReceivePenalty() {
         // Arrange
         var currentPlayer = players[0];
         var penaltyCard1 = CardTestFactory.createNumberCard(1, CardColor.BLUE);
@@ -298,7 +298,7 @@ public class TestGamePlay {
     }
 
     @Test
-    public void WhenPlayedLastCard_GameShouldBeOver() {// Arrange
+    void WhenPlayedLastCard_GameShouldBeOver() {// Arrange
         var currentPlayer = players[0];
         var cardToPlay = CardTestFactory.createNumberCard(3, CardColor.GREEN);
         var topCard = CardTestFactory.createNumberCard(3, CardColor.RED);
