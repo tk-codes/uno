@@ -110,6 +110,15 @@ public class PlayerView extends JPanel implements DomainEventSubscriber {
         controlPanel.add(draw);
         controlPanel.add(Box.createVerticalStrut(15));
         controlPanel.add(sayUNO);
+
+        toggleControlPanel();
+    }
+
+    private void toggleControlPanel() {
+        var isMyTurn = appService.getCurrentPlayer().getId().equals(player.getId());
+
+        draw.setVisible(isMyTurn);
+        sayUNO.setVisible(isMyTurn);
     }
 
     private void initNameLabel() {
@@ -143,7 +152,7 @@ public class PlayerView extends JPanel implements DomainEventSubscriber {
     private void playCard(Card selectedCard) {
         Card cardToPlay = selectedCard;
 
-        if(selectedCard.getType() == CardType.WILD_COLOR || selectedCard.getType() == CardType.WILD_DRAW_FOUR) {
+        if (selectedCard.getType() == CardType.WILD_COLOR || selectedCard.getType() == CardType.WILD_DRAW_FOUR) {
             var chosenColor = ColorPicker.getInstance().show();
             cardToPlay = new WildCard(selectedCard.getType(), chosenColor);
         }
@@ -151,11 +160,16 @@ public class PlayerView extends JPanel implements DomainEventSubscriber {
         appService.playCard(player.getId(), cardToPlay);
     }
 
+    private void refresh() {
+        renderHandCardsView();
+        toggleControlPanel();
+    }
+
     @Override
     public void handleEvent(DomainEvent event) {
         if (event instanceof CardPlayed
             || event instanceof CardDrawn) {
-            renderHandCardsView();
+            refresh();
         }
     }
 }
