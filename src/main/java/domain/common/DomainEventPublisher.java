@@ -45,4 +45,9 @@ public class DomainEventPublisher {
             isPublishing.set(Boolean.FALSE);
         }
     }
+
+    public static void reset() {
+        subscribers.remove();
+        isPublishing.remove();
+    }
 }
