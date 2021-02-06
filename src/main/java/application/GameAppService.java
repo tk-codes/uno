@@ -58,13 +58,15 @@ public class GameAppService implements IGameAppService {
 
     @Override
     public void playCard(UUID playerId, Card card, boolean hasSaidUno) {
-        logger.info(String.format("Player %s plays %s %s", playerId, card, hasSaidUno ? "and said UNO!!!" : ""));
+        var message = String.format("Player %s plays %s %s", playerId, card, hasSaidUno ? "and said UNO!!!" : "");
+        logger.info(message);
         game.playCard(playerId, card, hasSaidUno);
     }
 
     @Override
     public void drawCard(UUID playerId) {
-        logger.info(String.format("Player %s draws a card", playerId));
+        var message = String.format("Player %s draws a card", playerId);
+        logger.info(message);
         game.drawCard(playerId);
     }
 
