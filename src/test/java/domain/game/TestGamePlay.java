@@ -15,8 +15,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestGamePlay {
     private final Player[] players = PlayerTestFactory.createPlayers(4);
@@ -212,6 +211,41 @@ public class TestGamePlay {
             Arguments.of(topCard, CardTestFactory.createWildColorCard()),
             Arguments.of(topCard, CardTestFactory.createWildDrawFourCard())
         );
+    }
+
+    @Test
+    public void WhenDrawnCardIsPlayable_ShouldPlay() {
+        // Arrange
+        var cardToDraw = CardTestFactory.createWildColorCard();
+        var game = createGame(
+            CardTestFactory.createSkipCard(CardColor.GREEN),
+            cardToDraw,
+            CardTestFactory.createNumberCard(2, CardColor.RED));
+
+        // Act
+        game.drawCard(game.getCurrentPlayer().getId());
+
+        // Assert
+        assertGameState(game, CardTestFactory.createWildColorCard(CardColor.RED), "2");
+        assertEquals(1, players[0].getHandCards().count());
+    }
+
+    @Test
+    public void WhenDrawnCardIsNotPlayable_ShouldNotPlay() {
+        // Arrange
+        var cardToDraw = CardTestFactory.createNumberCard(3, CardColor.GREEN);
+        var topCard = CardTestFactory.createNumberCard(2, CardColor.RED);
+
+        var game = createGame(
+            CardTestFactory.createSkipCard(CardColor.GREEN), cardToDraw, topCard);
+
+        // Act
+        game.drawCard(game.getCurrentPlayer().getId());
+
+        // Assert
+        assertGameState(game, topCard, "2");
+        assertEquals(2, players[0].getHandCards().count());
+        assertTrue(players[0].hasHandCard(cardToDraw));
     }
 
     private Game createGame(Card cardToPlay, Card... drawPileCards) {
