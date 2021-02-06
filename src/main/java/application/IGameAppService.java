@@ -2,6 +2,7 @@ package application;
 
 import application.dto.PlayerInfoDTO;
 import domain.card.Card;
+import domain.player.ImmutablePlayer;
 
 import java.io.Serializable;
 import java.util.List;
@@ -20,4 +21,8 @@ public interface IGameAppService extends Serializable {
     void drawCard(UUID playerId);
 
     Card peekTopCard();
+
+    boolean isGameOver();
+
+    ImmutablePlayer getWinner();
 }

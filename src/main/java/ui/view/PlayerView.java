@@ -11,6 +11,7 @@ import domain.common.DomainEventSubscriber;
 import domain.game.DealerService;
 import domain.game.events.CardDrawn;
 import domain.game.events.CardPlayed;
+import domain.game.events.GameOver;
 import ui.common.StyleUtil;
 
 import javax.swing.*;
@@ -81,7 +82,6 @@ public class PlayerView extends JPanel implements DomainEventSubscriber {
         }
 
         handCardsView.revalidate();
-        repaint();
     }
 
     private Point getPoint(int width, int totalCards) {
@@ -118,8 +118,14 @@ public class PlayerView extends JPanel implements DomainEventSubscriber {
     private void toggleControlPanel() {
         var isMyTurn = appService.getCurrentPlayer().getId().equals(player.getId());
 
+        if (appService.isGameOver()) {
+            isMyTurn = false;
+        }
+
         drawButton.setVisible(isMyTurn);
         sayUnoButton.setVisible(isMyTurn);
+
+        controlPanel.revalidate();
     }
 
     private void initNameLabel() {
@@ -167,7 +173,8 @@ public class PlayerView extends JPanel implements DomainEventSubscriber {
     @Override
     public void handleEvent(DomainEvent event) {
         if (event instanceof CardPlayed
-            || event instanceof CardDrawn) {
+            || event instanceof CardDrawn
+            || event instanceof GameOver) {
             refresh();
         }
     }
