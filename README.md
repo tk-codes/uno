@@ -1,4 +1,6 @@
 # UNO - Card Game
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=tk-codes_uno&metric=coverage)](https://sonarcloud.io/dashboard?id=tk-codes_uno)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=tk-codes_uno&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=tk-codes_uno)
 
 Rebuilt the core game logic in domain-driven-design.
 
