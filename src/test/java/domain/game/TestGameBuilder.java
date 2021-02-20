@@ -7,10 +7,10 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class TestGameBuilder {
+class TestGameBuilder {
 
     @Test
-    public void WhenCreatedWithOnePlayer_ShouldThrowError() {
+    void WhenCreatedWithOnePlayer_ShouldThrowError() {
         var gameBuilder = new GameBuilder()
             .withPlayer("Player 1");
 
@@ -18,7 +18,7 @@ public class TestGameBuilder {
     }
 
     @Test
-    public void WhenHavingThreePlayers_ShouldBuildGame(){
+    void WhenHavingThreePlayers_ShouldBuildGame(){
         var game = new GameBuilder()
             .withPlayer("Player 1")
             .withPlayer("Player 2")

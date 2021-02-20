@@ -5,9 +5,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TestCard {
+class TestCard {
     @Test
-    public void GivenSameNumberCardValues_ShouldBeEqual(){
+    void GivenSameNumberCardValues_ShouldBeEqual() {
         var numberCard = new NumberCard(1, CardColor.RED);
         var anotherNumberCard = new NumberCard(1, CardColor.RED);
 
@@ -16,7 +16,7 @@ public class TestCard {
     }
 
     @Test
-    public void GivenDifferentNumberCardValues_ShouldNotBeEqual(){
+    void GivenDifferentNumberCardValues_ShouldNotBeEqual() {
         var numberCard = new NumberCard(1, CardColor.GREEN);
         var anotherNumberCard = new NumberCard(1, CardColor.RED);
 
@@ -24,7 +24,7 @@ public class TestCard {
     }
 
     @Test
-    public void GivenSameSkipCard_ShouldBeEqual(){
+    void GivenSameSkipCard_ShouldBeEqual() {
         var skipCard = CardTestFactory.createSkipCard(CardColor.RED);
         var anotherSkipCard = CardTestFactory.createSkipCard(CardColor.RED);
 
@@ -32,7 +32,7 @@ public class TestCard {
     }
 
     @Test
-    public void GivenDifferentSkipCard_ShouldNotBeEqual(){
+    void GivenDifferentSkipCard_ShouldNotBeEqual() {
         var skipCard = CardTestFactory.createSkipCard(CardColor.RED);
         var anotherSkipCard = CardTestFactory.createSkipCard(CardColor.GREEN);
 
@@ -40,7 +40,7 @@ public class TestCard {
     }
 
     @Test
-    public void GivenDifferentActionCard_ShouldNotBeEqual(){
+    void GivenDifferentActionCard_ShouldNotBeEqual() {
         var skipCard = CardTestFactory.createSkipCard(CardColor.RED);
         var reverseCard = CardTestFactory.createReverseCard(CardColor.RED);
 
@@ -48,7 +48,7 @@ public class TestCard {
     }
 
     @Test
-    public void GivenSameWildColorCard_ShouldBeEqual(){
+    void GivenSameWildColorCard_ShouldBeEqual() {
         var card = CardTestFactory.createWildColorCard();
         var anotherCard = CardTestFactory.createWildColorCard();
 
@@ -56,7 +56,7 @@ public class TestCard {
     }
 
     @Test
-    public void GivenSameWildDrawFourCard_ShouldBeEqual(){
+    void GivenSameWildDrawFourCard_ShouldBeEqual() {
         var card = CardTestFactory.createWildDrawFourCard();
         var anotherCard = CardTestFactory.createWildDrawFourCard();
 
