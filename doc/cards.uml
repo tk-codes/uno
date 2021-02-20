@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="0.0" y="551.0">domain.card.CardDeck</node>
+    <node x="269.0" y="551.0">domain.card.CardColor</node>
+    <node x="501.0" y="551.0">domain.card.CardUtil</node>
+    <node x="192.0" y="126.0">domain.card.AbstractCard</node>
+    <node x="384.0" y="385.5">domain.card.WildCard</node>
+    <node x="198.0" y="0.0">domain.card.Card</node>
+    <node x="601.0" y="0.0">domain.card.CardType</node>
+    <node x="192.0" y="385.5">domain.card.ActionCard</node>
+    <node x="0.0" y="363.0">domain.card.NumberCard</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="domain.card.WildCard" target="domain.card.AbstractCard">
+      <point x="0.0" y="-49.0" />
+      <point x="470.0" y="338.0" />
+      <point x="335.33333333333337" y="338.0" />
+      <point x="57.33333333333337" y="93.5" />
+    </edge>
+    <edge source="domain.card.NumberCard" target="domain.card.AbstractCard">
+      <point x="0.0" y="-71.5" />
+      <point x="86.0" y="338.0" />
+      <point x="220.66666666666666" y="338.0" />
+      <point x="-57.33333333333334" y="93.5" />
+    </edge>
+    <edge source="domain.card.AbstractCard" target="domain.card.Card">
+      <point x="0.0" y="-93.5" />
+      <point x="0.0" y="38.0" />
+    </edge>
+    <edge source="domain.card.ActionCard" target="domain.card.AbstractCard">
+      <point x="0.0" y="-49.0" />
+      <point x="0.0" y="93.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="553.5" y="348.5" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Methods</Category>
+    <Category>Fields</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
