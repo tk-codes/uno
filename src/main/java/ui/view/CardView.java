@@ -8,7 +8,6 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.Serializable;
 import java.util.function.Consumer;
 
 public class CardView extends JPanel {
@@ -99,7 +98,7 @@ public class CardView extends JPanel {
     }
 
     private void drawValueInCenter(Graphics2D g2, Color cardColor) {
-        var defaultFont = new Font(StyleUtil.defaultFont, Font.BOLD, cardWidth / 2 + 5);
+        var defaultFont = new Font(StyleUtil.DEFAULT_FONT, Font.BOLD, cardWidth / 2 + 5);
         var fontMetrics = this.getFontMetrics(defaultFont);
         int stringWidth = fontMetrics.stringWidth(value) / 2;
         int fontHeight = defaultFont.getSize() / 3;
@@ -110,7 +109,7 @@ public class CardView extends JPanel {
     }
 
     private void drawValueInCorner(Graphics2D g2) {
-        var defaultFont = new Font(StyleUtil.defaultFont, Font.ITALIC, cardWidth / 5);
+        var defaultFont = new Font(StyleUtil.DEFAULT_FONT, Font.ITALIC, cardWidth / 5);
 
         g2.setColor(Color.white);
         g2.setFont(defaultFont);

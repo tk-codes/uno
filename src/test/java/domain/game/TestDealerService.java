@@ -9,9 +9,9 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TestDealerService {
+class TestDealerService {
     @Test
-    public void WhenShuffled_ShouldHaveDifferentOrder() {
+    void WhenShuffled_ShouldHaveDifferentOrder() {
         // Arrange
         var originalList = new CardDeck().getImmutableCards();
 
@@ -30,35 +30,35 @@ public class TestDealerService {
     }
 
     @Test
-    public void WhenShuffled_ShouldHaveAllNumberCards() {
+    void WhenShuffled_ShouldHaveAllNumberCards() {
         var shuffledList = getShuffledCards();
 
         CardCounterAssertionHelper.assertNumberCards(shuffledList);
     }
 
     @Test
-    public void WhenShuffled_ShouldHaveAllSkipCards() {
+    void WhenShuffled_ShouldHaveAllSkipCards() {
         var shuffledList = getShuffledCards();
 
         CardCounterAssertionHelper.assertSkipCards(shuffledList);
     }
 
     @Test
-    public void WhenShuffled_ShouldHaveAllReverseCards() {
+    void WhenShuffled_ShouldHaveAllReverseCards() {
         var shuffledList = getShuffledCards();
 
         CardCounterAssertionHelper.assertReverseCards(shuffledList);
     }
 
     @Test
-    public void WhenShuffled_ShouldHaveAllDrawTwoCards() {
+    void WhenShuffled_ShouldHaveAllDrawTwoCards() {
         var shuffledList = getShuffledCards();
 
         CardCounterAssertionHelper.assertDrawTwoCards(shuffledList);
     }
 
     @Test
-    public void WhenShuffled_ShouldHaveAllWildCards() {
+    void WhenShuffled_ShouldHaveAllWildCards() {
         var shuffledList = getShuffledCards();
 
         CardCounterAssertionHelper.assertWildCards(shuffledList);
@@ -70,7 +70,7 @@ public class TestDealerService {
     }
 
     @Test
-    public void WhenDealt_ShouldHave7CardsPerEachPlayer() {
+    void WhenDealt_ShouldHave7CardsPerEachPlayer() {
         // Arrange
         var fixedCards = new ArrayList<Card>();
         for (int i = 0; i < 7; i++) {

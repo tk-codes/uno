@@ -1,6 +1,9 @@
 package domain.card;
 
 public class CardUtil {
+    private CardUtil() {
+    }
+
     public static void validateColor(CardColor color) {
         if (color == null) {
             throw new IllegalArgumentException("Card color should be defined");

@@ -13,7 +13,7 @@ import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class TestGameStart {
+class TestGameStart {
     private final PlayerRoundIterator players = new PlayerRoundIterator(PlayerTestFactory.createPlayers(3));
 
     @Test

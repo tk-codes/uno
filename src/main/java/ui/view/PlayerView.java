@@ -131,13 +131,13 @@ public class PlayerView extends JPanel implements DomainEventSubscriber {
     private void initNameLabel() {
         nameLabel = new JLabel(player.getName());
         nameLabel.setForeground(Color.WHITE);
-        nameLabel.setFont(new Font(StyleUtil.defaultFont, Font.BOLD, 15));
+        nameLabel.setFont(new Font(StyleUtil.DEFAULT_FONT, Font.BOLD, 15));
     }
 
     private void initSayNoButton() {
         sayUnoButton = new JButton("Say UNO");
         sayUnoButton.setBackground(new Color(149, 55, 53));
-        sayUnoButton.setFont(new Font(StyleUtil.defaultFont, Font.BOLD, 20));
+        sayUnoButton.setFont(new Font(StyleUtil.DEFAULT_FONT, Font.BOLD, 20));
         sayUnoButton.setFocusable(false);
 
         sayUnoButton.addActionListener(e -> hasSaidUno = true);
@@ -147,7 +147,7 @@ public class PlayerView extends JPanel implements DomainEventSubscriber {
         drawButton = new JButton("Draw");
 
         drawButton.setBackground(new Color(79, 129, 189));
-        drawButton.setFont(new Font(StyleUtil.defaultFont, Font.BOLD, 20));
+        drawButton.setFont(new Font(StyleUtil.DEFAULT_FONT, Font.BOLD, 20));
         drawButton.setFocusable(false);
 
         drawButton.addActionListener(e -> appService.drawCard(player.getId()));

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="302.0" y="0.0">domain.game.DealerService</node>
+    <node x="663.0" y="0.0">domain.game.GameBuilder</node>
+    <node x="0.0" y="716.0">domain.game.DrawPile</node>
+    <node x="0.0" y="0.0">domain.game.Game</node>
+  </nodes>
+  <notes />
+  <edges />
+  <settings layout="Hierarchic Group" zoom="1.0" x="533.5" y="354.0" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

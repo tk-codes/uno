@@ -4,7 +4,7 @@ public abstract class AbstractCard implements Card {
     private final CardType type;
     private final CardColor color;
 
-    public AbstractCard(CardType type, CardColor color) {
+    protected AbstractCard(CardType type, CardColor color) {
         this.type = type;
         this.color = color;
     }

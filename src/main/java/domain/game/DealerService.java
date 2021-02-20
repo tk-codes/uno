@@ -10,9 +10,13 @@ import java.util.Random;
 public class DealerService {
     public static final int TOTAL_INITIAL_HAND_CARDS = 7;
 
+    private DealerService() {
+    }
+
     /**
      * Cards are shuffled using the modern version of Fisher-Yates shuffle.
      * Refer https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_modern_algorithm
+     *
      * @param cards list will not be modified
      * @return a new shuffled card list
      */
@@ -55,7 +59,7 @@ public class DealerService {
 
         for (int i = 0; i < TOTAL_INITIAL_HAND_CARDS; i++) {
             for (int p = 0; p < totalPlayers; p++) {
-                if(i == 0){
+                if (i == 0) {
                     handCardLists[p] = new HandCardList();
                 }
 

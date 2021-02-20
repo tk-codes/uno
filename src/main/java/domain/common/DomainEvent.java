@@ -5,7 +5,7 @@ import java.util.Date;
 public abstract class DomainEvent {
     private final Date occurredDate;
 
-    public DomainEvent(){
+    protected DomainEvent(){
         occurredDate = new Date();
     }
 

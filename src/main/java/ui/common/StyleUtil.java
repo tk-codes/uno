@@ -16,10 +16,10 @@ public class StyleUtil {
     public static final Color yellowColor = new Color(255, 204, 0);
     public static final Color blackColor = new Color(0, 0, 0);
 
-    public static final String defaultFont = "Helvetica";
+    public static final String DEFAULT_FONT = "Helvetica";
 
-    private static final Character reverseChar = (char) 8634;
-    private static final Character skipChar = (char) Integer.parseInt("2718", 16);
+    private static final Character REVERSE_CHAR = (char) 8634;
+    private static final Character SKIP_CHAR = (char) Integer.parseInt("2718", 16);
 
     public static Color convertCardColor(CardColor color) {
         if (color == null) {
@@ -51,10 +51,10 @@ public class StyleUtil {
                 return Integer.toString(((NumberCard) card).getValue());
             }
             case SKIP -> {
-                return skipChar.toString();
+                return SKIP_CHAR.toString();
             }
             case REVERSE -> {
-                return reverseChar.toString();
+                return REVERSE_CHAR.toString();
             }
             case DRAW_TWO -> {
                 return "2+";

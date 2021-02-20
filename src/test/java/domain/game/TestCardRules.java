@@ -16,11 +16,11 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class TestCardRules {
+class TestCardRules {
 
     @ParameterizedTest
     @MethodSource("provideValidTopCardsForNumberCard")
-    public void WhenNumberCardPlayed_ShouldBeValid(Card topCard) {
+    void WhenNumberCardPlayed_ShouldBeValid(Card topCard) {
         var cardToPlay = CardTestFactory.createNumberCard(5, CardColor.RED);
 
         var result = CardRules.isValidNumberCard(topCard, cardToPlay);
@@ -43,7 +43,7 @@ public class TestCardRules {
 
     @ParameterizedTest
     @MethodSource("provideInvalidTopCardsForNumberCard")
-    public void WhenMisMatchNumberCardPlayed_ShouldBeInvalid(Card topCard) {
+    void WhenMisMatchNumberCardPlayed_ShouldBeInvalid(Card topCard) {
         var cardToPlay = CardTestFactory.createNumberCard(5, CardColor.RED);
 
         var result = CardRules.isValidNumberCard(topCard, cardToPlay);
@@ -68,7 +68,7 @@ public class TestCardRules {
 
     @ParameterizedTest
     @MethodSource("provideValidTopCardsForActionCard")
-    public void WhenActionCardPlayed_ShouldBeValid(Card cardToPlay, Card topCard) {
+    void WhenActionCardPlayed_ShouldBeValid(Card cardToPlay, Card topCard) {
         var result = CardRules.isValidActionCard(topCard, (ActionCard) cardToPlay);
 
         assertTrue(result, createTestMessage(topCard, cardToPlay));
@@ -95,7 +95,7 @@ public class TestCardRules {
 
     @ParameterizedTest
     @MethodSource("provideInvalidTopCardsForActionCard")
-    public void WhenMismatchActionCardPlayed_ShouldBeInvalid(Card cardToPlay, Card topCard) {
+    void WhenMismatchActionCardPlayed_ShouldBeInvalid(Card cardToPlay, Card topCard) {
         var result = CardRules.isValidActionCard(topCard, (ActionCard) cardToPlay);
 
         assertFalse(result, createTestMessage(topCard, cardToPlay));
@@ -126,7 +126,7 @@ public class TestCardRules {
     }
 
     @Test
-    public void WhenWildCardWithChosenColor_ShouldBeValid() {
+    void WhenWildCardWithChosenColor_ShouldBeValid() {
         var wildCard = CardTestFactory.createWildColorCard(CardColor.RED);
 
         var result = CardRules.isValidWildCard(wildCard);
@@ -135,7 +135,7 @@ public class TestCardRules {
     }
 
     @Test
-    public void WhenWildCardWithoutColor_ShouldBeInvalid() {
+    void WhenWildCardWithoutColor_ShouldBeInvalid() {
         var wildCard = CardTestFactory.createWildColorCard();
 
         var result = CardRules.isValidWildCard(wildCard);
