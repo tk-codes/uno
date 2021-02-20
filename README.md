@@ -45,4 +45,20 @@ Initially wild cards don't have a color. When drawn, a new value object is creat
 
 ![card-uml](./doc/cards.png)
 
+### Player
 
+`Player` is an entity which contains a list of hand cards to play.
+
+`PlayerRoundIterator` manages the players and switches turn as if the players are in a round table.
+
+![player-uml](./doc/player.png)
+
+### Game
+
+`Game` is the aggregate which maintains the state of **players**, **draw pile** and **discard pile** as the cards are played. 
+
+![game-uml](./doc/game.png)
+
+### Domain Events
+
+TBD
