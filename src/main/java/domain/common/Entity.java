@@ -5,11 +5,11 @@ import java.util.UUID;
 public abstract class Entity {
     private final UUID id;
 
-    public Entity(){
+    protected Entity(){
         this(UUID.randomUUID());
     }
 
-    public Entity(UUID id){
+    protected Entity(UUID id){
         this.id = id;
     }
 

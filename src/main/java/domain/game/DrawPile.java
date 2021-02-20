@@ -6,17 +6,17 @@ import java.util.List;
 import java.util.Stack;
 
 public class DrawPile {
-    private final Stack<Card> drawPile = new Stack<>();
+    private final Stack<Card> cards = new Stack<>();
 
     public DrawPile(List<Card> shuffledCards) {
-        drawPile.addAll(shuffledCards);
+        cards.addAll(shuffledCards);
     }
 
     public Card drawCard() {
-        return drawPile.pop();
+        return cards.pop();
     }
 
     public int getSize() {
-        return drawPile.size();
+        return cards.size();
     }
 }
