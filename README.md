@@ -2,10 +2,10 @@
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=tk-codes_uno&metric=coverage)](https://sonarcloud.io/dashboard?id=tk-codes_uno)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=tk-codes_uno&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=tk-codes_uno)
 
-> Rebuilt the core game logic in domain-driven-design.
+> v2.0: Rebuilt the core game logic in domain-driven-design.
 
 ![uno-ui](./doc/new-uno-v2.gif)
-*Note: GUI is built merely to try out the core domain logic. It is not suitable for serious game.*
+*Note: GUI is built merely to try out the core domain logic. It is not suitable for serious game. :)*
 
 ## Instructions
 
@@ -61,4 +61,8 @@ Initially wild cards don't have a color. When drawn, a new value object is creat
 
 ### Domain Events
 
-TBD
+`Game` aggregate produces domain events using `DomainEventPublisher`.
+
+Subscribers can register for these events and handle them accordingly. 
+
+![events-uml](./doc/events.png)

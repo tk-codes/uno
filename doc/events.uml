@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="166.0" y="127.0">domain.game.events.CardPlayed</node>
+    <node x="160.0" y="0.0">domain.common.DomainEvent</node>
+    <node x="0.0" y="503.0">domain.common.DomainEventSubscriber</node>
+    <node x="348.0" y="149.0">domain.game.events.GameOver</node>
+    <node x="0.0" y="149.0">domain.game.events.CardDrawn</node>
+    <node x="0.0" y="293.0">domain.common.DomainEventPublisher</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="domain.game.events.GameOver" target="domain.common.DomainEvent">
+      <point x="0.0" y="-38.5" />
+      <point x="450.5" y="102.0" />
+      <point x="305.0" y="102.0" />
+      <point x="58.0" y="38.5" />
+    </edge>
+    <edge source="domain.game.events.CardPlayed" target="domain.common.DomainEvent">
+      <point x="0.0" y="-60.5" />
+      <point x="0.0" y="38.5" />
+    </edge>
+    <edge source="domain.game.events.CardDrawn" target="domain.common.DomainEvent">
+      <point x="0.0" y="-38.5" />
+      <point x="73.0" y="102.0" />
+      <point x="189.0" y="102.0" />
+      <point x="-58.0" y="38.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="533.5" y="240.0" />
+  <SelectedNodes>
+    <node>domain.common.DomainEventPublisher</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
