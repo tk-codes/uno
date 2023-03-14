@@ -1,15 +1,15 @@
 package domain.common;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public abstract class DomainEvent {
-    private final Date occurredDate;
+    private final LocalDate occurredDate;
 
     protected DomainEvent(){
-        occurredDate = new Date();
+        occurredDate = LocalDate.now();
     }
 
-    public Date getOccurredDate(){
+    public LocalDate getOccurredDate(){
         return occurredDate;
     }
 }
